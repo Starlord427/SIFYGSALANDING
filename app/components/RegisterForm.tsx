@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -20,6 +18,17 @@ export default function RegisterForm({ onCancel }: RegisterFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // Validación básica
+    if (!fullName || !email || !password) {
+      setError('Por favor, complete todos los campos obligatorios.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
 
     try {
       const response = await fetch('/api/auth/register', {
@@ -48,7 +57,7 @@ export default function RegisterForm({ onCancel }: RegisterFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-white mb-6">Crear Cuenta</h2>
       <div>
-        <label htmlFor="fullName" className="block text-sm font-medium text-gray-300">Nombre completo</label>
+        <label htmlFor="fullName" className="block text-sm font-medium text-gray-300">Nombre completo *</label>
         <Input
           type="text"
           id="fullName"
@@ -65,12 +74,12 @@ export default function RegisterForm({ onCancel }: RegisterFormProps) {
           id="phone"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          required
           className="mt-1"
+          placeholder="Opcional"
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-300">Correo electrónico</label>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-300">Correo electrónico *</label>
         <Input
           type="email"
           id="email"
@@ -81,7 +90,7 @@ export default function RegisterForm({ onCancel }: RegisterFormProps) {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña</label>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-300">Contraseña *</label>
         <Input
           type="password"
           id="password"
@@ -98,7 +107,9 @@ export default function RegisterForm({ onCancel }: RegisterFormProps) {
         </Button>
         <Button type="submit">Registrarse</Button>
       </div>
+      <p className="text-sm text-gray-400 mt-4">* Campos obligatorios</p>
     </form>
   );
 }
+
 

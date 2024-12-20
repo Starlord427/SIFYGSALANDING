@@ -1,4 +1,6 @@
+CREATE DATABASE sifygsadtb
 
+USE sifygsadtb;
 -- Create users table (unchanged)
 DROP TABLE IF EXISTS users;
 
@@ -114,4 +116,3 @@ CREATE TABLE consultation_products (
   FOREIGN KEY (consultation_id) REFERENCES consultations(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
