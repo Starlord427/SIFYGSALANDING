@@ -28,13 +28,13 @@ const servicios = [
     imagen: "/servicio-automatizacion.jpg"
   },
   {
-    id: "deteccion-humo-supresion",
+    id: "deteccion-humo-incendios",
     titulo: "Detección de humo y supresión de incendios",
     descripcion: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",
     imagen: "/servicio-deteccion-humo.jpg"
   },
   {
-    id: "notificacion-masiva",
+    id: "notificacion-emergencias",
     titulo: "Notificación masiva de emergencias",
     descripcion: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.",
     imagen: "/servicio-notificacion.jpg"
@@ -64,7 +64,7 @@ const servicios = [
     imagen: "/servicio-interruptores.jpg"
   },
   {
-    id: "proteccion-equipos-instalaciones",
+    id: "proteccion-equipos",
     titulo: "Protección de equipos e instalaciones",
     descripcion: "Sistemas integrales para la protección de equipos críticos e instalaciones industriales.",
     imagen: "/servicio-proteccion-equipos.jpg"
