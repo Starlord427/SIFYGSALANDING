@@ -6,7 +6,7 @@ import { ResultSetHeader } from 'mysql2';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Método no permitido' });
   }
 
   const { fullName, phone, email, password } = req.body;
@@ -20,17 +20,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Check if user already exists
     const existingUsers = await query('SELECT * FROM users WHERE email = ?', [email]) as { length: number }[];
     if (existingUsers.length > 0) {
-      return res.status(409).json({ message: 'User already exists' });
+      return res.status(409).json({ message: 'El usuario ya existe' });
     }
 
-    // Hash password
-    const saltRounds = 10;
+    const saltRounds = 10; // Número de rondas de sal
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Insert new user
     const result = await query(
       'INSERT INTO users (username, password, role, email, full_name, phone) VALUES (?, ?, ?, ?, ?, ?)',
       [email, hashedPassword, 'client', email, fullName, phone || null]
@@ -38,18 +35,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const userId = result.insertId;
 
-    // Asegúrate de que la clave secreta esté definida
-    const secretKey = process.env.JWT_SECRET; // Asegúrate de que esta variable de entorno esté configurada
-
+    const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
-        throw new Error("La clave secreta no está definida");
+      throw new Error("La clave secreta no está definida");
     }
 
-    // Generar el token JWT
     const token = jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
 
     res.status(201).json({
-      message: 'User registered successfully',
+      message: 'Usuario registrado exitosamente',
       token,
       user: {
         id: userId,
@@ -59,8 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error de registro:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 }
 

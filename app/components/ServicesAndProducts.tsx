@@ -6,49 +6,59 @@ const servicesAndProducts = [
   {
     title: "Detección de gas y flama",
     description: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",
-    link: "/servicios/deteccion-gas-flama"
+    link: "/servicios/deteccion-gas-flama",
+    image: "/images/deteccion-gas-flama.jpg"
   },
   {
     title: "Protección contra caídas",
     description: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.",
-    link: "/servicios/proteccion-caidas"
+    link: "/servicios/proteccion-caidas",
+    image: "/images/proteccion-caidas.jpg"
   },
   {
     title: "Control y automatización",
     description: "Implementación de sistemas de control y automatización para optimizar procesos industriales.",
-    link: "/servicios/control-automatizacion"
+    link: "/servicios/control-automatizacion",
+    image: "/images/control-automatizacion.jpg"
   },
   {
     title: "Detección de humo y supresión de incendios",
     description: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",
-    link: "/servicios/deteccion-humo-incendios"
+    link: "/servicios/deteccion-humo-incendios",
+    image: "/images/deteccion-humo.jpg"
   },
   {
     title: "Notificación masiva de emergencias",
     description: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.",
-    link: "/servicios/notificacion-emergencias"
+    link: "/servicios/notificacion-emergencias",
+    image: "/images/notificacion-emergencias.jpg"
   },
   {
     title: "Intercomunicación y voceo",
     description: "Sistemas de comunicación interna para mejorar la coordinación y seguridad en las instalaciones.",
-    link: "/servicios/intercomunicacion-voceo"
+    link: "/servicios/intercomunicacion-voceo",
+    image: "/images/intercomunicacion.jpg"
   }
 ]
 
 export default function ServicesAndProducts() {
   return (
-    <section className="py-20 bg-gray-100">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Nuestros Servicios y Productos</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Nuestros Servicios y Productos</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesAndProducts.map((item, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+            <Card 
+              key={index} 
+              className="bg-[#FF7420] hover:bg-[#FF5500] hover:shadow-xl transition-shadow duration-300 border-none"
+            >
+              <img src={item.image} alt={item.title} className="w-full h-32 object-cover rounded-t-md" />
               <CardHeader>
-                <CardTitle>{item.title}</CardTitle>
+                <CardTitle className="text-white">{item.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>{item.description}</CardDescription>
-                <Link href={item.link} className="mt-4 inline-block text-[#FF7420] hover:underline">
+                <CardDescription className="text-white">{item.description}</CardDescription>
+                <Link href={item.link} className="mt-4 inline-block text-black hover:underline">
                   Leer más
                 </Link>
               </CardContent>
