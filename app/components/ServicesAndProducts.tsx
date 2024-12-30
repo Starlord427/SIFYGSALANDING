@@ -13,7 +13,7 @@ const servicesAndProducts = [
     title: "Protección contra caídas",
     description: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.",
     link: "/servicios/proteccion-caidas",
-    image: "/servicios/proteccion-caidas.jpg"
+    image: "/servicios/servicio-proteccion-caidas.jpg"
   },
   {
     title: "Control y automatización",
