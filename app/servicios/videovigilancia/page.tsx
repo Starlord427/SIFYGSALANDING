@@ -15,7 +15,7 @@ export default function Videovigilancia() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-videovigilancia.jpg" 
+              src="/servicios/servicio-videovigilancia.jpg" 
               alt="Sistemas de videovigilancia" 
               width={600} 
               height={400} 

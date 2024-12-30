@@ -13,67 +13,67 @@ const servicios = [
     id: "deteccion-gas-flama",
     titulo: "Detección fija de gas y flama",
     descripcion: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",
-    imagen: "/servicio-deteccion.jpg"
+    imagen: "/servicios/servicio-deteccion.jpg"
   },
   {
     id: "proteccion-caidas",
     titulo: "Sistemas de protección contra caídas",
     descripcion: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.",
-    imagen: "/servicio-proteccion-caidas.jpg"
+    imagen: "/servicios/servicio-proteccion-caidas.jpg"
   },
   {
     id: "control-automatizacion",
     titulo: "Control y automatización",
     descripcion: "Implementación de sistemas de control y automatización para optimizar procesos industriales.",
-    imagen: "/servicio-automatizacion.jpg"
+    imagen: "/servicios/servicio-automatizacion.jpg"
   },
   {
     id: "deteccion-humo-incendios",
     titulo: "Detección de humo y supresión de incendios",
     descripcion: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",
-    imagen: "/servicio-deteccion-humo.jpg"
+    imagen: "/servicios/servicio-deteccion-humo.jpg"
   },
   {
     id: "notificacion-emergencias",
     titulo: "Notificación masiva de emergencias",
     descripcion: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.",
-    imagen: "/servicio-notificacion.jpg"
+    imagen: "/servicios/servicio-notificacion.jpg"
   },
   {
     id: "intercomunicacion-voceo",
     titulo: "Intercomunicación y voceo",
     descripcion: "Sistemas de comunicación interna para mejorar la coordinación y seguridad en las instalaciones.",
-    imagen: "/servicio-intercomunicacion.jpg"
+    imagen: "/servicios/servicio-intercomunicacion.jpg"
   },
   {
     id: "tratamiento-aire-gas",
     titulo: "Tratamiento de aire y gas",
     descripcion: "Tecnologías avanzadas para el tratamiento y purificación de aire y gases industriales.",
-    imagen: "/servicio-tratamiento-aire.jpg"
+    imagen: "/servicios/servicio-tratamiento-aire.jpg"
   },
   {
     id: "compresion-aire",
     titulo: "Compresión de aire",
     descripcion: "Equipos y sistemas de compresión de aire para aplicaciones industriales diversas.",
-    imagen: "/servicio-compresion-aire.jpg"
+    imagen: "/servicios/servicio-compresion-aire.jpg"
   },
   {
     id: "interruptores",
     titulo: "Interruptores",
     descripcion: "Soluciones en interruptores de alta calidad para sistemas eléctricos industriales.",
-    imagen: "/servicio-interruptores.jpg"
+    imagen: "/servicios/servicio-interruptores.jpg"
   },
   {
     id: "proteccion-equipos",
     titulo: "Protección de equipos e instalaciones",
     descripcion: "Sistemas integrales para la protección de equipos críticos e instalaciones industriales.",
-    imagen: "/servicio-proteccion-equipos.jpg"
+    imagen: "/servicios/servicio-proteccion-equipos.jpg"
   },
   {
     id: "videovigilancia",
     titulo: "Sistemas de videovigilancia",
     descripcion: "Tecnología de punta en sistemas de videovigilancia para mejorar la seguridad en sus instalaciones.",
-    imagen: "/servicio-videovigilancia.jpg"
+    imagen: "/servicios/servicio-videovigilancia.jpg"
   },
   {
     id: "aire-instrumentos",

@@ -15,7 +15,7 @@ export default function ProteccionCaidas() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-proteccion-caidas.jpg" 
+              src="/servicios/servicio-proteccion-caidas.jpg" 
               alt="Sistemas de protección contra caídas" 
               width={600} 
               height={400} 

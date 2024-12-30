@@ -15,7 +15,7 @@ export default function IntercomunicacionVoceo() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-intercomunicacion.jpg" 
+              src="/servicios/servicio-intercomunicacion.jpg" 
               alt="Intercomunicación y voceo" 
               width={600} 
               height={400} 

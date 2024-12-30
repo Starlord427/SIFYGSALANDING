@@ -6,20 +6,20 @@ const servicesAndProducts = [
   {
     title: "Detección de gas y flama",
     description: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",
-    link: "/servicios/deteccion-gas-flama",
-    image: "/images/deteccion-gas-flama.jpg"
+    link: "/servicios/deteccion-gas-fuego",
+    image: "/servicios/deteccion-gas-fuego.jpg"
   },
   {
     title: "Protección contra caídas",
     description: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.",
     link: "/servicios/proteccion-caidas",
-    image: "/images/proteccion-caidas.jpg"
+    image: "/servicios/proteccion-caidas.jpg"
   },
   {
     title: "Control y automatización",
     description: "Implementación de sistemas de control y automatización para optimizar procesos industriales.",
-    link: "/servicios/control-automatizacion",
-    image: "/images/control-automatizacion.jpg"
+    link: "/servicios/servicio-automatizacion",
+    image: "/servicios/servicio-automatizacion.jpg"
   },
   {
     title: "Detección de humo y supresión de incendios",

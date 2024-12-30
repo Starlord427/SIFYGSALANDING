@@ -15,7 +15,7 @@ export default function DeteccionHumoIncendios() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-deteccion-humo.jpg" 
+              src="/servicios/servicio-deteccion-humo.jpg" 
               alt="Detección de humo y supresión de incendios" 
               width={600} 
               height={400} 

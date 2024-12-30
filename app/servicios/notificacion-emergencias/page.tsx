@@ -15,7 +15,7 @@ export default function NotificacionEmergencias() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-notificacion.jpg" 
+              src="/servicios/servicio-notificacion.jpg" 
               alt="Notificación masiva de emergencias" 
               width={600} 
               height={400} 

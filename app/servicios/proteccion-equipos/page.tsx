@@ -15,7 +15,7 @@ export default function ProteccionEquipos() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-proteccion-equipos.jpg" 
+              src="/servicios/servicio-proteccion-equipos.jpg" 
               alt="Protección de equipos e instalaciones" 
               width={600} 
               height={400} 

@@ -15,7 +15,7 @@ export default function TratamientoAireGas() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-tratamiento-aire.jpg" 
+              src="/servicios/servicio-tratamiento-aire.jpg" 
               alt="Tratamiento de aire y gas" 
               width={600} 
               height={400} 

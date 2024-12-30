@@ -15,7 +15,7 @@ export default function Interruptores() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-interruptores.jpg" 
+              src="/servicios/servicio-interruptores.jpg" 
               alt="Interruptores" 
               width={600} 
               height={400} 

@@ -15,7 +15,7 @@ export default function DeteccionGasFlama() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-deteccion.jpg" 
+              src="/servicios/servicio-deteccion.jpg" 
               alt="Detección fija de gas y flama" 
               width={600} 
               height={400} 
