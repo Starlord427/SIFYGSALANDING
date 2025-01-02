@@ -1,5 +1,24 @@
 {
-  "/not-found": "app/not-found.js",
+  "/_not-found": "app/_not-found.js",
+  "/MAC/page": "app/MAC/page.js",
+  "/acerca-de/page": "app/acerca-de/page.js",
+  "/contacto/page": "app/contacto/page.js",
+  "/eventos/[id]/page": "app/eventos/[id]/page.js",
+  "/eventos/page": "app/eventos/page.js",
+  "/mac-form/page": "app/mac-form/page.js",
   "/page": "app/page.js",
-  "/servicios/proteccion-caidas/page": "app/servicios/proteccion-caidas/page.js"
+  "/proyectos/page": "app/proyectos/page.js",
+  "/servicios-y-productos/page": "app/servicios-y-productos/page.js",
+  "/servicios/aire-instrumentos/page": "app/servicios/aire-instrumentos/page.js",
+  "/servicios/compresion-aire/page": "app/servicios/compresion-aire/page.js",
+  "/servicios/control-automatizacion/page": "app/servicios/control-automatizacion/page.js",
+  "/servicios/deteccion-gas-flama/page": "app/servicios/deteccion-gas-flama/page.js",
+  "/servicios/deteccion-humo-incendios/page": "app/servicios/deteccion-humo-incendios/page.js",
+  "/servicios/intercomunicacion-voceo/page": "app/servicios/intercomunicacion-voceo/page.js",
+  "/servicios/interruptores/page": "app/servicios/interruptores/page.js",
+  "/servicios/notificacion-emergencias/page": "app/servicios/notificacion-emergencias/page.js",
+  "/servicios/proteccion-caidas/page": "app/servicios/proteccion-caidas/page.js",
+  "/servicios/proteccion-equipos/page": "app/servicios/proteccion-equipos/page.js",
+  "/servicios/tratamiento-aire-gas/page": "app/servicios/tratamiento-aire-gas/page.js",
+  "/servicios/videovigilancia/page": "app/servicios/videovigilancia/page.js"
 }

@@ -1,1 +1,1 @@
-{}
+{"/api/auth/register":"pages/api/auth/register.js","/api/consultations/[id]":"pages/api/consultations/[id].js","/api/consultations":"pages/api/consultations.js","/api/products":"pages/api/products.js","/_app":"pages/_app.js","/_error":"pages/_error.js","/_document":"pages/_document.js","/api/auth/login":"pages/api/auth/login.js","/404":"pages/404.html"}
