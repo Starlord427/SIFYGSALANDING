@@ -12,7 +12,7 @@ Este proyecto es la landing page para SIFYGSA, una empresa que ofrece soluciones
 1. Clona este repositorio:
 
    ```bash
-   git clone [<repository_url>](https://github.com/Starlord427/SIFYGSALANDING.git)
+   git clone https://github.com/Starlord427/SIFYGSALANDING.git
    ```
 
 2. Instala las dependencias:
