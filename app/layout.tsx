@@ -2,7 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Header from './components/Header'
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from '@vercel/analytics/next'
 import Footer from './components/Footer'
 import ScrollToTopButton from '@/components/ScrollToTopButton'
 
@@ -31,12 +31,14 @@ export default function RootLayout({
     <html lang="es">
       <Head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <title>{metadata.title}</title>
       </Head>
       <body className={inter.className}>
         <Header />
         {children}
         <Footer />
         <ScrollToTopButton />
+        <Analytics />
       </body>
     </html>
   )
