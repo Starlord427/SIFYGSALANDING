@@ -1,12 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { query } from '@/lib/db';
+import { db } from '@/firebaseConfig';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const productsRef = collection(db, 'products');
+
   switch (req.method) {
     case 'GET':
       try {
-        const results = await query('SELECT * FROM products ORDER BY name ASC', []);
-        res.status(200).json(results);
+        const results = await getDocs(productsRef);
+        const products = results.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.status(200).json(products);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
         res.status(500).json({ message: 'Error al obtener los productos' });
@@ -16,11 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'POST':
       try {
         const { name, category, description, price, stock } = req.body;
-        const result = await query(
-          'INSERT INTO products (name, category, description, price, stock) VALUES (?, ?, ?, ?, ?)',
-          [name, category, description, price, stock]
-        ) as { insertId: number };
-        res.status(201).json({ message: 'Producto creado', id: result.insertId });
+        const result = await addDoc(productsRef, { name, category, description, price, stock });
+        res.status(201).json({ message: 'Producto creado', id: result.id });
       } catch (error) {
         console.error('Error al crear el producto:', error);
         res.status(500).json({ message: 'Error al crear el producto' });

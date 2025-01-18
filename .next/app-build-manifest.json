@@ -1,25 +1,233 @@
 {
   "pages": {
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+    "/_not-found": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/app/_not-found-43e63352ee26281c.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/css/6a7fc69f96fe32da.css",
+      "static/chunks/app/layout-6cb4f199b36d485b.js"
+    ],
+    "/MAC/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/853-7cfadc5825e91ff1.js",
+      "static/chunks/706-40f5a3a1ac7ca8a9.js",
+      "static/chunks/736-6bd6989f97347826.js",
+      "static/chunks/199-d313300a7a7802d8.js",
+      "static/chunks/130-6c4d7058314021ed.js",
+      "static/chunks/app/MAC/page-08d45fb80d51ff0c.js"
+    ],
+    "/contacto/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/app/contacto/page-aee802038895f222.js"
+    ],
+    "/eventos/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/eventos/page-f37cfd5432be7be5.js"
     ],
     "/acerca-de/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/acerca-de/page.js"
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/853-7cfadc5825e91ff1.js",
+      "static/chunks/736-6bd6989f97347826.js",
+      "static/chunks/app/acerca-de/page-9ba2b3742998da2f.js"
     ],
-    "/not-found": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+    "/eventos/[id]/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/app/eventos/[id]/page-42fb723296c96434.js"
+    ],
+    "/mac-form/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/853-7cfadc5825e91ff1.js",
+      "static/chunks/706-40f5a3a1ac7ca8a9.js",
+      "static/chunks/736-6bd6989f97347826.js",
+      "static/chunks/199-d313300a7a7802d8.js",
+      "static/chunks/130-6c4d7058314021ed.js",
+      "static/chunks/app/mac-form/page-c8d94397818f4b2a.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/114-9834e018faaa9eca.js",
+      "static/chunks/291-48da50025512da90.js",
+      "static/chunks/app/page-b1ea6f69ee828523.js"
+    ],
+    "/proyectos/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/114-9834e018faaa9eca.js",
+      "static/chunks/app/proyectos/page-a332c95ca9158e0a.js"
+    ],
+    "/servicios-y-productos/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/603-1879ae81d75f294d.js",
+      "static/chunks/853-7cfadc5825e91ff1.js",
+      "static/chunks/706-40f5a3a1ac7ca8a9.js",
+      "static/chunks/app/servicios-y-productos/page-52f9b34e66a8e4b9.js"
+    ],
+    "/servicios/aire-instrumentos/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/aire-instrumentos/page-c3bb84a29f671f7c.js"
+    ],
+    "/servicios/compresion-aire/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/compresion-aire/page-828cd5933b715b11.js"
+    ],
+    "/servicios/control-automatizacion/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/control-automatizacion/page-47d8056aed9da09a.js"
+    ],
+    "/servicios/deteccion-gas-flama/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/deteccion-gas-flama/page-d21c9a076076b534.js"
+    ],
+    "/servicios/deteccion-humo-incendios/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/deteccion-humo-incendios/page-f3e6af5847d8bc06.js"
+    ],
+    "/servicios/intercomunicacion-voceo/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/intercomunicacion-voceo/page-e21e7055629b226b.js"
+    ],
+    "/servicios/notificacion-emergencias/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/notificacion-emergencias/page-5c3a8ba74f1e52f5.js"
+    ],
+    "/servicios/interruptores/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/interruptores/page-a7873c029287434d.js"
+    ],
+    "/servicios/proteccion-caidas/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/proteccion-caidas/page-b4eda37bb2551239.js"
+    ],
+    "/servicios/proteccion-equipos/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/proteccion-equipos/page-54c91fac703c03d2.js"
+    ],
+    "/servicios/tratamiento-aire-gas/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/tratamiento-aire-gas/page-f55e3e569ab10040.js"
+    ],
+    "/servicios/videovigilancia/page": [
+      "static/chunks/webpack-ffd5c5109648eb3d.js",
+      "static/chunks/fd9d1056-181b355a02994ca9.js",
+      "static/chunks/472-5ffd556884a0bc6a.js",
+      "static/chunks/main-app-8cb131365b3e6c28.js",
+      "static/chunks/326-692d2f52a072041f.js",
+      "static/chunks/413-d931efe1b6fbed6d.js",
+      "static/chunks/app/servicios/videovigilancia/page-41c191cb9dee0174.js"
     ]
   }
 }

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { query } from '@/lib/db';
+import { db } from '@/firebaseConfig';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ResultSetHeader } from 'mysql2';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -20,33 +20,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const existingUsers = await query('SELECT * FROM users WHERE email = ?', [email]) as { length: number }[];
-    if (existingUsers.length > 0) {
+    // Verificar si el usuario ya existe
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
       return res.status(409).json({ message: 'El usuario ya existe' });
     }
 
-    const saltRounds = 10; // Número de rondas de sal
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const result = await query(
-      'INSERT INTO users (username, password, role, email, full_name, phone) VALUES (?, ?, ?, ?, ?, ?)',
-      [email, hashedPassword, 'client', email, fullName, phone || null]
-    ) as ResultSetHeader;
-
-    const userId = result.insertId;
+    // Agregar el nuevo usuario a Firestore
+    const docRef = await addDoc(usersRef, {
+      fullName,
+      phone,
+      email,
+      password: hashedPassword,
+      role: 'client',
+    });
 
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
       throw new Error("La clave secreta no está definida");
     }
 
-    const token = jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: docRef.id }, secretKey, { expiresIn: '1h' });
 
     res.status(201).json({
       message: 'Usuario registrado exitosamente',
       token,
       user: {
-        id: userId,
+        id: docRef.id,
         email,
         fullName,
         role: 'client'

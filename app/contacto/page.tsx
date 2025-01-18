@@ -2,13 +2,11 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import LoginForm from '../components/LoginForm'
-import RegisterForm from '../components/RegisterForm'
+import Auth from '@/components/Auth'
 import { CheckCircle } from 'lucide-react'
 
 export default function Contacto() {
-  const [showLoginForm, setShowLoginForm] = useState(false)
-  const [showRegisterForm, setShowRegisterForm] = useState(false)
+  const [showAuth, setShowAuth] = useState<'login' | 'register' | null>(null)
 
   return (
     <div className="min-h-screen bg-black">
@@ -45,30 +43,28 @@ export default function Contacto() {
       {/* Login/Register Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          {!showLoginForm && !showRegisterForm ? (
+          {!showAuth ? (
             <div className="bg-[#FF7420] rounded-lg p-8 max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-white mb-6">
                 ¿Tienes cuenta? Inicia sesión o regístrate para comenzar tu Consulta.
               </h2>
               <div className="flex justify-center gap-4">
                 <Button 
-                  onClick={() => setShowLoginForm(true)} 
+                  onClick={() => setShowAuth('login')} 
                   className="bg-white text-[#FF7420] hover:bg-gray-100"
                 >
                   Iniciar Sesión
                 </Button>
                 <Button 
-                  onClick={() => setShowRegisterForm(true)}
+                  onClick={() => setShowAuth('register')}
                   className="bg-black text-white hover:bg-gray-900"
                 >
                   Crear Cuenta
                 </Button>
               </div>
             </div>
-          ) : showLoginForm ? (
-            <LoginForm onCancel={() => setShowLoginForm(false)} />
           ) : (
-            <RegisterForm onCancel={() => setShowRegisterForm(false)} />
+            <Auth isLogin={showAuth === 'login'} />
           )}
         </div>
       </section>
