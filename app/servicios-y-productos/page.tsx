@@ -79,7 +79,7 @@ const servicios = [
     id: "aire-instrumentos",
     titulo: "Sistemas de aire para instrumentos",
     descripcion: "Soluciones especializadas de aire comprimido para instrumentos y controles industriales.",
-    imagen: "/servicio-aire-instrumentos.jpg"
+    imagen: "/servicios/servicio-aire-instrumentos.jpg"
   }
 ]
 

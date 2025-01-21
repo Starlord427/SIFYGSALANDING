@@ -4,9 +4,19 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import Auth from '@/components/Auth'
 import { CheckCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function Contacto() {
   const [showAuth, setShowAuth] = useState<'login' | 'register' | null>(null)
+  const router = useRouter()
+
+  const handleAuthClick = (type: 'login' | 'register') => {
+    setShowAuth(type)
+  }
+
+  const handleBackClick = () => {
+    setShowAuth(null)
+  }
 
   return (
     <div className="min-h-screen bg-black">
@@ -50,13 +60,13 @@ export default function Contacto() {
               </h2>
               <div className="flex justify-center gap-4">
                 <Button 
-                  onClick={() => setShowAuth('login')} 
+                  onClick={() => handleAuthClick('login')} 
                   className="bg-white text-[#FF7420] hover:bg-gray-100"
                 >
                   Iniciar Sesión
                 </Button>
                 <Button 
-                  onClick={() => setShowAuth('register')}
+                  onClick={() => handleAuthClick('register')}
                   className="bg-black text-white hover:bg-gray-900"
                 >
                   Crear Cuenta
@@ -64,7 +74,15 @@ export default function Contacto() {
               </div>
             </div>
           ) : (
-            <Auth isLogin={showAuth === 'login'} />
+            <div>
+              <Button 
+                onClick={handleBackClick}
+                className="mb-4 bg-transparent text-[#FF7420] hover:bg-[#FF7420]/10"
+              >
+                &larr; Volver
+              </Button>
+              <Auth isLogin={showAuth === 'login'} onBack={handleBackClick} />
+            </div>
           )}
         </div>
       </section>

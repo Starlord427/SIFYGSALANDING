@@ -15,7 +15,7 @@ return (
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <div>
           <Image 
-            src="/servicio-aire-instrumentos.jpg" 
+            src="/servicios/servicio-aire-instrumentos.jpg" 
             alt="Sistemas de aire para instrumentos" 
             width={600} 
             height={400} 

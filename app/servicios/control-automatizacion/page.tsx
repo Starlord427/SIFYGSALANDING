@@ -15,7 +15,7 @@ export default function ControlAutomatizacion() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-automatizacion.jpg" 
+              src="/servicios/servicio-automatizacion.jpg" 
               alt="Control y automatización" 
               width={600} 
               height={400} 

@@ -15,7 +15,7 @@ export default function CompresionAire() {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           <div>
             <Image 
-              src="/servicio-compresion-aire.jpg" 
+              src="/servicios/servicio-compresion-aire.jpg" 
               alt="Compresión de aire" 
               width={600} 
               height={400} 

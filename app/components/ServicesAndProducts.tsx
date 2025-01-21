@@ -6,8 +6,8 @@ const servicesAndProducts = [
   {
     title: "Detección de gas y flama",
     description: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",
-    link: "/servicios/deteccion-gas-fuego",
-    image: "/servicios/deteccion-gas-fuego.jpg"
+    link: "/servicios/deteccion-gas-flama",
+    image: "/servicios/servicio-deteccion.jpg"
   },
   {
     title: "Protección contra caídas",
@@ -25,19 +25,19 @@ const servicesAndProducts = [
     title: "Detección de humo y supresión de incendios",
     description: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",
     link: "/servicios/deteccion-humo-incendios",
-    image: "/images/deteccion-humo.jpg"
+    image: "/servicios/servicio-deteccion-humo.jpg"
   },
   {
     title: "Notificación masiva de emergencias",
     description: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.",
     link: "/servicios/notificacion-emergencias",
-    image: "/images/notificacion-emergencias.jpg"
+    image: "/servicios/servicio-notificacion.jpg"
   },
   {
     title: "Intercomunicación y voceo",
     description: "Sistemas de comunicación interna para mejorar la coordinación y seguridad en las instalaciones.",
     link: "/servicios/intercomunicacion-voceo",
-    image: "/images/intercomunicacion.jpg"
+    image: "/servicios/servicio-intercomunicacion.jpg"
   }
 ]
 
