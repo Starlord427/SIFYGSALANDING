@@ -6,16 +6,31 @@ import Auth from '@/components/Auth'
 import { CheckCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+type AuthType = 'login' | 'register' | null;
+
 export default function Contacto() {
-  const [showAuth, setShowAuth] = useState<'login' | 'register' | null>(null)
+  const [authType, setAuthType] = useState<AuthType>(null)
   const router = useRouter()
 
   const handleAuthClick = (type: 'login' | 'register') => {
-    setShowAuth(type)
+    setAuthType(type)
   }
 
-  const handleBackClick = () => {
-    setShowAuth(null)
+  const handleAuthSuccess = (role: string) => {
+    // Redirigir al usuario basado en su rol
+    switch (role) {
+      case 'client':
+        router.push('/client-dashboard')
+        break
+      case 'salesperson':
+        router.push('/salesperson-dashboard')
+        break
+      case 'manager':
+        router.push('/manager-dashboard')
+        break
+      default:
+        console.error('Rol desconocido:', role)
+    }
   }
 
   return (
@@ -53,7 +68,7 @@ export default function Contacto() {
       {/* Login/Register Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          {!showAuth ? (
+          {!authType ? (
             <div className="bg-[#FF7420] rounded-lg p-8 max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-white mb-6">
                 ¿Tienes cuenta? Inicia sesión o regístrate para comenzar tu Consulta.
@@ -76,12 +91,12 @@ export default function Contacto() {
           ) : (
             <div>
               <Button 
-                onClick={handleBackClick}
+                onClick={() => setAuthType(null)}
                 className="mb-4 bg-transparent text-[#FF7420] hover:bg-[#FF7420]/10"
               >
                 &larr; Volver
               </Button>
-              <Auth isLogin={showAuth === 'login'} onBack={handleBackClick} />
+              <Auth authType={authType} onAuthSuccess={handleAuthSuccess} />
             </div>
           )}
         </div>

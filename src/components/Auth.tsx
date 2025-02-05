@@ -1,221 +1,165 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from 'react';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/Label"
-import { Eye, EyeOff, CheckCircle } from "lucide-react"
-import { ServiceInfo, LocationInfo, ProjectDetails, AdditionalInfo, ContactInfo, Summary, ProgressBar } from "@/app/MAC/components"
-import MACForm from "@/app/mac-form/page"
+import { Eye, EyeOff } from 'lucide-react';
+
 interface AuthProps {
-  isLogin: boolean;
-  onBack: () => void;
+  authType: 'login' | 'register';
+  onAuthSuccess: (role: string) => void;
 }
 
-interface FormData {
-  [key: string]: any;
-}
-
-export default function Auth({ isLogin, onBack }: AuthProps) {
-  const router = useRouter()
-  const [isLoginView, setIsLoginView] = useState(isLogin)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [showMAC, setShowMAC] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+export default function Auth({ authType, onAuthSuccess }: AuthProps) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      if (isLoginView) {
-        // Login logic
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        })
+      if (authType === 'login') {
+        // Login
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Obtener el rol del usuario desde Firestore
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (!userDoc.exists()) {
+          throw new Error('No se encontró información del usuario');
+        }
 
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.message)
+        const userData = userDoc.data();
+        const userRole = userData.role;
 
-        // Handle token and redirect based on role
-        const userRole = data.user.role
-        setIsLoggedIn(true)
-        setShowMAC(true)
-        // You can still use the switch statement here if you want to redirect to different dashboards
-        // For now, we'll just show the MAC component
+        if (!userRole) {
+          throw new Error('Rol de usuario no definido');
+        }
+
+        onAuthSuccess(userRole);
       } else {
-        // Register logic
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password, name, phone }),
-        })
+        // Register
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.message)
+        // Actualizar el perfil del usuario
+        await updateProfile(user, { 
+          displayName: name 
+        });
 
-        setIsLoggedIn(true)
-        setShowMAC(true)
+        // Guardar información adicional en Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          fullName: name,
+          email,
+          phone,
+          role: 'client', // Por defecto, los nuevos usuarios son clientes
+          createdAt: new Date(),
+          status: 'active'
+        });
+
+        onAuthSuccess('client');
       }
     } catch (err: any) {
-      setError(err.message)
+      console.error('Error de autenticación:', err);
+      setError(err.message || 'Ocurrió un error durante la autenticación. Por favor, intente nuevamente.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-
-  if (showMAC) {
-    return <MACForm />
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-[url('/images/industrial-bg.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative container mx-auto px-4 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            Liderando en Soluciones Industriales y<br />
-            Sistemas de Seguridad
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 text-lg">
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Personal Profesional</span>
+    <div className="bg-[#FF7420] rounded-lg p-8 max-w-md mx-auto">
+      <h1 className="text-3xl font-bold text-white text-center mb-2">
+        {authType === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+      </h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {authType === 'register' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-black">Nombre</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-white text-black border-gray-300"
+                placeholder="Tu nombre completo"
+              />
             </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>100% Satisfacción</span>
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-black">Teléfono</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="bg-white text-black border-gray-300"
+                placeholder="Número de teléfono"
+              />
             </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Pruebas Precisas</span>
-            </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Precios Transparentes</span>
-            </div>
+          </>
+        )}
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-black">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="bg-white text-black border-gray-300"
+            placeholder="tu@email.com"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-black">Contraseña</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="bg-white text-black border-gray-300 pr-10"
+              placeholder="••••••••"
+              minLength={6}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              {showPassword ? <EyeOff className="h-5 w-5 text-gray-400" /> : <Eye className="h-5 w-5 text-gray-400" />}
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* Auth Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="bg-[#FF7420] rounded-lg p-8 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
-              {isLoginView ? "Iniciar Sesión" : "Crear Cuenta"}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {!isLoginView && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-white">
-                      Nombre
-                    </Label>
-                    <Input
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className="bg-white text-black border-gray-300"
-                      placeholder="Tu nombre completo"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-white">
-                      Teléfono
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                      className="bg-white text-black border-gray-300"
-                      placeholder="Número de teléfono"
-                    />
-                  </div>
-                </>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="bg-white text-black border-gray-300"
-                  placeholder="tu@email.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">
-                  Contraseña
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="bg-white text-black border-gray-300 pr-10"
-                    placeholder="••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-              </div>
+        {error && (
+          <p className="text-red-500 text-sm text-center bg-white/90 p-2 rounded">
+            {error}
+          </p>
+        )}
 
-              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-              <Button type="submit" className="w-full bg-black text-white hover:bg-gray-900" disabled={loading}>
-                {loading ? "Procesando..." : isLoginView ? "Iniciar Sesión" : "Registrarse"}
-              </Button>
-
-              <p className="text-center text-white">
-                {isLoginView ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}
-                <button
-                  type="button"
-                  className="ml-1 text-black hover:text-gray-800"
-                  onClick={() => setIsLoginView(!isLoginView)}
-                >
-                  {isLoginView ? "Regístrate" : "Inicia sesión"}
-                </button>
-              </p>
-            </form>
-          </div>
-        </div>
-      </section>
+        <Button
+          type="submit"
+          className="w-full bg-black hover:bg-gray-900 text-white"
+          disabled={loading}
+        >
+          {loading ? 'Procesando...' : authType === 'login' ? 'Iniciar Sesión' : 'Registrarse'}
+        </Button>
+      </form>
     </div>
-  )
+  );
 }
-
