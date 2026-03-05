@@ -1,7 +1,0 @@
-{
-  "/not-found": "app/not-found.js",
-  "/page": "app/page.js",
-  "/acerca-de/page": "app/acerca-de/page.js",
-  "/servicios-y-productos/page": "app/servicios-y-productos/page.js",
-  "/servicios/proteccion-caidas/page": "app/servicios/proteccion-caidas/page.js"
-}
