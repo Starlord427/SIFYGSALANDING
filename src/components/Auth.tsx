@@ -1,221 +1,172 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from 'react'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { doc, setDoc, getDoc } from 'firebase/firestore'
+import { auth, db } from '@/lib/firebase'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/Label"
-import { Eye, EyeOff, CheckCircle } from "lucide-react"
-import MAC from "@/app/MAC/page"
+import { Label } from "@/components/ui/label"
+import { Eye, EyeOff } from 'lucide-react'
 
 interface AuthProps {
-  isLogin: boolean;
-  onBack: () => void;
+  authType: 'login' | 'register'
+  onAuthSuccess: (role: string) => void
 }
 
-interface FormData {
-  [key: string]: any;
-}
-
-export default function Auth({ isLogin, onBack }: AuthProps) {
-  const router = useRouter()
-  const [isLoginView, setIsLoginView] = useState(isLogin)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
+export default function Auth({ authType, onAuthSuccess }: AuthProps) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showMAC, setShowMAC] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
+    setError('')
     setLoading(true)
 
     try {
-      if (isLoginView) {
-        // Login logic
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        })
+      if (authType === 'login') {
+        // --- PROCESO DE LOGIN ---
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        const user = userCredential.user
+        
+        const userDoc = await getDoc(doc(db, 'users', user.uid))
+        if (!userDoc.exists()) {
+          throw new Error('No se encontró información del usuario en nuestra base de datos.')
+        }
 
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.message)
+        const userData = userDoc.data()
+        const userRole = userData.role || 'client'
 
-        // Handle token and redirect based on role
-        const userRole = data.user.role
-        setIsLoggedIn(true)
-        setShowMAC(true)
-        // You can still use the switch statement here if you want to redirect to different dashboards
-        // For now, we'll just show the MAC component
+        onAuthSuccess(userRole)
       } else {
-        // Register logic
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password, name, phone }),
+        // --- PROCESO DE REGISTRO ---
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        const user = userCredential.user
+
+        await updateProfile(user, { displayName: name })
+
+        // Guardar en Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          fullName: name,
+          email,
+          phone,
+          role: 'client', // Rol por defecto
+          createdAt: new Date(),
+          status: 'active',
+          hasCompletedMACForm: false
         })
 
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.message)
-
-        setIsLoggedIn(true)
-        setShowMAC(true)
+        onAuthSuccess('client')
       }
     } catch (err: any) {
-      setError(err.message)
+      console.error('Error de autenticación:', err)
+      // Mensajes de error más amigables
+      if (err.code === 'auth/user-not-found') setError('No existe una cuenta con este correo.')
+      else if (err.code === 'auth/wrong-password') setError('Contraseña incorrecta.')
+      else if (err.code === 'auth/email-already-in-use') setError('Este correo ya está registrado.')
+      else setError(err.message || 'Error al intentar conectar. Revisa tus datos.')
     } finally {
       setLoading(false)
     }
   }
 
-  if (showMAC) {
-    return <MAC />
-  }
-
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-[url('/images/industrial-bg.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative container mx-auto px-4 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            Liderando en Soluciones Industriales y<br />
-            Sistemas de Seguridad
-          </h1>
+    <div className="bg-[#FF7420] rounded-lg p-8 w-full max-w-md mx-auto shadow-xl">
+      <h1 className="text-3xl font-bold text-white text-center mb-6">
+        {authType === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+      </h1>
+      
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {authType === 'register' && (
+          <>
+            <div className="space-y-1">
+              <Label htmlFor="name" className="text-white">Nombre Completo</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-white text-black"
+                placeholder="Juan Pérez"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="phone" className="text-white">Teléfono</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="bg-white text-black"
+                placeholder="5512345678"
+              />
+            </div>
+          </>
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 text-lg">
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Personal Profesional</span>
-            </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>100% Satisfacción</span>
-            </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Pruebas Precisas</span>
-            </div>
-            <div className="flex items-center gap-3 text-white md:justify-center">
-              <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-              <span>Precios Transparentes</span>
-            </div>
+        <div className="space-y-1">
+          <Label htmlFor="email" className="text-white">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="bg-white text-black"
+            placeholder="tu@email.com"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <Label htmlFor="password" className="text-white">Contraseña</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="bg-white text-black pr-10"
+              placeholder="••••••••"
+              minLength={6}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+            >
+              {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* Auth Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="bg-[#FF7420] rounded-lg p-8 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
-              {isLoginView ? "Iniciar Sesión" : "Crear Cuenta"}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {!isLoginView && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-white">
-                      Nombre
-                    </Label>
-                    <Input
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className="bg-white text-black border-gray-300"
-                      placeholder="Tu nombre completo"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-white">
-                      Teléfono
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                      className="bg-white text-black border-gray-300"
-                      placeholder="Número de teléfono"
-                    />
-                  </div>
-                </>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="bg-white text-black border-gray-300"
-                  placeholder="tu@email.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white">
-                  Contraseña
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="bg-white text-black border-gray-300 pr-10"
-                    placeholder="••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-              <Button type="submit" className="w-full bg-black text-white hover:bg-gray-900" disabled={loading}>
-                {loading ? "Procesando..." : isLoginView ? "Iniciar Sesión" : "Registrarse"}
-              </Button>
-
-              <p className="text-center text-white">
-                {isLoginView ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}
-                <button
-                  type="button"
-                  className="ml-1 text-black hover:text-gray-800"
-                  onClick={() => setIsLoginView(!isLoginView)}
-                >
-                  {isLoginView ? "Regístrate" : "Inicia sesión"}
-                </button>
-              </p>
-            </form>
+        {error && (
+          <div className="text-red-600 text-sm font-medium text-center bg-white p-2 rounded-md animate-pulse">
+            {error}
           </div>
-        </div>
-      </section>
+        )}
+
+        <Button
+          type="submit"
+          className="w-full bg-black hover:bg-zinc-900 text-white font-bold py-3 mt-2"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              Procesando...
+            </span>
+          ) : (
+            authType === 'login' ? 'Entrar' : 'Registrarme'
+          )}
+        </Button>
+      </form>
     </div>
   )
 }
-
