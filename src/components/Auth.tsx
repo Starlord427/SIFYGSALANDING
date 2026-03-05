@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/Label"
 import { Eye, EyeOff, CheckCircle } from "lucide-react"
-import { ServiceInfo, LocationInfo, ProjectDetails, AdditionalInfo, ContactInfo, Summary, ProgressBar } from "@/app/MAC/components"
-import MACForm from "@/app/mac-form/page"
+import MAC from "@/app/MAC/page"
+
 interface AuthProps {
   isLogin: boolean;
   onBack: () => void;
@@ -79,7 +79,7 @@ export default function Auth({ isLogin, onBack }: AuthProps) {
   }
 
   if (showMAC) {
-    return <MACForm />
+    return <MAC />
   }
 
   return (
