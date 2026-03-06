@@ -1,27 +1,30 @@
+// src/components/Auth.tsx
+// Reemplaza la versión con Firebase Auth
+
 'use client'
 
 import { useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { doc, setDoc, getDoc } from 'firebase/firestore'
-import { auth, db } from '@/lib/firebase'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { Button }   from '@/components/ui/button'
+import { Input }    from '@/components/ui/input'
+import { Label }    from '@/components/ui/label'
 import { Eye, EyeOff } from 'lucide-react'
 
 interface AuthProps {
   authType: 'login' | 'register'
-  onAuthSuccess: (role: string) => void
+  onAuthSuccess?: (role: string) => void
 }
 
 export default function Auth({ authType, onAuthSuccess }: AuthProps) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const router = useRouter()
+  const [email,        setEmail]        = useState('')
+  const [password,     setPassword]     = useState('')
+  const [name,         setName]         = useState('')
+  const [phone,        setPhone]        = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [error,        setError]        = useState('')
+  const [loading,      setLoading]      = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,47 +32,49 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
     setLoading(true)
 
     try {
-      if (authType === 'login') {
-        // --- PROCESO DE LOGIN ---
-        const userCredential = await signInWithEmailAndPassword(auth, email, password)
-        const user = userCredential.user
-        
-        const userDoc = await getDoc(doc(db, 'users', user.uid))
-        if (!userDoc.exists()) {
-          throw new Error('No se encontró información del usuario en nuestra base de datos.')
-        }
-
-        const userData = userDoc.data()
-        const userRole = userData.role || 'client'
-
-        onAuthSuccess(userRole)
-      } else {
-        // --- PROCESO DE REGISTRO ---
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        const user = userCredential.user
-
-        await updateProfile(user, { displayName: name })
-
-        // Guardar en Firestore
-        await setDoc(doc(db, 'users', user.uid), {
-          fullName: name,
-          email,
-          phone,
-          role: 'client', // Rol por defecto
-          createdAt: new Date(),
-          status: 'active',
-          hasCompletedMACForm: false
+      if (authType === 'register') {
+        // 1. Crear usuario en la base de datos
+        const res = await fetch('/api/auth/register', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ fullName: name, phone, email, password }),
         })
 
-        onAuthSuccess('client')
+        const data = await res.json()
+
+        if (!res.ok) {
+          setError(data.message || 'Error al registrarse')
+          return
+        }
       }
-    } catch (err: any) {
+
+      // 2. Iniciar sesión con next-auth (funciona tanto para login como post-registro)
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+
+      if (result?.error) {
+        setError('Credenciales inválidas. Verifica tu correo y contraseña.')
+        return
+      }
+
+      // 3. Obtener sesión para conocer el rol
+      const sessionRes  = await fetch('/api/auth/session')
+      const sessionData = await sessionRes.json()
+      const role        = sessionData?.user?.role ?? 'CLIENT'
+
+      onAuthSuccess?.(role)
+
+      // Redirigir según rol
+      if      (role === 'MANAGER')     router.push('/dashboard/manager')
+      else if (role === 'SALESPERSON') router.push('/dashboard/sales')
+      else                             router.push('/dashboard/client')
+
+    } catch (err) {
       console.error('Error de autenticación:', err)
-      // Mensajes de error más amigables
-      if (err.code === 'auth/user-not-found') setError('No existe una cuenta con este correo.')
-      else if (err.code === 'auth/wrong-password') setError('Contraseña incorrecta.')
-      else if (err.code === 'auth/email-already-in-use') setError('Este correo ya está registrado.')
-      else setError(err.message || 'Error al intentar conectar. Revisa tus datos.')
+      setError('Error al conectar. Intenta de nuevo.')
     } finally {
       setLoading(false)
     }
@@ -80,7 +85,7 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
       <h1 className="text-3xl font-bold text-white text-center mb-6">
         {authType === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
       </h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {authType === 'register' && (
           <>
@@ -102,7 +107,6 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                required
                 className="bg-white text-black"
                 placeholder="5512345678"
               />
@@ -128,7 +132,7 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
           <div className="relative">
             <Input
               id="password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -147,7 +151,7 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
         </div>
 
         {error && (
-          <div className="text-red-600 text-sm font-medium text-center bg-white p-2 rounded-md animate-pulse">
+          <div className="text-red-600 text-sm font-medium text-center bg-white p-2 rounded-md">
             {error}
           </div>
         )}
@@ -159,7 +163,7 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
         >
           {loading ? (
             <span className="flex items-center gap-2">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               Procesando...
             </span>
           ) : (

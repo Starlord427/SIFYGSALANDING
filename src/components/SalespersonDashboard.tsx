@@ -1,191 +1,173 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'react-hot-toast';
+'use client'
+// src/components/SalespersonDashboard.tsx
+
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { toast } from 'react-hot-toast'
+import { useSession } from 'next-auth/react'
 
 interface Consultation {
-  id: number;
-  service_type: string;
-  location: string;
-  priority: string;
-  status: string;
-  created_at: string;
-  latitude: number;
-  longitude: number;
-  description: string;
-  salesperson_id: number;
+  id: string
+  serviceType: string
+  location: string
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED'
+  createdAt: string
+  salespersonId: string | null
+  latitude: number | null
+  longitude: number | null
+  client: { fullName: string; email: string; phone: string }
 }
 
-export default function SalespersonDashboard({ userId }: { userId: number }) {
-  const [consultations, setConsultations] = useState<Consultation[]>([]);
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [filter, setFilter] = useState({ priority: '', status: '' });
+// Fórmula Haversine para calcular distancia en km entre dos coordenadas
+function calcDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371
+  const dLat = (lat2 - lat1) * (Math.PI / 180)
+  const dLon = (lon2 - lon1) * (Math.PI / 180)
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+export default function SalespersonDashboard() {
+  const { data: session } = useSession()
+  const userId = (session?.user as any)?.id
+
+  const [consultations, setConsultations]         = useState<Consultation[]>([])
+  const [userLocation, setUserLocation]           = useState<{ lat: number; lng: number } | null>(null)
+  const [filter, setFilter]                       = useState({ status: '' })
 
   useEffect(() => {
-    fetchConsultations();
-    getUserLocation();
-  }, []);
+    fetchConsultations()
+    navigator.geolocation?.getCurrentPosition(
+      p  => setUserLocation({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => toast.error('No se pudo obtener tu ubicación. El orden por distancia no estará disponible.')
+    )
+  }, [])
 
   const fetchConsultations = async () => {
     try {
-      const response = await fetch('/api/consultations');
-      if (!response.ok) {
-        throw new Error('Failed to fetch consultations');
-      }
-      const data = await response.json();
-      setConsultations(data);
-    } catch (error) {
-      console.error('Error fetching consultations:', error);
-      toast.error('Failed to load consultations. Please try again.');
+      const res = await fetch('/api/consultations')
+      if (!res.ok) throw new Error()
+      setConsultations(await res.json())
+    } catch {
+      toast.error('Error al cargar consultas.')
     }
-  };
+  }
 
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting user location:', error);
-          toast.error('Unable to get your location. Distance-based sorting may be inaccurate.');
-        }
-      );
-    } else {
-      toast.error('Geolocation is not supported by your browser. Distance-based sorting may be inaccurate.');
-    }
-  };
-
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371; // Radius of the Earth in km
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
-  };
-
-  const sortedConsultations = userLocation
-    ? consultations.sort((a, b) => {
-        const distanceA = calculateDistance(userLocation.latitude, userLocation.longitude, a.latitude, a.longitude);
-        const distanceB = calculateDistance(userLocation.latitude, userLocation.longitude, b.latitude, b.longitude);
-        return distanceA - distanceB;
+  const handleUpdate = async (id: string, status: string) => {
+    try {
+      const res = await fetch(`/api/consultations/${id}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ salespersonId: userId, status }),
       })
-    : consultations;
-
-  const filteredConsultations = sortedConsultations.filter(consultation => {
-    return (
-      (filter.priority === '' || consultation.priority === filter.priority) &&
-      (filter.status === '' || consultation.status === filter.status)
-    );
-  });
-
-  const handleAssign = async (consultationId: number) => {
-    try {
-      const response = await fetch(`/api/consultations/${consultationId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ salesperson_id: userId, status: 'in_progress' }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to assign consultation');
-      }
-      fetchConsultations();
-      toast.success('Consultation assigned successfully');
-    } catch (error) {
-      console.error('Error assigning consultation:', error);
-      toast.error('Failed to assign consultation. Please try again.');
+      if (!res.ok) throw new Error()
+      fetchConsultations()
+      toast.success(status === 'IN_PROGRESS' ? 'Consulta asignada' : 'Consulta completada')
+    } catch {
+      toast.error('No se pudo actualizar la consulta.')
     }
-  };
+  }
 
-  const handleComplete = async (consultationId: number) => {
-    try {
-      const response = await fetch(`/api/consultations/${consultationId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'completed' }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to complete consultation');
-      }
-      fetchConsultations();
-      toast.success('Consultation marked as completed');
-    } catch (error) {
-      console.error('Error completing consultation:', error);
-      toast.error('Failed to complete consultation. Please try again.');
-    }
-  };
+  // Ordenar por distancia si tenemos ubicación del vendedor
+  const sorted = userLocation
+    ? [...consultations].sort((a, b) => {
+        if (!a.latitude || !b.latitude) return 0
+        const dA = calcDistance(userLocation.lat, userLocation.lng, a.latitude, a.longitude!)
+        const dB = calcDistance(userLocation.lat, userLocation.lng, b.latitude, b.longitude!)
+        return dA - dB
+      })
+    : consultations
+
+  const filtered = sorted.filter(c =>
+    filter.status === '' || c.status === filter.status
+  )
+
+  const available = filtered.filter(c => c.status === 'PENDING')
+  const myActive  = filtered.filter(c => c.status === 'IN_PROGRESS' && c.salespersonId === userId)
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Salesperson Dashboard</h1>
-      <div className="mb-6 flex space-x-4">
-        <Select onValueChange={(value) => setFilter({ ...filter, priority: value })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Filter by Priority" />
+      <h1 className="text-2xl font-bold mb-4">Panel de Vendedor</h1>
+      {userLocation && (
+        <p className="text-xs text-green-600 mb-4">
+          📍 Ubicación activa — mostrando consultas ordenadas por cercanía
+        </p>
+      )}
+
+      <div className="mb-6">
+        <Select onValueChange={v => setFilter({ status: v === 'ALL' ? '' : v })}>
+          <SelectTrigger className="w-56">
+            <SelectValue placeholder="Filtrar por Estado" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Priorities</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select onValueChange={(value) => setFilter({ ...filter, status: value })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Filter by Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All Statuses</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="ALL">Todos</SelectItem>
+            <SelectItem value="PENDING">Pendientes</SelectItem>
+            <SelectItem value="IN_PROGRESS">En Progreso</SelectItem>
+            <SelectItem value="COMPLETED">Completados</SelectItem>
           </SelectContent>
         </Select>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Available Consultations</CardTitle>
+            <CardTitle>Disponibles ({available.length})</CardTitle>
           </CardHeader>
-          <CardContent>
-            {filteredConsultations.filter(c => c.status === 'pending').map(consultation => (
-              <div key={consultation.id} className="mb-4 p-4 border rounded">
-                <p><strong>Service:</strong> {consultation.service_type}</p>
-                <p><strong>Location:</strong> {consultation.location}</p>
-                <p><strong>Priority:</strong> {consultation.priority}</p>
-                <p><strong>Description:</strong> {consultation.description}</p>
-                <p><strong>Created:</strong> {new Date(consultation.created_at).toLocaleDateString()}</p>
-                <Button onClick={() => handleAssign(consultation.id)} className="mt-2">Assign to Me</Button>
-              </div>
-            ))}
+          <CardContent className="space-y-3">
+            {available.length === 0 && <p className="text-gray-400 text-sm">Sin consultas disponibles.</p>}
+            {available.map(c => {
+              const dist = userLocation && c.latitude
+                ? calcDistance(userLocation.lat, userLocation.lng, c.latitude, c.longitude!).toFixed(1)
+                : null
+              return (
+                <div key={c.id} className="p-3 border rounded-lg space-y-1">
+                  <p className="font-semibold">{c.serviceType}</p>
+                  <p className="text-sm text-gray-500">📍 {c.location}</p>
+                  {dist && <p className="text-xs text-blue-600">🚗 {dist} km de ti</p>}
+                  <p className="text-xs text-gray-400">Cliente: {c.client?.fullName}</p>
+                  <Button
+                    size="sm"
+                    onClick={() => handleUpdate(c.id, 'IN_PROGRESS')}
+                    className="mt-2 bg-[#FF7420] hover:bg-[#FF7420]/90 text-white"
+                  >
+                    Tomar consulta
+                  </Button>
+                </div>
+              )
+            })}
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader>
-            <CardTitle>My Assigned Consultations</CardTitle>
+            <CardTitle>Mis Asignadas ({myActive.length})</CardTitle>
           </CardHeader>
-          <CardContent>
-            {filteredConsultations.filter(c => c.status === 'in_progress' && c.salesperson_id === userId).map(consultation => (
-              <div key={consultation.id} className="mb-4 p-4 border rounded">
-                <p><strong>Service:</strong> {consultation.service_type}</p>
-                <p><strong>Location:</strong> {consultation.location}</p>
-                <p><strong>Priority:</strong> {consultation.priority}</p>
-                <p><strong>Description:</strong> {consultation.description}</p>
-                <p><strong>Assigned:</strong> {new Date(consultation.created_at).toLocaleDateString()}</p>
-                <Button onClick={() => handleComplete(consultation.id)} className="mt-2">Mark as Completed</Button>
+          <CardContent className="space-y-3">
+            {myActive.length === 0 && <p className="text-gray-400 text-sm">Sin consultas asignadas.</p>}
+            {myActive.map(c => (
+              <div key={c.id} className="p-3 border rounded-lg space-y-1">
+                <p className="font-semibold">{c.serviceType}</p>
+                <p className="text-sm text-gray-500">📍 {c.location}</p>
+                <p className="text-xs text-gray-400">
+                  Cliente: {c.client?.fullName} — {c.client?.phone}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleUpdate(c.id, 'COMPLETED')}
+                  className="mt-2"
+                >
+                  Marcar como Completada
+                </Button>
               </div>
             ))}
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }
-

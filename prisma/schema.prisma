@@ -1,0 +1,113 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Requerido por Supabase para migraciones
+}
+
+// ─────────────────────────────────────────
+// USUARIOS
+// ─────────────────────────────────────────
+model User {
+  id                   String         @id @default(cuid())
+  fullName             String
+  email                String         @unique
+  phone                String?
+  password             String
+  role                 Role           @default(CLIENT)
+  status               UserStatus     @default(ACTIVE)
+  hasCompletedMACForm  Boolean        @default(false)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // Relaciones
+  consultations        Consultation[] @relation("ClientConsultations")
+  assignedConsultations Consultation[] @relation("SalespersonConsultations")
+
+  @@map("users")
+}
+
+enum Role {
+  CLIENT
+  SALESPERSON
+  MANAGER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+// ─────────────────────────────────────────
+// CONSULTAS / SOLICITUDES MAC
+// ─────────────────────────────────────────
+model Consultation {
+  id            String             @id @default(cuid())
+  serviceType   String
+  location      String
+  postalCode    String
+  latitude      Float?             // Georreferenciación
+  longitude     Float?             // Georreferenciación
+  projectTypes  String[]           // Array de tipos de proyecto
+  startDate     DateTime?
+  installations String?
+  budget        String?
+  supportLevel  String?
+  contactName   String
+  organization  String?
+  email         String
+  phone         String?
+  status        ConsultationStatus @default(PENDING)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  // Relaciones
+  clientId      String
+  client        User               @relation("ClientConsultations", fields: [clientId], references: [id])
+
+  salespersonId String?
+  salesperson   User?              @relation("SalespersonConsultations", fields: [salespersonId], references: [id])
+
+  @@map("consultations")
+}
+
+enum ConsultationStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// ─────────────────────────────────────────
+// PRODUCTOS
+// ─────────────────────────────────────────
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  description String?
+  price       Float
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("products")
+}
+
+// ─────────────────────────────────────────
+// SOLICITUDES DE CONTACTO (formulario landing)
+// ─────────────────────────────────────────
+model CustomerRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  services  String
+  createdAt DateTime @default(now())
+
+  @@map("customer_requests")
+}
