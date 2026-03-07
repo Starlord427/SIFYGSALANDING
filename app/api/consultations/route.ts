@@ -1,32 +1,25 @@
-// app/api/consultations/route.ts
-// Reemplaza: pages/api/consultations/index.ts
-
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/route'
-import { prisma } from '@/src/lib/prisma'
+import { authOptions } from '../auth/[...nextauth]/route'// ← ruta correcta
+import { prisma } from '@/lib/prisma'                              // ← corregido
 
-// GET /api/consultations — Lista todas las consultas del usuario
-export async function GET(request: Request) {
+export async function GET() {
   const session = await getServerSession(authOptions)
-
-  if (!session?.user) {
+  if (!session?.user)
     return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
-  }
 
   const userId = (session.user as any).id
   const role   = (session.user as any).role
 
   try {
     const consultations = await prisma.consultation.findMany({
-      where: role === 'CLIENT' ? { clientId: userId } : undefined, // Managers ven todas
+      where: role === 'CLIENT' ? { clientId: userId } : undefined,
       include: {
         client:      { select: { fullName: true, email: true } },
         salesperson: { select: { fullName: true, email: true } },
       },
       orderBy: { createdAt: 'desc' },
     })
-
     return NextResponse.json(consultations)
   } catch (error) {
     console.error('Error al obtener consultas:', error)
@@ -34,40 +27,17 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/consultations — Crea una nueva consulta
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
-
-  if (!session?.user) {
+  if (!session?.user)
     return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
-  }
 
   try {
     const body = await request.json()
-    const {
-      serviceType,
-      address,
-      postalCode,
-      latitude,    // ← Coordenadas de georreferenciación
-      longitude,   // ← Coordenadas de georreferenciación
-      projectTypes,
-      startDate,
-      installations,
-      budget,
-      supportLevel,
-      name,
-      organization,
-      email,
-      phone,
-    } = body
+    const { serviceType, address, postalCode, latitude, longitude, projectTypes, startDate, installations, budget, supportLevel, name, organization, email, phone } = body
 
-    // Validaciones básicas
-    if (!serviceType || !address || !postalCode || !name || !email) {
-      return NextResponse.json(
-        { message: 'Faltan campos obligatorios' },
-        { status: 400 }
-      )
-    }
+    if (!serviceType || !address || !postalCode || !name || !email)
+      return NextResponse.json({ message: 'Faltan campos obligatorios' }, { status: 400 })
 
     const consultation = await prisma.consultation.create({
       data: {
@@ -89,10 +59,7 @@ export async function POST(request: Request) {
       },
     })
 
-    return NextResponse.json(
-      { message: 'Consulta creada exitosamente', id: consultation.id },
-      { status: 201 }
-    )
+    return NextResponse.json({ message: 'Consulta creada exitosamente', id: consultation.id }, { status: 201 })
   } catch (error) {
     console.error('Error al crear la consulta:', error)
     return NextResponse.json({ message: 'Error interno del servidor' }, { status: 500 })

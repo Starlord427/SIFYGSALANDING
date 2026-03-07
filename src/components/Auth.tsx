@@ -61,16 +61,20 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
       }
 
       // 3. Obtener sesión para conocer el rol
+      router.refresh()
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      // 4. Obtener sesión para conocer el rol
       const sessionRes  = await fetch('/api/auth/session')
       const sessionData = await sessionRes.json()
       const role        = sessionData?.user?.role ?? 'CLIENT'
 
       onAuthSuccess?.(role)
 
-      // Redirigir según rol
+      // 5. Redirigir según rol
       if      (role === 'MANAGER')     router.push('/dashboard/manager')
       else if (role === 'SALESPERSON') router.push('/dashboard/sales')
-      else                             router.push('/dashboard/client')
+        else                             router.push('/dashboard/client')
 
     } catch (err) {
       console.error('Error de autenticación:', err)
