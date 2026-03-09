@@ -28,14 +28,20 @@ export default function SalesDashboardPage() {
   if (status !== 'authenticated' || (session.user as any)?.role !== 'SALESPERSON') return null
 
   return (
-<div className="flex items-center gap-4">
-  <span className="text-sm text-gray-400">{session.user?.email}</span>
-  <button
-    onClick={() => signOut({ callbackUrl: '/contacto' })}
-    className="bg-[#FF7420] hover:bg-[#FF5500] text-white text-sm px-3 py-1 rounded"
-  >
-    Cerrar sesión
-  </button>
-</div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-black text-white px-6 py-4 flex justify-between items-center">
+        <span className="font-bold text-lg">SIFYGSA — Panel de Vendedor</span>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-gray-400">{session.user?.email}</span>
+          <button
+            onClick={() => signOut({ callbackUrl: '/contacto' })}
+            className="bg-[#FF7420] hover:bg-[#FF5500] text-white text-sm px-3 py-1 rounded"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+      <SalespersonDashboard />
+    </div>
   )
 }
