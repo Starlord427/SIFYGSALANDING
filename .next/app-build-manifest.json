@@ -6,11 +6,6 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
     "/contacto/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -21,25 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/client/page.js"
     ],
-    "/eventos/page": [
+    "/MAC/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/eventos/page.js"
+      "static/chunks/app/MAC/page.js"
     ],
-    "/acerca-de/page": [
+    "/dashboard/manager/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/acerca-de/page.js"
-    ],
-    "/servicios-y-productos/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/servicios-y-productos/page.js"
-    ],
-    "/servicios/deteccion-gas-flama/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/servicios/deteccion-gas-flama/page.js"
+      "static/chunks/app/dashboard/manager/page.js"
     ],
     "/not-found": [
       "static/chunks/webpack.js",
