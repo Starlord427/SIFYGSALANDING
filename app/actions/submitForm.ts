@@ -3,7 +3,7 @@
 
 'use server'
 
-import { prisma } from '@/src/lib/prisma'
+import { prisma } from '@/lib/prisma'
 
 export async function submitForm(formData: FormData) {
   const name     = formData.get('name')     as string
