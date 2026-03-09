@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]/route' // ← ruta correcta
+import { authOptions } from '@/lib/authOptions'
 import { prisma } from '@/lib/prisma'                              // ← corregido
 
 export async function GET(request: Request) {

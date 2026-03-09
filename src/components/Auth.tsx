@@ -1,6 +1,3 @@
-// src/components/Auth.tsx
-// Reemplaza la versión con Firebase Auth
-
 'use client'
 
 import { useState } from 'react'
