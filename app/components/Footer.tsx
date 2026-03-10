@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
             <h3 className="text-lg font-semibold mb-4">Acerca de</h3>
             <p className="text-sm text-gray-300">
-              En Sifygsa, tenemos la confianza de ofrecerle el mejor servicio, respaldado por un equipo de profesionales certificados y altamente capacitados. Gracias a los materiales de alta calidad que utilizamos y a nuestras técnicas de trabajo estructuradas, garantizamos la finalización oportuna de todos nuestros proyectos.
+              En SIFYGSA, tenemos la confianza de ofrecerle el mejor servicio, respaldado por un equipo de profesionales certificados y altamente capacitados. Gracias a los materiales de alta calidad que utilizamos y a nuestras técnicas de trabajo estructuradas, garantizamos la finalización oportuna de todos nuestros proyectos.
             </p>
             <div className="flex space-x-4 mt-4">
               <a href="https://mx.linkedin.com/company/sifygsa" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#FF7420]">

@@ -33,7 +33,7 @@ export default function Home() {
         <div className="relative z-10 container mx-auto px-4 py-32 min-h-screen flex flex-col justify-center">
           <div className="max-w-3xl space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold text-white">
-              Soluciones Integrales en Fire & Gas SA de SV
+              Soluciones Integrales en Fire & Gas
             </h1>
             <p className="text-xl text-white">
               EN SIFYGSA HACEMOS QUE LAS COSAS SUCEDAN
@@ -91,7 +91,7 @@ export default function Home() {
             </div>
             <div className="space-y-6">
               <h2 className="text-5xl font-bold text-white">
-                8+ <span className="text-[#FF7420]">Años</span>
+                9+ <span className="text-[#FF7420]">Años</span>
                 <br />de experiencia
               </h2>
               <p className="text-gray-300">

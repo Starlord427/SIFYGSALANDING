@@ -13,7 +13,7 @@ import {
 
 export default function AcercaDe() {
   const stats = [
-    { number: "8+", label: "Años de experiencia" },
+    { number: "9+", label: "Años de experiencia" },
     { number: "200+", label: "Proyectos completados" },
     { number: "50+", label: "Socios estratégicos y Fabricantes" }
   ]
@@ -46,6 +46,18 @@ export default function AcercaDe() {
     integridad: {
       title: "Integridad",
       content: "Actuar e inspiramos valores en pensamiento y acción."
+    },
+    Lealtad: {
+      title: "Lealtad",
+      content: "Defendemos los ideales de nuestra organización, los compromisos adquiridos con nuestros colaboradores, proveedores y clientes, en los buenos y en los malos momentos."
+    },
+    Honestidad: {
+      title: "Honestidad",
+      content: "Somos transparentes, congruentes y dignos de confianza."
+    },
+    Respeto: {
+      title: "Respeto",
+      content: "Tratamos a las personas como queremos ser tratados, respetamos nuestras instituciones y sus autoridades, además de cuidar y mejorar nuestro entorno."
     }
   }
 

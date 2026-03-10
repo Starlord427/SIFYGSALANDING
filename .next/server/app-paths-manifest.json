@@ -1,9 +1,7 @@
 {
-  "/not-found": "app/not-found.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/contacto/page": "app/contacto/page.js",
-  "/dashboard/client/page": "app/dashboard/client/page.js",
-  "/api/consultations/route": "app/api/consultations/route.js",
-  "/MAC/page": "app/MAC/page.js",
-  "/dashboard/manager/page": "app/dashboard/manager/page.js"
+  "/proyectos/page": "app/proyectos/page.js",
+  "/servicios-y-productos/page": "app/servicios-y-productos/page.js",
+  "/acerca-de/page": "app/acerca-de/page.js",
+  "/eventos/page": "app/eventos/page.js"
 }
