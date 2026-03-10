@@ -2,159 +2,195 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { CheckCircle, ArrowRight } from 'lucide-react'
+import { CheckCircle } from 'lucide-react'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import CollaboratorsSection from './components/CollaboratorsSection'
 import ServicesAndProducts from './components/ServicesAndProducts'
 
-export default function Home() {
-  const processSteps = [
-    "Evaluación y Firma de Contratos",
-    "Preparación del Plan de Trabajo",
-    "Implementación de Trabajos de Control",
-    "Entrega del Proyecto al Cliente"
-  ]
+const processSteps = [
+  { num: "01", label: "Evaluación y Firma de Contratos" },
+  { num: "02", label: "Preparación del Plan de Trabajo" },
+  { num: "03", label: "Implementación de Trabajos de Control" },
+  { num: "04", label: "Entrega del Proyecto al Cliente" },
+]
 
+const stats = [
+  { value: "200+", label: "Proyectos Completados" },
+  { value: "98%",  label: "Satisfacción del Cliente" },
+  { value: "24/7", label: "Soporte Técnico" },
+]
+
+export default function Home() {
   return (
-    <main className="flex-grow">
-      {/* Hero Section */}
-      <section className="relative min-h-screen bg-gray-900">
+    <main className="bg-[#0a0a0a] text-white">
+
+      {/* ── HERO ── */}
+      <section className="relative min-h-screen">
         <Image
           src="/hero/hero-background.jpg"
           alt="SIFYGSA Hero Background"
-          layout="fill"
-          objectFit="cover"
-          quality={75}
+          fill
+          className="object-cover opacity-25"
           priority
-          placeholder="blur"
-          blurDataURL="/placeholder.svg?height=1080&width=1920"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-60" />
-        <div className="relative z-10 container mx-auto px-4 py-32 min-h-screen flex flex-col justify-center">
-          <div className="max-w-3xl space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
-              Soluciones Integrales en Fire & Gas
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-transparent to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/80 via-[#0a0a0a]/40 to-transparent" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 min-h-screen flex flex-col justify-center">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 mb-6">
+              <span className="w-8 h-px bg-[#FF7420]" />
+              <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">
+                Seguridad Industrial
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-7xl font-black tracking-tight leading-none mb-6">
+              Soluciones<br />
+              Integrales en<br />
+              <span className="text-[#FF7420]">Fire & Gas</span>
             </h1>
-            <p className="text-xl text-white">
-              EN SIFYGSA HACEMOS QUE LAS COSAS SUCEDAN
+            <p className="text-gray-400 text-lg mb-10 uppercase tracking-widest text-sm">
+              En SIFYGSA hacemos que las cosas sucedan
             </p>
-            <div className="flex flex-wrap gap-4 pt-4">
+
+            <div className="flex flex-wrap gap-4 mb-12">
               <Link
                 href="/servicios-y-productos"
-                className="bg-[#FF7420] hover:bg-[#FF5500] text-white px-6 py-3 rounded-md transition-colors duration-200"
+                className="inline-flex items-center gap-2 bg-[#FF7420] hover:bg-[#e5681c] text-white font-bold px-7 py-3.5 rounded-xl transition-colors"
               >
-                Nuestros servicios y productos
+                Servicios y productos
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
               <Link
                 href="/proyectos"
-                className="bg-white text-black hover:bg-gray-100 px-6 py-3 rounded-md transition-colors duration-200"
+                className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold px-7 py-3.5 rounded-xl transition-colors"
               >
                 Ver Proyectos
               </Link>
             </div>
-            
-            <div className="space-y-4 pt-8">
-              <div className="flex items-center gap-3 text-white">
-                <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-                <span>Presencia en el País</span>
-              </div>
-              <div className="flex items-center gap-3 text-white">
-                <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-                <span>Personal Altamente Profesional, Procesos de Pruebas Precisos</span>
-              </div>
-              <div className="flex items-center gap-3 text-white">
-                <CheckCircle className="w-6 h-6 text-[#FF7420]" />
-                <span>Mano de obra inigualable, Profesional y Calificada</span>
-              </div>
+
+            <div className="flex flex-col gap-3">
+              {[
+                "Presencia en el País",
+                "Personal Altamente Profesional, Procesos de Pruebas Precisos",
+                "Mano de obra inigualable, Profesional y Calificada"
+              ].map((text, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-[#FF7420] shrink-0" />
+                  <span className="text-gray-300 text-sm">{text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services and Products Section */}
+      {/* ── SERVICIOS ── */}
       <ServicesAndProducts />
 
-      {/* Experience Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="relative h-[400px] rounded-lg overflow-hidden">
+      {/* ── EXPERIENCIA ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-16 md:py-24">
+        <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            {/* Imagen */}
+            <div className="relative h-64 md:h-auto min-h-[360px]">
               <Image
                 src="/about/team-image.jpg"
-                alt="SIFYGSA Experience"
-                layout="fill"
-                objectFit="cover"
-                quality={75}
-                placeholder="blur"
-                blurDataURL="/placeholder.svg?height=400&width=600"
+                alt="SIFYGSA Equipo"
+                fill
+                className="object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#141414] hidden md:block" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent md:hidden" />
             </div>
-            <div className="space-y-6">
-              <h2 className="text-5xl font-bold text-white">
-                9+ <span className="text-[#FF7420]">Años</span>
-                <br />de experiencia
+            {/* Texto */}
+            <div className="p-8 md:p-12 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="w-6 h-px bg-[#FF7420]" />
+                <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Trayectoria</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black leading-none mb-6">
+                9+ <span className="text-[#FF7420]">Años</span><br />
+                de experiencia
               </h2>
-              <p className="text-gray-300">
-                Proveemos tecnología e ingeniería vanguardistas que resuelven las necesidades y generan la satisfacción de clientes, proveedores y accionistas, con alto sentido de ética y profesionalismo, a través del desarrollo y habilidades de nuestros colaboradores y contribuyendo al mejoramiento de nuestro entorno.
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Proveemos tecnología e ingeniería vanguardistas que resuelven las necesidades y generan la satisfacción de clientes, proveedores y accionistas, con alto sentido de ética y profesionalismo.
               </p>
-              <p className="text-gray-300">
-                Con 8+ años de experiencia, en SIFYGSA contamos con un profundo conocimiento del mercado y sus necesidades de la industria, asegurando que nuestros proyectos cumplen con los estándares más exigentes de seguridad y construcción, garantizando que el resultado final cumpla o supere las expectativas de nuestros clientes.
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Con 9+ años en el mercado, aseguramos que nuestros proyectos cumplen los estándares más exigentes de seguridad y construcción, garantizando resultados que superan las expectativas.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Process Steps */}
-      <section className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between max-w-4xl mx-auto">
-            {processSteps.map((step, index) => (
-              <div key={index} className="flex flex-col items-center text-center">
-                <div className="w-8 h-8 rounded-full bg-[#FF7420] text-white flex items-center justify-center mb-4">
-                  {index + 1}
+      {/* ── PROCESO ── */}
+      <section className="bg-[#141414] border-y border-white/5 py-14">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <div className="inline-flex items-center gap-2 mb-8">
+            <span className="w-6 h-px bg-[#FF7420]" />
+            <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Cómo trabajamos</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 relative">
+            {/* Línea conectora desktop */}
+            <div className="hidden md:block absolute top-5 left-[12.5%] right-[12.5%] h-px bg-white/5 z-0" />
+            {processSteps.map((step, i) => (
+              <div key={i} className="flex flex-col items-center text-center relative z-10">
+                <div className="w-10 h-10 rounded-full bg-[#FF7420] text-white font-black text-sm flex items-center justify-center mb-4 shrink-0">
+                  {step.num}
                 </div>
-                <p className="text-white text-sm max-w-[120px]">{step}</p>
+                <p className="text-gray-300 text-sm max-w-[130px] leading-snug">{step.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
+      {/* ── PROYECTOS CAROUSEL ── */}
       <ProjectsCarousel />
 
-      {/* Collaborators Section */}
+      {/* ── COLABORADORES ── */}
       <CollaboratorsSection />
 
-      {/* Contact Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">
-              Liderando la Innovación en Seguridad Industrial
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-              <div className="bg-gray-800 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-[#FF7420] mb-2">200+</p>
-                <p className="text-white">Proyectos Completados</p>
+      {/* ── STATS + CTA ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-16 md:py-24">
+        <div className="bg-[#FF7420] rounded-3xl overflow-hidden">
+          <div className="grid md:grid-cols-2 items-center">
+            <div className="p-8 md:p-12">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="w-6 h-px bg-white/50" />
+                <span className="text-white/70 text-xs font-semibold uppercase tracking-[0.3em]">Resultados</span>
               </div>
-              <div className="bg-gray-800 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-[#FF7420] mb-2">98%</p>
-                <p className="text-white">Satisfacción del Cliente</p>
-              </div>
-              <div className="bg-gray-800 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-[#FF7420] mb-2">24/7</p>
-                <p className="text-white">Soporte Técnico</p>
-              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                Liderando la Innovación<br />en Seguridad Industrial
+              </h2>
+              <p className="text-white/80 text-sm leading-relaxed mb-8">
+                En SIFYGSA, no solo ofrecemos soluciones — creamos un futuro más seguro y eficiente para su organización.
+              </p>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-2 bg-black hover:bg-gray-900 text-white font-bold px-7 py-3.5 rounded-xl transition-colors text-sm"
+              >
+                Iniciar consulta
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
-            <p className="text-xl text-white mb-8">
-              En SIFYGSA, no solo ofrecemos soluciones, creamos un futuro más seguro y eficiente para su organización.
-            </p>
+            <div className="grid grid-cols-3 divide-x divide-white/20 border-t md:border-t-0 md:border-l border-white/20">
+              {stats.map((s, i) => (
+                <div key={i} className="flex flex-col items-center justify-center py-10 px-4 text-center">
+                  <p className="text-3xl md:text-4xl font-black text-white">{s.value}</p>
+                  <p className="text-white/70 text-xs mt-1 leading-tight max-w-[80px]">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
+
     </main>
   )
 }
-

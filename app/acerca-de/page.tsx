@@ -2,228 +2,237 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+
+const stats = [
+  { number: "9+", label: "Años de experiencia" },
+  { number: "200+", label: "Proyectos completados" },
+  { number: "50+", label: "Socios estratégicos" },
+]
+
+const valores = [
+  { title: "Honestidad", content: "Somos transparentes, congruentes y dignos de confianza en cada interacción con nuestros clientes y colaboradores." },
+  { title: "Lealtad", content: "Defendemos los ideales de nuestra organización y los compromisos adquiridos en los buenos y en los malos momentos." },
+  { title: "Respeto", content: "Tratamos a las personas como queremos ser tratados, respetamos nuestras instituciones y cuidamos nuestro entorno." },
+  { title: "Responsabilidad", content: "Cumplimos con nuestros compromisos y pactos con las entidades involucradas para llegar a las metas fijadas." },
+  { title: "Compromiso", content: "Alcanzamos los objetivos establecidos de manera eficaz y efectiva, sin excepciones." },
+  { title: "Confianza", content: "Establecemos vínculos duraderos a través del respeto y la honestidad con cada cliente." },
+  { title: "Integridad", content: "Actuamos e inspiramos valores en pensamiento y acción, siendo congruentes en todo momento." },
+]
+
+const politicas = [
+  "Medimos nuestros procesos y procedimientos, siempre buscando la mejora continua del Sistema de Gestión de Calidad.",
+  "La mejora continua representa una entrada de servicio al cliente para garantizar su satisfacción.",
+  "Hemos optimizado la comunicación con nuestros socios comerciales.",
+  "Buscamos oportunidades a través de una gestión eficiente y eficaz con los recursos disponibles.",
+  "Desarrollamos competencias relevantes para la satisfacción del cliente.",
+  "Estructuramos mejores relaciones de ganar-ganar con nuestros socios comerciales.",
+  "Garantizamos que los productos y servicios cumplan criterios de seguridad y salud para su uso previsto.",
+  "Desarrollamos una gestión normativa ambiental que minimiza el impacto y asegura la disposición adecuada de residuos.",
+]
 
 export default function AcercaDe() {
-  const stats = [
-    { number: "9+", label: "Años de experiencia" },
-    { number: "200+", label: "Proyectos completados" },
-    { number: "50+", label: "Socios estratégicos y Fabricantes" }
-  ]
-
-  const compromisosData = {
-    vision: {
-      title: "Visión",
-      content: "Consolidar a SIFYGSA en el 2026 como empresa Líder en Soluciones de Seguridad y Automatización de procesos para el mercado Industrial Nacional y ser una Gran empresa para trabajar."
-    },
-    valores: {
-      title: "Valores",
-      content: "Nos basamos en ideales de nuestra organización, los compartimos altamente y los ponemos como prioridad en nuestras actividades diarias, siendo estos: honestidad, lealtad, respeto, responsabilidad, compromiso, confianza e integridad."
-    },
-    habilidades: {
-      title: "Habilidades",
-      content: "Somos profesionales competentes y dignos de confianza."
-    },
-    responsabilidad: {
-      title: "Responsabilidad",
-      content: "Cumplimos con nuestros compromisos y pactos con las entidades involucradas para llegar a las metas fijadas."
-    },
-    compromiso: {
-      title: "Compromiso",
-      content: "Alcanzamos los objetivos establecidos de manera eficaz y efectiva."
-    },
-    confianza: {
-      title: "Confianza",
-      content: "Establecemos vínculos duraderos a través del respeto y la honestidad."
-    },
-    integridad: {
-      title: "Integridad",
-      content: "Actuar e inspiramos valores en pensamiento y acción."
-    },
-    Lealtad: {
-      title: "Lealtad",
-      content: "Defendemos los ideales de nuestra organización, los compromisos adquiridos con nuestros colaboradores, proveedores y clientes, en los buenos y en los malos momentos."
-    },
-    Honestidad: {
-      title: "Honestidad",
-      content: "Somos transparentes, congruentes y dignos de confianza."
-    },
-    Respeto: {
-      title: "Respeto",
-      content: "Tratamos a las personas como queremos ser tratados, respetamos nuestras instituciones y sus autoridades, además de cuidar y mejorar nuestro entorno."
-    }
-  }
-
-  const politicas = [
-    "En SIFYGSA medimos nuestros procesos y procedimientos, siempre buscando la mejora continua del Sistema de Gestión de Calidad.",
-    "La mejora continua representa una entrada de servicio al cliente para garantizar su satisfacción.",
-    "Hemos optimizado la comunicación con nuestros socios comerciales.",
-    "Buscamos oportunidades a través de nueva eficiente y eficaz con los recursos disponibles.",
-    "Desarrollamos competencias relevantes para la satisfacción del cliente.",
-    "Se estructuran mejores relaciones de ganar-ganar con nuestros socios comerciales.",
-    "La mejora responsabilidad social y comercial los recursos y bienes de la empresa.",
-    "Garantizamos que los productos y servicios que bajan a criterios de seguridad y salud, garantizando que sean seguros y saludables para su uso previsto, optimizando el uso de los recursos naturales y asegurando que la disposición final de los residuos sea respetuosa con el medio.",
-    "Desarrollamos una separación lógica y normativa aplicable a criterios ambientales, de manera que se pueda controlar que los residuos que se generen durante la prestación del servicio sean dispuestos adecuadamente y minimizando el uso de los recursos de manera sostenible y el manejo integral de los mismos."
-  ]
-
   return (
-    <main className="bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] bg-gray-900">
+    <main className="bg-[#0a0a0a] text-white min-h-screen">
+
+      {/* ── HERO ── */}
+      <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
         <Image
           src="/about/hero-background.jpg"
-          alt="SIFYGSA Hero Background"
-          layout="fill"
-          objectFit="cover"
-          quality={75}
+          alt="SIFYGSA"
+          fill
+          className="object-cover opacity-30"
           priority
-          placeholder="blur"
-          blurDataURL="/placeholder.svg?height=1080&width=1920"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-60" />
-        <div className="container mx-auto px-4 py-20 relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Bienvenido a SIFYGSA
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/60 to-transparent" />
+
+        <div className="relative z-10 h-full flex flex-col justify-end px-6 md:px-16 pb-16 max-w-7xl mx-auto">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="w-8 h-px bg-[#FF7420]" />
+            <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Quiénes somos</span>
+          </div>
+          <h1 className="text-4xl md:text-7xl font-black tracking-tight leading-none mb-6 max-w-3xl">
+            Líderes en<br />
+            <span className="text-[#FF7420]">Seguridad</span><br />
+            Industrial
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mb-8">
-            Donde 8+ años de experiencia en la industria se traducen en soluciones innovadoras y confiables para tu organización
-          </p>
-          <p className="text-lg text-gray-300 max-w-3xl">
-            Sabemos que cada organización es única, por tanto sumamos esfuerzos para definir soluciones hechas a la medida en compromiso con la seguridad y eficiencia de sus procesos.
+          <p className="text-gray-400 max-w-lg text-sm md:text-base leading-relaxed">
+            9+ años definiendo soluciones hechas a la medida con compromiso con la seguridad y eficiencia de sus procesos industriales.
           </p>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <div className="bg-[#FF7420] py-6">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-            <p className="text-white text-lg max-w-md">
-              Nuestra misión es simple: hacer su entorno más seguro y su operación más eficiente, con tecnología de vanguardia y compromiso total.
-            </p>
-            <div className="flex flex-wrap justify-center md:justify-end gap-8 md:gap-12">
-              {stats.map((stat, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="text-2xl md:text-3xl font-bold">{stat.number}</span>
-                  <span className="text-sm max-w-[100px] leading-tight">{stat.label}</span>
-                </div>
-              ))}
+      {/* ── STATS ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {stats.map((s, i) => (
+            <div
+              key={i}
+              className="bg-[#141414] rounded-2xl border border-white/5 px-8 py-8 flex items-center gap-6 hover:border-[#FF7420]/30 transition-colors duration-300"
+            >
+              <span className="text-5xl font-black text-[#FF7420]">{s.number}</span>
+              <span className="text-gray-400 text-sm leading-tight max-w-[120px]">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── MISIÓN ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-10">
+        <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden">
+          <div className="grid md:grid-cols-2">
+            {/* Imagen */}
+            <div className="relative h-64 md:h-auto min-h-[320px]">
+              <Image
+                src="/about/priority-image.jpg"
+                alt="SIFYGSA en acción"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#141414] hidden md:block" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent md:hidden" />
+            </div>
+            {/* Texto */}
+            <div className="p-8 md:p-12 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="w-6 h-px bg-[#FF7420]" />
+                <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Nuestra misión</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black mb-5 leading-tight">
+                Usted es nuestra<br />prioridad
+              </h2>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Nuestro propósito es ayudarlo a operar en un ambiente seguro, confiable y eficiente. Nuestro personal aplica sus habilidades para asegurar que su empresa esté protegida de manera óptima.
+              </p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                Sabemos que cada organización es única, por tanto sumamos esfuerzos para definir soluciones hechas a la medida en compromiso con la seguridad y eficiencia de sus procesos.
+              </p>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-2 bg-[#FF7420] hover:bg-[#e5681c] text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors w-fit"
+              >
+                Contáctenos
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Priority Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold mb-4">
-              En SIFYGSA
-              <br />
-              USTED ES NUESTRA PRIORIDAD
-            </h2>
-            <p className="text-gray-300">
-              Nuestro propósito es ayudarlo a operar en un ambiente seguro, confiable y eficiente
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-gray-300">
-                Nuestro personal se encarga de aplicar sus habilidades para asegurar que su empresa esté protegida de manera óptima.
+      {/* ── VISIÓN ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-6">
+        <div className="bg-[#FF7420] rounded-3xl overflow-hidden">
+          <div className="grid md:grid-cols-2 items-center">
+            <div className="p-8 md:p-12">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="w-6 h-px bg-white/60" />
+                <span className="text-white/70 text-xs font-semibold uppercase tracking-[0.3em]">Hacia el futuro</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">
+                Nuestra Visión
+              </h2>
+              <p className="text-white/80 text-sm leading-relaxed">
+                Consolidar a SIFYGSA como empresa líder en Soluciones de Seguridad y Automatización de procesos para el mercado Industrial Nacional, y ser una gran empresa para trabajar — referente de confianza, innovación y excelencia operativa para el 2026.
               </p>
-              <p className="text-gray-300">
-                La seguridad y eficiencia de su empresa son nuestro norte de ser. Permitimos desarrollarnos de mejor este con soluciones industriales de calidad y seguridad.
-              </p>
-              <Button asChild>
-                <Link href="/contacto" className="inline-flex items-center">
-                  Contáctenos para más información <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
             </div>
-            <div className="relative h-[400px] rounded-lg overflow-hidden">
+            <div className="relative h-56 md:h-72 overflow-hidden">
               <Image
-                src="/about/priority-image.jpg"
-                alt="SIFYGSA Priority"
-                layout="fill"
-                objectFit="cover"
-                quality={75}
-                placeholder="blur"
-                blurDataURL="/placeholder.svg?height=400&width=600"
+                src="/about/timeline-image.jpg"
+                alt="Trayectoria SIFYGSA"
+                fill
+                className="object-cover opacity-40 mix-blend-luminosity"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            Nuestra Trayectoria
-          </h2>
-          <div className="relative h-[300px] rounded-lg overflow-hidden">
-            <Image
-              src="/about/timeline-image.jpg"
-              alt="SIFYGSA Timeline"
-              layout="fill"
-              objectFit="cover"
-              quality={75}
-              placeholder="blur"
-              blurDataURL="/placeholder.svg?height=300&width=1200"
-            />
+      {/* ── VALORES ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-10">
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <span className="w-6 h-px bg-[#FF7420]" />
+            <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Lo que nos define</span>
           </div>
+          <h2 className="text-3xl md:text-4xl font-black">Nuestros Valores</h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {valores.map((v, i) => (
+            <div
+              key={i}
+              className="bg-[#141414] rounded-2xl border border-white/5 p-6 group hover:bg-[#1a1a1a] hover:border-[#FF7420]/30 transition-all duration-300"
+            >
+              <div className="w-6 h-0.5 bg-[#FF7420] mb-4" />
+              <h3 className="font-black text-base mb-2 text-white">{v.title}</h3>
+              <p className="text-gray-500 text-xs leading-relaxed group-hover:text-gray-400 transition-colors">{v.content}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Compromiso con la Innovación y Seguridad Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-white">
-            Compromiso con la Innovación y Seguridad
-          </h2>
-          <p className="text-center text-gray-300 mb-12 max-w-3xl mx-auto">
-            SIFYGSA ofrece soluciones integrales de seguridad y automatización industrial para optimizar la protección y eficiencia de sus operaciones.
-          </p>
+      {/* ── POLÍTICAS ── */}
+      <section className="max-w-7xl mx-auto px-6 md:px-16 py-6 pb-16">
+        <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden">
+          <div className="grid md:grid-cols-5">
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Left Column - Políticas */}
-            <div className="bg-gray-900 p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-4 text-[#FF7420]">Políticas</h3>
-              <ul className="space-y-4">
-                {politicas.map((politica, index) => (
-                  <li key={index} className="text-gray-300 text-sm">
-                    • {politica}
+            {/* Header lateral */}
+            <div className="md:col-span-2 bg-[#1a1a1a] p-8 md:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/5">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span className="w-6 h-px bg-[#FF7420]" />
+                <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Nuestro compromiso</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black leading-tight mb-5">
+                Políticas de<br />Calidad
+              </h2>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                SIFYGSA basa sus operaciones en principios de calidad, sostenibilidad y mejora continua para garantizar soluciones de excelencia a cada cliente.
+              </p>
+            </div>
+
+            {/* Lista */}
+            <div className="md:col-span-3">
+              <ul>
+                {politicas.map((p, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-4 px-8 py-4 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors"
+                  >
+                    <span className="text-[#FF7420] font-black text-xs shrink-0 mt-0.5 tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="text-gray-400 text-sm leading-relaxed">{p}</p>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Right Column - Accordion */}
-            <div className="bg-gray-900 p-6 rounded-lg">
-              <Accordion type="single" collapsible className="w-full">
-                {Object.entries(compromisosData).map(([key, { title, content }]) => (
-                  <AccordionItem key={key} value={key}>
-                    <AccordionTrigger className="text-[#FF7420] hover:text-[#FF7420]/90">
-                      {title}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-300">
-                      {content}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
           </div>
         </div>
       </section>
+
+      {/* ── CTA FINAL ── */}
+      <section className="border-t border-white/5 py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-black text-white">¿Listo para trabajar<br className="hidden md:block" /> con nosotros?</h2>
+            <p className="text-gray-500 text-sm mt-2">Cuéntenos sobre su proyecto y le ayudamos a encontrar la solución ideal.</p>
+          </div>
+          <Link
+            href="/contacto"
+            className="shrink-0 inline-flex items-center gap-3 bg-[#FF7420] hover:bg-[#e5681c] text-white font-black px-8 py-4 rounded-2xl text-sm transition-colors"
+          >
+            Iniciar consulta
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </section>
+
     </main>
   )
 }
-
