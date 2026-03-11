@@ -13,7 +13,8 @@ const STORAGE_KEY = 'mac_form_draft'
 
 export default function MAC() {
   const [step, setStep]         = useState(1)
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [restored, setRestored] = useState(false)
 
   // Restaurar borrador al montar
   useEffect(() => {
@@ -21,8 +22,9 @@ export default function MAC() {
       const saved = sessionStorage.getItem(STORAGE_KEY)
       if (saved) {
         const { step: savedStep, formData: savedData } = JSON.parse(saved)
-        if (savedStep) setStep(savedStep)
-        if (savedData) setFormData(savedData)
+        if (savedStep)  setStep(savedStep)
+        if (savedData)  setFormData(savedData)
+        if (savedStep > 1) setRestored(true)
       }
     } catch {}
   }, [])
@@ -37,9 +39,9 @@ export default function MAC() {
   const handleSubmit = async () => {
     try {
       const response = await fetch('/api/consultations', {
-        method: 'POST',
+        method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body:    JSON.stringify(formData),
       })
       if (!response.ok) throw new Error('Error al enviar el formulario')
       sessionStorage.removeItem(STORAGE_KEY)
@@ -55,14 +57,66 @@ export default function MAC() {
   const nextStep = () => setStep((s) => s + 1)
   const prevStep = () => setStep((s) => s - 1)
 
+  // Cada step recibe initialData para pre-cargar sus campos locales
   const renderStep = () => {
     switch (step) {
-      case 1: return <ServiceInfo    onNext={nextStep}                    updateFormData={updateFormData} />
-      case 2: return <LocationInfo   onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
-      case 3: return <ProjectDetails onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
-      case 4: return <AdditionalInfo onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
-      case 5: return <ContactInfo    onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
-      case 6: return <Summary formData={formData} onPrev={prevStep} onSubmit={handleSubmit} />
+      case 1: return (
+        <ServiceInfo
+          onNext={nextStep}
+          updateFormData={updateFormData}
+          initialData={{ servicesAndProducts: formData.servicesAndProducts }}
+        />
+      )
+      case 2: return (
+        <LocationInfo
+          onNext={nextStep} onPrev={prevStep}
+          updateFormData={updateFormData}
+          initialData={{
+            address:    formData.address,
+            postalCode: formData.postalCode,
+            latitude:   formData.latitude,
+            longitude:  formData.longitude,
+          }}
+        />
+      )
+      case 3: return (
+        <ProjectDetails
+          onNext={nextStep} onPrev={prevStep}
+          updateFormData={updateFormData}
+          initialData={{
+            projectTypes:  formData.projectTypes,
+            startDate:     formData.startDate,
+            preferredTime: formData.preferredTime,
+          }}
+        />
+      )
+      case 4: return (
+        <AdditionalInfo
+          onNext={nextStep} onPrev={prevStep}
+          updateFormData={updateFormData}
+          initialData={{
+            installations: formData.installations,
+            budget:        formData.budget,
+            supportLevel:  formData.supportLevel,
+          }}
+        />
+      )
+      case 5: return (
+        <ContactInfo
+          onNext={nextStep} onPrev={prevStep}
+          updateFormData={updateFormData}
+          initialData={{
+            name:         formData.name,
+            position:     formData.position,
+            organization: formData.organization,
+            email:        formData.email,
+            phone:        formData.phone,
+          }}
+        />
+      )
+      case 6: return (
+        <Summary formData={formData} onPrev={prevStep} onSubmit={handleSubmit} />
+      )
       default: return null
     }
   }
@@ -116,17 +170,18 @@ export default function MAC() {
           })}
         </div>
 
-        {/* Aviso borrador guardado */}
-        {step > 1 && (
+        {/* Aviso borrador restaurado */}
+        {restored && step > 1 && (
           <div className="mb-4 flex items-center justify-between bg-[#FF7420]/10 border border-[#FF7420]/20 rounded-2xl px-5 py-3">
             <p className="text-[#FF7420] text-xs font-semibold">
-              ✓ Progreso guardado — puedes salir y continuar después
+              ✓ Progreso restaurado — continúa desde donde lo dejaste
             </p>
             <button
               onClick={() => {
                 sessionStorage.removeItem(STORAGE_KEY)
                 setStep(1)
                 setFormData({})
+                setRestored(false)
               }}
               className="text-gray-500 hover:text-red-400 text-[10px] font-semibold transition-colors"
             >

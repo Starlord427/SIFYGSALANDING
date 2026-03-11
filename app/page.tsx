@@ -6,13 +6,7 @@ import { CheckCircle } from 'lucide-react'
 import ProjectsCarousel from './components/ProjectsCarousel'
 import CollaboratorsSection from './components/CollaboratorsSection'
 import ServicesAndProducts from './components/ServicesAndProducts'
-
-const processSteps = [
-  { num: "01", label: "Evaluación y Firma de Contratos" },
-  { num: "02", label: "Preparación del Plan de Trabajo" },
-  { num: "03", label: "Implementación de Trabajos de Control" },
-  { num: "04", label: "Entrega del Proyecto al Cliente" },
-]
+import ProcessTimeline from './components/ProcessTimeline'
 
 const stats = [
   { value: "200+", label: "Proyectos Completados" },
@@ -94,7 +88,6 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 md:px-16 py-16 md:py-24">
         <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden">
           <div className="grid md:grid-cols-2">
-            {/* Imagen */}
             <div className="relative h-64 md:h-auto min-h-[360px]">
               <Image
                 src="/about/team-image.jpg"
@@ -105,7 +98,6 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#141414] hidden md:block" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent md:hidden" />
             </div>
-            {/* Texto */}
             <div className="p-8 md:p-12 flex flex-col justify-center">
               <div className="inline-flex items-center gap-2 mb-4">
                 <span className="w-6 h-px bg-[#FF7420]" />
@@ -126,27 +118,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PROCESO ── */}
-      <section className="bg-[#141414] border-y border-white/5 py-14">
-        <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <div className="inline-flex items-center gap-2 mb-8">
-            <span className="w-6 h-px bg-[#FF7420]" />
-            <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Cómo trabajamos</span>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 relative">
-            {/* Línea conectora desktop */}
-            <div className="hidden md:block absolute top-5 left-[12.5%] right-[12.5%] h-px bg-white/5 z-0" />
-            {processSteps.map((step, i) => (
-              <div key={i} className="flex flex-col items-center text-center relative z-10">
-                <div className="w-10 h-10 rounded-full bg-[#FF7420] text-white font-black text-sm flex items-center justify-center mb-4 shrink-0">
-                  {step.num}
-                </div>
-                <p className="text-gray-300 text-sm max-w-[130px] leading-snug">{step.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── PROCESO (timeline premium) ── */}
+      <ProcessTimeline />
 
       {/* ── PROYECTOS CAROUSEL ── */}
       <ProjectsCarousel />
