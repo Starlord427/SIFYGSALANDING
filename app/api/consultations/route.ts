@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/authOptions'
-import { prisma } from '@/lib/prisma'                              // ← corregido
+import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   const session = await getServerSession(authOptions)
@@ -34,14 +34,40 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
-    const { serviceType, address, postalCode, latitude, longitude, projectTypes, startDate, installations, budget, supportLevel, name, organization, email, phone } = body
 
-    if (!serviceType || !address || !postalCode || !name || !email)
-      return NextResponse.json({ message: 'Faltan campos obligatorios' }, { status: 400 })
+    // El form MAC manda servicesAndProducts (array), lo unimos como string para serviceType
+    const {
+      servicesAndProducts,
+      address,
+      postalCode,
+      latitude,
+      longitude,
+      projectTypes,
+      startDate,
+      preferredTime,
+      installations,
+      budget,
+      supportLevel,
+      name,
+      position,
+      organization,
+      email,
+      phone,
+    } = body
+
+    // Validación con los campos reales que manda el form
+    if (!servicesAndProducts?.length || !address || !postalCode || !name || !email)
+      return NextResponse.json(
+        { message: 'Faltan campos obligatorios', received: { servicesAndProducts, address, postalCode, name, email } },
+        { status: 400 }
+      )
 
     const consultation = await prisma.consultation.create({
       data: {
-        serviceType,
+        // Guardamos el array como string separado por comas en serviceType
+        serviceType:  Array.isArray(servicesAndProducts)
+                        ? servicesAndProducts.join(', ')
+                        : servicesAndProducts,
         location:     address,
         postalCode,
         latitude:     latitude  ? parseFloat(latitude)  : null,
@@ -59,7 +85,10 @@ export async function POST(request: Request) {
       },
     })
 
-    return NextResponse.json({ message: 'Consulta creada exitosamente', id: consultation.id }, { status: 201 })
+    return NextResponse.json(
+      { message: 'Consulta creada exitosamente', id: consultation.id },
+      { status: 201 }
+    )
   } catch (error) {
     console.error('Error al crear la consulta:', error)
     return NextResponse.json({ message: 'Error interno del servidor' }, { status: 500 })
