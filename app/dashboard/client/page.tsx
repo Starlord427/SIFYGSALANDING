@@ -1,49 +1,40 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import ClientDashboard from '@/components/ClientDashboard'
-import { Button } from '@/components/ui/button'
+import DashboardBar from '@/components/DashboardBar'
 
 export default function ClientDashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/contacto')
+    if (status === 'unauthenticated') router.push('/contacto')
+    if (status === 'authenticated') {
+      const role = (session?.user as any)?.role
+      if (role === 'MANAGER')     router.push('/dashboard/manager')
+      if (role === 'SALESPERSON') router.push('/dashboard/sales')
     }
-  }, [status, router])
+  }, [status, session, router])
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-[#FF7420]" />
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-[#FF7420]" />
       </div>
     )
   }
 
-  if (status !== 'authenticated') return null
+  if (!session) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header responsive */}
-      <div className="bg-black text-white px-4 md:px-6 py-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-        <span className="font-bold text-base md:text-lg">SIFYGSA — Mi Panel</span>
-        <div className="flex items-center justify-between sm:justify-end gap-3">
-          <span className="text-xs md:text-sm text-gray-400 truncate max-w-[180px] md:max-w-none">
-            {session.user?.email}
-          </span>
-          <Button
-            onClick={() => signOut({ callbackUrl: '/contacto' })}
-            className="bg-[#FF7420] hover:bg-[#FF7420]/90 text-white text-xs md:text-sm px-3 py-1 h-auto shrink-0"
-          >
-            Cerrar sesión
-          </Button>
-        </div>
-      </div>
-      <ClientDashboard />
+    <div className="min-h-screen bg-[#0a0a0a] text-white pt-16">
+      <DashboardBar role="cliente" email={session.user?.email} showNewRequest />
+      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-10">
+        <ClientDashboard userId={(session.user as any)?.id} />
+      </main>
     </div>
   )
 }

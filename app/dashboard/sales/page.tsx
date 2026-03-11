@@ -1,47 +1,39 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import SalespersonDashboard from '@/components/SalespersonDashboard'
+import DashboardBar from '@/components/DashboardBar'
 
 export default function SalesDashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/contacto')
-    } else if (status === 'authenticated' && (session.user as any)?.role !== 'SALESPERSON') {
-      router.push('/contacto')
+    if (status === 'unauthenticated') router.push('/contacto')
+    if (status === 'authenticated') {
+      const role = (session?.user as any)?.role
+      if (role !== 'SALESPERSON') router.push('/contacto')
     }
   }, [status, session, router])
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-[#FF7420]" />
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-[#FF7420]" />
       </div>
     )
   }
 
-  if (status !== 'authenticated' || (session.user as any)?.role !== 'SALESPERSON') return null
+  if (!session) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-black text-white px-6 py-4 flex justify-between items-center">
-        <span className="font-bold text-lg">SIFYGSA — Panel de Vendedor</span>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-400">{session.user?.email}</span>
-          <button
-            onClick={() => signOut({ callbackUrl: '/contacto' })}
-            className="bg-[#FF7420] hover:bg-[#FF5500] text-white text-sm px-3 py-1 rounded"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      </div>
-      <SalespersonDashboard />
+    <div className="min-h-screen bg-[#0a0a0a] text-white pt-20">
+      <DashboardBar role="vendedor" email={session.user?.email} />
+      <main className="max-w-7xl mx-auto px-6 md:px-16 pb-10">
+        <SalespersonDashboard userId={(session.user as any)?.id} />
+      </main>
     </div>
   )
 }

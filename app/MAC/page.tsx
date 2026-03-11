@@ -1,121 +1,148 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
-import ProgressBar from './components/ProgressBar'
-import ServiceInfo from './components/ServiceInfo'
-import LocationInfo from './components/LocationInfo'
+import { useState, useEffect } from 'react'
+import ProgressBar    from './components/ProgressBar'
+import ServiceInfo    from './components/ServiceInfo'
+import LocationInfo   from './components/LocationInfo'
 import ProjectDetails from './components/ProjectDetails'
 import AdditionalInfo from './components/AdditionalInfo'
-import ContactInfo from './components/ContactInfo'
-import Summary from './components/Summary'
+import ContactInfo    from './components/ContactInfo'
+import Summary        from './components/Summary'
 
-// Tipo completo del formulario — alineado con el schema de Prisma
-interface MACFormData {
-  // Paso 1 - Servicios
-  servicesAndProducts?: string[]
-  serviceType?: string
-  // Paso 2 - Ubicación
-  address?: string
-  postalCode?: string
-  latitude?: number | null
-  longitude?: number | null
-  // Paso 3 - Detalles del proyecto
-  projectTypes?: string[]
-  startDate?: string
-  installations?: string
-  budget?: string
-  // Paso 4 - Info adicional
-  supportLevel?: string
-  // Paso 5 - Contacto
-  name?: string
-  position?: string
-  organization?: string
-  email?: string
-  phone?: string
-}
+const STORAGE_KEY = 'mac_form_draft'
 
 export default function MAC() {
-  const router = useRouter()
-  const [step, setStep] = useState(1)
-  const [formData, setFormData] = useState<MACFormData>({})
-  const [loading, setLoading] = useState(false)
+  const [step, setStep]         = useState(1)
+  const [formData, setFormData] = useState({})
+
+  // Restaurar borrador al montar
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY)
+      if (saved) {
+        const { step: savedStep, formData: savedData } = JSON.parse(saved)
+        if (savedStep) setStep(savedStep)
+        if (savedData) setFormData(savedData)
+      }
+    } catch {}
+  }, [])
+
+  // Guardar borrador en cada cambio
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ step, formData }))
+    } catch {}
+  }, [step, formData])
 
   const handleSubmit = async () => {
-    setLoading(true)
     try {
       const response = await fetch('/api/consultations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          serviceType:   formData.serviceType ?? formData.servicesAndProducts?.join(', '),
-          address:       formData.address,
-          postalCode:    formData.postalCode,
-          latitude:      formData.latitude,
-          longitude:     formData.longitude,
-          projectTypes:  formData.projectTypes ?? [],
-          startDate:     formData.startDate,
-          installations: formData.installations,
-          budget:        formData.budget,
-          supportLevel:  formData.supportLevel,
-          name:          formData.name,
-          organization:  formData.organization,
-          email:         formData.email,
-          phone:         formData.phone,
-        }),
+        body: JSON.stringify(formData),
       })
-
-      if (!response.ok) {
-        const err = await response.json()
-        throw new Error(err.message ?? 'Error al enviar')
-      }
-
-      toast.success('¡Solicitud enviada con éxito! Nos pondremos en contacto pronto.')
-      setTimeout(() => router.push('/'), 2000)
-
-    } catch (error: any) {
+      if (!response.ok) throw new Error('Error al enviar el formulario')
+      sessionStorage.removeItem(STORAGE_KEY)
+    } catch (error) {
       console.error('Error:', error)
-      toast.error(error.message ?? 'Ocurrió un error. Intenta de nuevo.')
-    } finally {
-      setLoading(false)
     }
   }
 
-  const updateFormData = (newData: Partial<MACFormData>) => {
-    setFormData(prev => ({ ...prev, ...newData }))
+  const updateFormData = (newData: Record<string, any>) => {
+    setFormData((prev) => ({ ...prev, ...newData }))
   }
 
-  const nextStep = () => setStep(prev => prev + 1)
-  const prevStep = () => setStep(prev => prev - 1)
+  const nextStep = () => setStep((s) => s + 1)
+  const prevStep = () => setStep((s) => s - 1)
 
   const renderStep = () => {
     switch (step) {
-      case 1: return <ServiceInfo   onNext={nextStep}                   updateFormData={updateFormData} />
-      case 2: return <LocationInfo  onNext={nextStep} onPrev={prevStep} updateFormData={updateFormData} />
-      case 3: return <ProjectDetails onNext={nextStep} onPrev={prevStep} updateFormData={updateFormData} />
-      case 4: return <AdditionalInfo onNext={nextStep} onPrev={prevStep} updateFormData={updateFormData} />
-      case 5: return <ContactInfo   onNext={nextStep} onPrev={prevStep} updateFormData={updateFormData} />
-      case 6: return <Summary formData={formData} onPrev={prevStep} onSubmit={handleSubmit} loading={loading} />
+      case 1: return <ServiceInfo    onNext={nextStep}                    updateFormData={updateFormData} />
+      case 2: return <LocationInfo   onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
+      case 3: return <ProjectDetails onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
+      case 4: return <AdditionalInfo onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
+      case 5: return <ContactInfo    onNext={nextStep} onPrev={prevStep}  updateFormData={updateFormData} />
+      case 6: return <Summary formData={formData} onPrev={prevStep} onSubmit={handleSubmit} />
       default: return null
     }
   }
 
+  const stepLabels = ['Servicios', 'Ubicación', 'Proyecto', 'Adicional', 'Contacto', 'Resumen']
+
   return (
-    <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-12">
-        <div className="bg-[#FF7420] rounded-lg p-8 max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold text-white text-center mb-2">
-            Módulo de Atención al Cliente (MAC)
-          </h1>
-          <p className="text-center text-white mb-8">
-            El control total sobre nuestros productos y servicios nos permite ofrecer a nuestros clientes la mejor calidad, precios y servicios.
+    <div className="min-h-screen bg-[#0a0a0a] text-white pt-20">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+
+        {/* Título */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="w-6 h-px bg-[#FF7420]" />
+            <span className="text-[#FF7420] text-[10px] font-bold uppercase tracking-[0.3em]">Solicitud</span>
+            <span className="w-6 h-px bg-[#FF7420]" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-3">Nueva Consulta</h1>
+          <p className="text-gray-400 text-sm max-w-lg mx-auto leading-relaxed">
+            El control total sobre nuestros productos y servicios nos permite ofrecer la mejor calidad, precios y servicio.
           </p>
-          <div className="bg-white p-8 rounded-lg">
-            <ProgressBar currentStep={step} totalSteps={6} />
+        </div>
+
+        {/* Step labels */}
+        <div className="hidden md:flex items-center justify-center gap-1 mb-8">
+          {stepLabels.map((label, i) => {
+            const n         = i + 1
+            const active    = n === step
+            const completed = n < step
+            return (
+              <div key={n} className="flex items-center gap-1">
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  active    ? 'bg-[#FF7420] text-white' :
+                  completed ? 'bg-[#FF7420]/20 text-[#FF7420]' :
+                              'bg-white/5 text-gray-600'
+                }`}>
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black ${
+                    active    ? 'bg-white text-[#FF7420]' :
+                    completed ? 'bg-[#FF7420] text-white' :
+                                'bg-white/10 text-gray-500'
+                  }`}>
+                    {completed ? '✓' : n}
+                  </span>
+                  {label}
+                </div>
+                {i < stepLabels.length - 1 && (
+                  <div className={`w-6 h-px ${n < step ? 'bg-[#FF7420]/40' : 'bg-white/10'}`} />
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Aviso borrador guardado */}
+        {step > 1 && (
+          <div className="mb-4 flex items-center justify-between bg-[#FF7420]/10 border border-[#FF7420]/20 rounded-2xl px-5 py-3">
+            <p className="text-[#FF7420] text-xs font-semibold">
+              ✓ Progreso guardado — puedes salir y continuar después
+            </p>
+            <button
+              onClick={() => {
+                sessionStorage.removeItem(STORAGE_KEY)
+                setStep(1)
+                setFormData({})
+              }}
+              className="text-gray-500 hover:text-red-400 text-[10px] font-semibold transition-colors"
+            >
+              Reiniciar
+            </button>
+          </div>
+        )}
+
+        {/* Tarjeta principal */}
+        <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden">
+          <ProgressBar currentStep={step} totalSteps={6} />
+          <div className="p-8 md:p-10">
             {renderStep()}
           </div>
         </div>
+
       </div>
     </div>
   )
