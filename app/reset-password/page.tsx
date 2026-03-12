@@ -6,20 +6,58 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
 
+// ── Fuera de ResetForm para evitar re-montaje en cada render ──
+const PasswordInput = ({
+  value, onChange, show, onToggle, placeholder
+}: {
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  show: boolean
+  onToggle: () => void
+  placeholder: string
+}) => (
+  <div className="relative">
+    <input
+      type="password"
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`w-full bg-[#1a1a1a] border border-white/10 focus:border-[#FF7420]/50 placeholder-gray-600 text-sm px-4 py-3 pr-11 rounded-xl outline-none transition-colors
+        [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden
+        ${show ? 'text-transparent caret-white' : 'text-white'}`}
+    />
+    {show && value && (
+      <span className="absolute inset-y-0 left-4 flex items-center text-sm text-white pointer-events-none tracking-wide">
+        {value}
+      </span>
+    )}
+    <button
+      type="button"
+      onClick={onToggle}
+      className="absolute inset-y-0 right-0 w-11 flex items-center justify-center text-gray-600 hover:text-[#FF7420] transition-colors"
+    >
+      <div className="relative w-4 h-4">
+        <Eye    className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${show ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`} />
+        <EyeOff className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${show ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
+      </div>
+    </button>
+  </div>
+)
+
 function ResetForm() {
   const searchParams = useSearchParams()
   const router       = useRouter()
   const token        = searchParams.get('token') ?? ''
 
-  const [validating, setValidating] = useState(true)
-  const [tokenValid, setTokenValid] = useState(false)
-  const [password,   setPassword]   = useState('')
-  const [confirm,    setConfirm]    = useState('')
-  const [showPw,     setShowPw]     = useState(false)
-  const [showConfirm,setShowConfirm]= useState(false)
-  const [loading,    setLoading]    = useState(false)
-  const [success,    setSuccess]    = useState(false)
-  const [error,      setError]      = useState('')
+  const [validating,  setValidating]  = useState(true)
+  const [tokenValid,  setTokenValid]  = useState(false)
+  const [password,    setPassword]    = useState('')
+  const [confirm,     setConfirm]     = useState('')
+  const [showPw,      setShowPw]      = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [loading,     setLoading]     = useState(false)
+  const [success,     setSuccess]     = useState(false)
+  const [error,       setError]       = useState('')
 
   useEffect(() => {
     if (!token) { setValidating(false); return }
@@ -59,44 +97,6 @@ function ResetForm() {
       setLoading(false)
     }
   }
-
-  // Reutilizable para los dos inputs de contraseña
-  const PasswordInput = ({
-    value, onChange, show, onToggle, placeholder
-  }: {
-    value: string
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    show: boolean
-    onToggle: () => void
-    placeholder: string
-  }) => (
-    <div className="relative">
-      <input
-        type="password"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`w-full bg-[#1a1a1a] border border-white/10 focus:border-[#FF7420]/50 placeholder-gray-600 text-sm px-4 py-3 pr-11 rounded-xl outline-none transition-colors
-          [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden
-          ${show ? 'text-transparent caret-white' : 'text-white'}`}
-      />
-      {show && value && (
-        <span className="absolute inset-y-0 left-4 flex items-center text-sm text-white pointer-events-none tracking-wide">
-          {value}
-        </span>
-      )}
-      <button
-        type="button"
-        onClick={onToggle}
-        className="absolute inset-y-0 right-0 w-11 flex items-center justify-center text-gray-600 hover:text-[#FF7420] transition-colors"
-      >
-        <div className="relative w-4 h-4">
-          <Eye    className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${show ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`} />
-          <EyeOff className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${show ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
-        </div>
-      </button>
-    </div>
-  )
 
   if (validating) return (
     <div className="bg-[#141414] rounded-b-3xl border border-white/5 border-t-0 p-8 flex items-center justify-center py-16">
@@ -138,7 +138,7 @@ function ResetForm() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               show={showPw}
-              onToggle={() => setShowPw(!showPw)}
+              onToggle={() => setShowPw(p => !p)}
               placeholder="••••••••"
             />
           </div>
@@ -149,7 +149,7 @@ function ResetForm() {
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
               show={showConfirm}
-              onToggle={() => setShowConfirm(!showConfirm)}
+              onToggle={() => setShowConfirm(p => !p)}
               placeholder="••••••••"
             />
           </div>
