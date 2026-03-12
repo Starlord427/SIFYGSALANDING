@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff } from 'lucide-react'
+import Link from 'next/link'
 
 interface AuthProps {
   authType: 'login' | 'register'
@@ -86,7 +87,7 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
   return (
     <div className="bg-[#141414] border border-white/5 rounded-3xl overflow-hidden w-full max-w-md mx-auto">
 
-      {/* Header de la tarjeta */}
+      {/* Header */}
       <div className="bg-[#FF7420] px-8 py-6">
         <div className="inline-flex items-center gap-2 mb-1">
           <span className="w-4 h-px bg-white/60" />
@@ -141,9 +142,6 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
             Contraseña
           </label>
           <div className="relative">
-
-            {/* Input real — siempre type="password" para que el navegador no sepa la longitud.
-                Cuando showPassword está activo mostramos el valor en el overlay de abajo. */}
             <input
               id="password"
               type="password"
@@ -157,16 +155,11 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
                 ${showPassword ? 'text-transparent caret-white' : 'text-white'}`}
               placeholder={showPassword ? '' : '••••••••'}
             />
-
-            {/* Overlay que muestra el texto real cuando showPassword=true
-                — así el navegador nunca ve el input como "text" y no agrega su botón */}
             {showPassword && password && (
               <span className="absolute inset-y-0 left-4 flex items-center text-sm text-white pointer-events-none tracking-wide">
                 {password}
               </span>
             )}
-
-            {/* Botón toggle con crossfade */}
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -177,7 +170,6 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
                 <EyeOff className={`absolute inset-0 h-4 w-4 transition-all duration-200 ${showPassword ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
               </div>
             </button>
-
           </div>
         </div>
 
@@ -201,6 +193,18 @@ export default function Auth({ authType, onAuthSuccess }: AuthProps) {
             authType === 'login' ? 'Entrar' : 'Registrarme'
           )}
         </button>
+
+        {/* Link olvidé contraseña — solo en login */}
+        {authType === 'login' && (
+          <div className="text-center pt-1">
+            <Link
+              href="/forgot-password"
+              className="text-gray-600 hover:text-gray-400 text-xs transition-colors"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+        )}
 
       </form>
     </div>

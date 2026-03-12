@@ -7,27 +7,28 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // Requerido por Supabase para migraciones
+  directUrl = env("DIRECT_URL")
 }
 
 // ─────────────────────────────────────────
 // USUARIOS
 // ─────────────────────────────────────────
 model User {
-  id                   String         @id @default(cuid())
-  fullName             String
-  email                String         @unique
-  phone                String?
-  password             String
-  role                 Role           @default(CLIENT)
-  status               UserStatus     @default(ACTIVE)
-  hasCompletedMACForm  Boolean        @default(false)
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
+  id                  String         @id @default(cuid())
+  fullName            String
+  email               String         @unique
+  phone               String?
+  password            String
+  role                Role           @default(CLIENT)
+  status              UserStatus     @default(ACTIVE)
+  hasCompletedMACForm Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
-  // Relaciones
-  consultations        Consultation[] @relation("ClientConsultations")
-  assignedConsultations Consultation[] @relation("SalespersonConsultations")
+  consultations         Consultation[]      @relation("ClientConsultations")
+  assignedConsultations Consultation[]      @relation("SalespersonConsultations")
+  consultationDrafts    ConsultationDraft[]
+  passwordResetTokens   PasswordResetToken[]
 
   @@map("users")
 }
@@ -51,9 +52,9 @@ model Consultation {
   serviceType   String
   location      String
   postalCode    String
-  latitude      Float?             // Georreferenciación
-  longitude     Float?             // Georreferenciación
-  projectTypes  String[]           // Array de tipos de proyecto
+  latitude      Float?
+  longitude     Float?
+  projectTypes  String[]
   startDate     DateTime?
   installations String?
   budget        String?
@@ -66,7 +67,6 @@ model Consultation {
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
 
-  // Relaciones
   clientId      String
   client        User               @relation("ClientConsultations", fields: [clientId], references: [id])
 
@@ -81,6 +81,38 @@ enum ConsultationStatus {
   IN_PROGRESS
   COMPLETED
   CANCELLED
+}
+
+// ─────────────────────────────────────────
+// BORRADORES MAC (guardado por pasos)
+// ─────────────────────────────────────────
+model ConsultationDraft {
+  id        String   @id @default(cuid())
+  userId    String   @unique   // Un borrador por usuario
+  step      Int      @default(1)
+  formData  Json                // Todo el formData serializado
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("consultation_drafts")
+}
+
+// ─────────────────────────────────────────
+// TOKENS DE RESET DE CONTRASEÑA
+// ─────────────────────────────────────────
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
 }
 
 // ─────────────────────────────────────────
@@ -100,7 +132,7 @@ model Product {
 }
 
 // ─────────────────────────────────────────
-// SOLICITUDES DE CONTACTO (formulario landing)
+// SOLICITUDES DE CONTACTO
 // ─────────────────────────────────────────
 model CustomerRequest {
   id        String   @id @default(cuid())

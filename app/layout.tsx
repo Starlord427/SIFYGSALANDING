@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/next'
 import Footer from './components/Footer'
 import ScrollToTopButton from '@/components/ScrollToTopButton'
 import Providers from './components/Providers'
+import SessionGuard from '@/components/SessionGuard'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +37,7 @@ export default function RootLayout({
       </Head>
       <body className={`${inter.className} bg-[#0a0a0a]`}>
         <Providers>
+          <SessionGuard /> 
           <Header />
           {children}
           <Footer />

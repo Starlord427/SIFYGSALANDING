@@ -1,3 +1,5 @@
+DROP INDEX IF EXISTS "consultations_clientId_idx";
+DROP INDEX IF EXISTS "consultations_salespersonId_idx";
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('CLIENT', 'SALESPERSON', 'MANAGER');
 
