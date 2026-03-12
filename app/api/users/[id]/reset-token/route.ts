@@ -6,9 +6,9 @@ import { prisma } from '@/lib/prisma'
 import crypto from 'crypto'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: Request, { params }: { params: { id: string } }) {
+  const resend = new Resend(process.env.RESEND_API_KEY)  // ← movido aquí adentro
+
   const session = await getServerSession(authOptions)
   if (!session?.user || (session.user as any).role !== 'MANAGER')
     return NextResponse.json({ message: 'No autorizado' }, { status: 403 })
@@ -17,11 +17,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
     const user = await prisma.user.findUnique({ where: { id: params.id } })
     if (!user) return NextResponse.json({ message: 'Usuario no encontrado' }, { status: 404 })
 
-    // Invalidar tokens anteriores
     await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } })
 
     const token     = crypto.randomBytes(32).toString('hex')
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 horas para tokens del manager
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
     await prisma.passwordResetToken.create({
       data: { token, userId: user.id, expiresAt },
@@ -30,7 +29,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`
 
     await resend.emails.send({
-      from:    'SIFYGSA <noreply@sifygsa.com>',
+      from:    'SIFYGSA <onboarding@resend.dev>',
       to:      user.email,
       subject: 'Acceso temporal — SIFYGSA',
       html: `
