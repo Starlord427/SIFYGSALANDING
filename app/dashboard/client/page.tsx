@@ -33,7 +33,7 @@ export default function ClientDashboardPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-white pt-16">
       <DashboardBar role="cliente" email={session.user?.email} showNewRequest />
       <main className="max-w-7xl mx-auto px-6 md:px-16 pb-10">
-        <ClientDashboard userId={(session.user as any)?.id} />
+        <ClientDashboard />
       </main>
     </div>
   )
