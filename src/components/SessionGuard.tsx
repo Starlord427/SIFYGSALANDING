@@ -52,7 +52,7 @@ export default function SessionGuard() {
   const logout = useCallback(async () => {
     removeWarning()
     await signOut({ redirect: false })
-    router.push('/auth?reason=inactivity')
+    router.push('/contacto?reason=inactivity')
   }, [router])
 
   const resetTimers = useCallback(() => {

@@ -58,7 +58,7 @@ export default function ForgotPassword() {
               <p className="text-gray-500 text-xs leading-relaxed">
                 Si los datos son correctos, recibirás un enlace en tu correo. Revisa tu bandeja de spam.
               </p>
-              <Link href="/auth" className="inline-block mt-6 text-[#FF7420] text-xs font-semibold hover:text-[#e5681c] transition-colors">
+              <Link href="/contacto" className="inline-block mt-6 text-[#FF7420] text-xs font-semibold hover:text-[#e5681c] transition-colors">
                 Volver al inicio de sesión
               </Link>
             </div>
@@ -106,7 +106,7 @@ export default function ForgotPassword() {
                 {loading ? 'Enviando...' : 'Enviar enlace de recuperación'}
               </button>
 
-              <Link href="/auth" className="block text-center text-gray-600 hover:text-gray-400 text-xs transition-colors">
+              <Link href="/contacto" className="block text-center text-gray-600 hover:text-gray-400 text-xs transition-colors">
                 Volver al inicio de sesión
               </Link>
             </div>

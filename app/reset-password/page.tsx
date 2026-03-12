@@ -52,7 +52,7 @@ function ResetForm() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.message)
       setSuccess(true)
-      setTimeout(() => router.push('/auth'), 3000)
+      setTimeout(() => router.push('/contacto'), 3000)
     } catch (e: any) {
       setError(e.message ?? 'Error al restablecer la contraseña')
     } finally {
