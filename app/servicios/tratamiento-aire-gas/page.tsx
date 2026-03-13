@@ -8,7 +8,7 @@ export default function TratamientoAireGas() {
       subtitle="Calidad del Aire"
       imageSrc="/servicios/servicio-tratamiento-aire.jpg"
       imageAlt="Tratamiento de aire y gas"
-      category="air_gas_treatment"
+      categoryKeyword="air_gas_treatment"
       description="Nuestras soluciones de tratamiento de aire y gas ofrecen tecnologías avanzadas para la purificación y procesamiento de aire y gases industriales. Diseñadas para mejorar la calidad del aire, aumentar la eficiencia y cumplir con las normativas ambientales más estrictas."
       features={[
         'Sistemas de filtración de alta eficiencia',

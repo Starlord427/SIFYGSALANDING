@@ -8,7 +8,7 @@ export default function ControlAutomatizacion() {
       subtitle="Automatización Industrial"
       imageSrc="/servicios/servicio-automatizacion.jpg"
       imageAlt="Control y automatización"
-      category="automation"
+      categoryKeyword="automation"
       description="Nuestros servicios de control y automatización están diseñados para optimizar los procesos industriales, aumentar la eficiencia y reducir los costos operativos. Implementamos soluciones de vanguardia adaptadas a las necesidades específicas de cada cliente."
       features={[
         'Sistemas de control distribuido (DCS)',

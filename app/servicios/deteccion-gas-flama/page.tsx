@@ -8,7 +8,7 @@ export default function DeteccionGasFlama() {
       subtitle="Seguridad Industrial"
       imageSrc="/servicios/servicio-deteccion.jpg"
       imageAlt="Detección fija de gas y flama"
-      category="gas_detection"
+      categoryKeyword="gas_detection"
       description="Nuestros sistemas de detección fija de gas y flama ofrecen una solución completa para la seguridad industrial. Utilizamos tecnología de punta para detectar una amplia gama de gases tóxicos y combustibles, así como llamas, en tiempo real."
       features={[
         'Detección temprana de gases peligrosos y fuego',

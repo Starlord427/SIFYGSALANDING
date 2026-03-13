@@ -8,7 +8,7 @@ export default function Videovigilancia() {
       subtitle="Videovigilancia"
       imageSrc="/servicios/servicio-videovigilancia.jpg"
       imageAlt="Sistemas de videovigilancia"
-      category="video_surveillance"
+      categoryKeyword="video_surveillance"
       description="Ofrecemos sistemas de videovigilancia de última generación diseñados para mejorar la seguridad en sus instalaciones. Nuestras soluciones proporcionan monitoreo en tiempo real, análisis de video avanzado y almacenamiento seguro de datos para una protección integral."
       features={[
         'Cámaras de alta resolución para interiores y exteriores',

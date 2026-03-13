@@ -8,7 +8,7 @@ export default function Interruptores() {
       subtitle="Protección Eléctrica"
       imageSrc="/servicios/servicio-interruptores.jpg"
       imageAlt="Interruptores industriales"
-      category="switches"
+      categoryKeyword="switches"
       description="Ofrecemos una amplia gama de interruptores de alta calidad diseñados para sistemas eléctricos industriales. Nuestros interruptores garantizan la seguridad, confiabilidad y eficiencia en la distribución y control de energía eléctrica en entornos industriales exigentes."
       features={[
         'Interruptores de baja, media y alta tensión',

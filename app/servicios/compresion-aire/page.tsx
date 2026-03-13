@@ -8,7 +8,7 @@ export default function CompresionAire() {
       subtitle="Sistemas de Compresión"
       imageSrc="/servicios/servicio-compresion-aire.jpg"
       imageAlt="Compresión de aire"
-      category="air_compression"
+      categoryKeyword="air_compression"
       description="Nuestros sistemas de compresión de aire ofrecen soluciones eficientes y confiables para una amplia gama de aplicaciones industriales. Diseñados para proporcionar un suministro constante de aire comprimido de alta calidad, mejorando la productividad y reduciendo los costos operativos."
       features={[
         'Compresores de aire de última generación',

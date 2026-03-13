@@ -8,7 +8,7 @@ export default function ProteccionEquipos() {
       subtitle="Protección Industrial"
       imageSrc="/servicios/servicio-proteccion-equipos.jpg"
       imageAlt="Protección de equipos e instalaciones"
-      category="equipment_protection"
+      categoryKeyword="equipment_protection"
       description="Ofrecemos sistemas integrales de protección para equipos críticos e instalaciones industriales. Nuestras soluciones están diseñadas para salvaguardar sus activos contra una variedad de riesgos, incluyendo sobretensiones, cortocircuitos, incendios y más."
       features={[
         'Sistemas de protección contra sobretensiones',

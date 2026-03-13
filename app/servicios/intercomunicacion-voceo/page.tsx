@@ -8,7 +8,7 @@ export default function IntercomunicacionVoceo() {
       subtitle="Comunicación Industrial"
       imageSrc="/servicios/servicio-intercomunicacion.jpg"
       imageAlt="Intercomunicación y voceo"
-      category="intercom_paging"
+      categoryKeyword="intercom_paging"
       description="Nuestros sistemas de intercomunicación y voceo proporcionan una comunicación clara y eficiente en entornos industriales y comerciales. Diseñados para mejorar la coordinación y seguridad en las instalaciones, son fundamentales para una operación fluida y segura."
       features={[
         'Comunicación bidireccional de alta calidad',

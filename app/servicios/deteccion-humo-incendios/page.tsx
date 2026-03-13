@@ -8,7 +8,7 @@ export default function DeteccionHumoIncendios() {
       subtitle="Protección contra Incendios"
       imageSrc="/servicios/servicio-deteccion-humo.jpg"
       imageAlt="Detección de humo y supresión de incendios"
-      category="fire_detection"
+      categoryKeyword="fire_detection"
       description="Nuestros sistemas de detección de humo y supresión de incendios ofrecen una protección integral contra incendios para todo tipo de instalaciones. Utilizamos tecnología de punta para detectar y responder rápidamente a cualquier amenaza de incendio."
       features={[
         'Detectores de humo fotoeléctricos y iónicos',

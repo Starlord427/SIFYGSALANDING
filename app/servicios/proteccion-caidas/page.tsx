@@ -8,7 +8,7 @@ export default function ProteccionCaidas() {
       subtitle="Seguridad en Alturas"
       imageSrc="/servicios/servicio-proteccion-caidas.jpg"
       imageAlt="Sistemas de protección contra caídas"
-      category="fall_protection"
+      categoryKeyword="fall_protection"
       description="Nuestros sistemas de protección contra caídas están diseñados para garantizar la seguridad del personal que trabaja en alturas. Ofrecemos soluciones integrales que cumplen con las normativas más estrictas de seguridad laboral."
       features={[
         'Equipos de protección personal de alta calidad',

@@ -8,7 +8,7 @@ export default function AireInstrumentos() {
       subtitle="Aire Industrial"
       imageSrc="/servicios/servicio-aire-instrumentos.jpg"
       imageAlt="Sistemas de aire para instrumentos"
-      category="instrument_air"
+      categoryKeyword="instrument_air"
       description="Nuestros sistemas de aire para instrumentos proporcionan soluciones especializadas de aire comprimido limpio, seco y estable para aplicaciones críticas en instrumentación y control industrial. Diseñados para garantizar la máxima fiabilidad y precisión en entornos industriales exigentes."
       features={[
         'Sistemas de filtración de alta eficiencia',

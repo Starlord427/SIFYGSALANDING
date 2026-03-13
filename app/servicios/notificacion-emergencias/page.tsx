@@ -8,7 +8,7 @@ export default function NotificacionEmergencias() {
       subtitle="Alertas de Emergencia"
       imageSrc="/servicios/servicio-notificacion.jpg"
       imageAlt="Notificación masiva de emergencias"
-      category="emergency_notification"
+      categoryKeyword="emergency_notification"
       description="Nuestros sistemas de notificación masiva de emergencias están diseñados para proporcionar alertas rápidas y eficaces en situaciones críticas. Utilizamos tecnología avanzada para garantizar que la información vital llegue a todas las personas afectadas de manera oportuna."
       features={[
         'Sistemas de alerta multicanal (audio, visual, móvil)',
