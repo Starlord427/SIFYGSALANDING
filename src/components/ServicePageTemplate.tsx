@@ -88,7 +88,7 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {categories.map(cat => (
-          <div key={cat.id} className="snap-start shrink-0 w-72 bg-[#141414] border border-white/5 hover:border-[#FF7420]/20 rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,116,32,0.05)]">
+          <div key={cat.id} className="snap-start shrink-0 w-72 bg-[#141414] border border-white/5 hover:border-[#FF7420]/20 rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,116,32,0.05)] flex flex-col">
             {/* Imagen */}
             <div className="relative h-36 bg-[#1a1a1a]">
               {cat.imagen ? (
@@ -103,14 +103,14 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
               <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent" />
             </div>
 
-            <div className="p-5">
+            <div className="p-5 flex flex-col flex-1">
               <p className="text-white font-bold text-sm leading-tight mb-2">{cat.tipo}</p>
               {cat.descripcion && (
                 <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3">{cat.descripcion}</p>
               )}
 
               {/* Primeros 3 items */}
-              <ul className="space-y-1 mb-4">
+              <ul className="space-y-1 mb-4 flex-1">
                 {(cat.items as string[]).slice(0, 3).map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-400 text-xs">
                     <span className="w-1 h-1 rounded-full bg-[#FF7420] shrink-0" />
