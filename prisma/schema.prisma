@@ -143,3 +143,18 @@ model CustomerRequest {
 
   @@map("customer_requests")
 }
+// ─────────────────────────────────────────
+// Productos
+// ─────────────────────────────────────────
+model ProductCategory {
+  id          String   @id @default(cuid())
+  tipo        String
+  descripcion String?
+  imagen      String?
+  items       Json     @default("[]")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("product_categories")
+}

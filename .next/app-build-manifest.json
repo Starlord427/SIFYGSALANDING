@@ -1,35 +1,50 @@
 {
   "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/forgot-password/page": [
+    "/servicios-y-productos/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/forgot-password/page.js"
+      "static/chunks/app/servicios-y-productos/page.js"
     ],
-    "/page": [
+    "/servicios/deteccion-gas-flama/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/servicios/deteccion-gas-flama/page.js"
+    ],
+    "/servicios/proteccion-caidas/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/servicios/proteccion-caidas/page.js"
     ],
     "/contacto/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/contacto/page.js"
     ],
-    "/reset-password/page": [
+    "/servicios/control-automatizacion/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/reset-password/page.js"
+      "static/chunks/app/servicios/control-automatizacion/page.js"
     ],
-    "/not-found": [
+    "/servicios/deteccion-humo-incendios/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/not-found.js"
+      "static/chunks/app/servicios/deteccion-humo-incendios/page.js"
+    ],
+    "/servicios/compresion-aire/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/servicios/compresion-aire/page.js"
     ]
   }
 }
