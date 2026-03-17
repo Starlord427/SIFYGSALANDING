@@ -5,7 +5,7 @@ export async function middleware(req: NextRequest) {
 
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://va.vercel-scripts.com https://cdn.vercel-insights.com`,
+    `script-src 'self' 'nonce-${nonce}' https://va.vercel-scripts.com https://*.vercel-insights.com https://*.vercel.app`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https://*.supabase.co",
     "font-src 'self' https://fonts.gstatic.com",
