@@ -24,10 +24,73 @@ export interface ServicePageProps {
   services: string[]
   whyTitle: string
   whyText: string[]
-  /** Palabra clave para filtrar categorías relacionadas, ej: "gas", "incendio", "automatización" */
   categoryKeyword?: string
   backHref?: string
 }
+
+// ── Placeholders ──────────────────────────────────────────────────────────────
+
+const GRADIENTS = [
+  'from-[#1a0d00] to-[#2d1800]',
+  'from-[#00141a] to-[#001f2d]',
+  'from-[#0d1a00] to-[#162900]',
+  'from-[#1a0014] to-[#2d0022]',
+  'from-[#001a14] to-[#00291f]',
+  'from-[#1a1400] to-[#2d2200]',
+  'from-[#00001a] to-[#00002d]',
+  'from-[#1a0a00] to-[#2d1500]',
+]
+
+function CategoryIcon({ tipo, className }: { tipo: string; className?: string }) {
+  const t = tipo.toLowerCase()
+  if (t.includes('gas') || t.includes('flama'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" /></svg>
+  if (t.includes('caída') || t.includes('caidas') || t.includes('protec'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+  if (t.includes('control') || t.includes('automat'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+  if (t.includes('humo') || t.includes('incendio'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+  if (t.includes('video') || t.includes('vigilancia'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+  if (t.includes('aire') || t.includes('compres'))
+    return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" /></svg>
+  return <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+}
+
+function CatImage({ src, alt, tipo, index, className }: {
+  src: string | null
+  alt: string
+  tipo: string
+  index: number
+  className?: string
+}) {
+  const [errored, setErrored] = useState(false)
+  const gradient = GRADIENTS[index % GRADIENTS.length]
+
+  if (!src || errored) {
+    return (
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} flex flex-col items-center justify-center gap-2`}>
+        <CategoryIcon tipo={tipo} className="w-8 h-8 text-[#FF7420]/50" />
+        <span className="text-[9px] font-semibold uppercase tracking-widest text-[#FF7420]/30 px-3 text-center leading-tight">
+          {tipo}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={className}
+      onError={() => setErrored(true)}
+    />
+  )
+}
+
+// ── Carrusel ──────────────────────────────────────────────────────────────────
 
 function ProductsCarousel({ keyword }: { keyword?: string }) {
   const [categories, setCategories] = useState<ProductCategory[]>([])
@@ -87,19 +150,16 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
         className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {categories.map(cat => (
+        {categories.map((cat, index) => (
           <div key={cat.id} className="snap-start shrink-0 w-72 bg-[#141414] border border-white/5 hover:border-[#FF7420]/20 rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-[0_0_20px_rgba(255,116,32,0.05)] flex flex-col">
-            {/* Imagen */}
             <div className="relative h-36 bg-[#1a1a1a]">
-              {cat.imagen ? (
-                <Image src={cat.imagen} alt={cat.tipo} fill className="object-cover opacity-80" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
-                </div>
-              )}
+              <CatImage
+                src={cat.imagen}
+                alt={cat.tipo}
+                tipo={cat.tipo}
+                index={index}
+                className="object-cover opacity-80"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#141414] to-transparent" />
             </div>
 
@@ -109,7 +169,6 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
                 <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3">{cat.descripcion}</p>
               )}
 
-              {/* Primeros 3 items */}
               <ul className="space-y-1 mb-4 flex-1">
                 {(cat.items as string[]).slice(0, 3).map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-400 text-xs">
@@ -147,6 +206,8 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
     </section>
   )
 }
+
+// ── Template principal ────────────────────────────────────────────────────────
 
 export default function ServicePageTemplate({
   title, subtitle, imageSrc, imageAlt, description,
@@ -247,7 +308,6 @@ export default function ServicePageTemplate({
           </div>
         </div>
 
-        {/* Carrusel de productos relacionados */}
         <ProductsCarousel keyword={categoryKeyword} />
 
         <div className="mt-10 bg-[#FF7420] rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
