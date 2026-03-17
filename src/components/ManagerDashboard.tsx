@@ -135,11 +135,11 @@ export default function ManagerDashboard() {
           <SectionLabel text="Panel de Gerente" />
           <h2 className="text-white font-black text-xl -mt-2">
             {view === 'consultations' && 'Consultas MAC'}
-            {/*{view === 'products'      && 'Gestión de Productos'}*/}
+            {/* view === 'products' && 'Gestión de Productos' — oculto temporalmente */}
             {view === 'categories'    && 'Catálogo de Categorías'}
           </h2>
         </div>
-        
+
         {/* Navegación del Panel */}
         <div className="flex flex-wrap gap-2">
           <button
@@ -148,12 +148,14 @@ export default function ManagerDashboard() {
           >
             Ver Consultas
           </button>
+          {/* Botón Productos oculto temporalmente
           <button
             onClick={() => setView('products')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${view === 'products' ? 'bg-[#FF7420] text-white' : 'bg-white/5 text-gray-500 hover:text-gray-300'}`}
           >
             Productos
           </button>
+          */}
           <button
             onClick={() => setView('categories')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${view === 'categories' ? 'bg-[#FF7420] text-white' : 'bg-white/5 text-gray-500 hover:text-gray-300'}`}
@@ -239,11 +241,11 @@ export default function ManagerDashboard() {
                       {expanded === c.id && (
                         <div className="border-t border-white/5 p-5 space-y-4 bg-[#0f0f0f]">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                            {c.contactName && <div><span className="text-gray-600 uppercase tracking-wider">Contacto</span><p className="text-gray-300 mt-0.5">{c.contactName}</p></div>}
-                            {c.organization && <div><span className="text-gray-600 uppercase tracking-wider">Organización</span><p className="text-gray-300 mt-0.5">{c.organization}</p></div>}
-                            {c.email && <div><span className="text-gray-600 uppercase tracking-wider">Correo</span><p className="text-gray-300 mt-0.5">{c.email}</p></div>}
-                            {c.phone && <div><span className="text-gray-600 uppercase tracking-wider">Teléfono</span><p className="text-gray-300 mt-0.5">{c.phone}</p></div>}
-                            {c.budget && <div><span className="text-gray-600 uppercase tracking-wider">Presupuesto</span><p className="text-gray-300 mt-0.5">{c.budget}</p></div>}
+                            {c.contactName   && <div><span className="text-gray-600 uppercase tracking-wider">Contacto</span><p className="text-gray-300 mt-0.5">{c.contactName}</p></div>}
+                            {c.organization  && <div><span className="text-gray-600 uppercase tracking-wider">Organización</span><p className="text-gray-300 mt-0.5">{c.organization}</p></div>}
+                            {c.email         && <div><span className="text-gray-600 uppercase tracking-wider">Correo</span><p className="text-gray-300 mt-0.5">{c.email}</p></div>}
+                            {c.phone         && <div><span className="text-gray-600 uppercase tracking-wider">Teléfono</span><p className="text-gray-300 mt-0.5">{c.phone}</p></div>}
+                            {c.budget        && <div><span className="text-gray-600 uppercase tracking-wider">Presupuesto</span><p className="text-gray-300 mt-0.5">{c.budget}</p></div>}
                             {c.installations && <div><span className="text-gray-600 uppercase tracking-wider">Instalaciones</span><p className="text-gray-300 mt-0.5">{c.installations}</p></div>}
                           </div>
 
@@ -272,11 +274,13 @@ export default function ManagerDashboard() {
           </div>
         )}
 
+        {/* Panel Productos oculto temporalmente
         {view === 'products' && (
           <div className="bg-[#141414] rounded-3xl border border-white/5 p-8">
             <ProductManagement />
           </div>
         )}
+        */}
 
         {view === 'categories' && (
           <div className="bg-[#141414] rounded-3xl border border-white/5 p-8">
