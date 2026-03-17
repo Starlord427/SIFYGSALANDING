@@ -135,7 +135,7 @@ export default function ManagerDashboard() {
           <SectionLabel text="Panel de Gerente" />
           <h2 className="text-white font-black text-xl -mt-2">
             {view === 'consultations' && 'Consultas MAC'}
-            {view === 'products'      && 'Gestión de Productos'}
+            {/*{view === 'products'      && 'Gestión de Productos'}*/}
             {view === 'categories'    && 'Catálogo de Categorías'}
           </h2>
         </div>
