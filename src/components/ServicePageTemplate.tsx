@@ -68,23 +68,22 @@ function CatImage({ src, alt, tipo, index, className }: {
   const [errored, setErrored] = useState(false)
   const gradient = GRADIENTS[index % GRADIENTS.length]
 
-  if (!src || errored) {
-    return (
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} flex flex-col items-center justify-center gap-2`}>
-        <CategoryIcon tipo={tipo} className="w-8 h-8 text-[#FF7420]/50" />
-        <span className="text-[9px] font-semibold uppercase tracking-widest text-[#FF7420]/30 px-3 text-center leading-tight">
-          {tipo}
-        </span>
-      </div>
-    )
-  }
+  const Placeholder = () => (
+    <div className={`absolute inset-0 bg-gradient-to-br ${gradient} flex flex-col items-center justify-center gap-2`}>
+      <CategoryIcon tipo={tipo} className="w-8 h-8 text-[#FF7420]/50" />
+      <span className="text-[9px] font-semibold uppercase tracking-widest text-[#FF7420]/30 px-3 text-center leading-tight">
+        {tipo}
+      </span>
+    </div>
+  )
+
+  if (!src || errored) return <Placeholder />
 
   return (
-    <Image
+    <img
       src={src}
       alt={alt}
-      fill
-      className={className}
+      className={`absolute inset-0 w-full h-full ${className ?? 'object-cover'}`}
       onError={() => setErrored(true)}
     />
   )
