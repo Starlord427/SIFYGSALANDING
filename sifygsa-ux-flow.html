@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIFYGSA — Flujo de experiencia de usuario</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; }
+
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: #141414; border-bottom: 1px solid #222;
+    height: 56px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+  }
+  #topbar .logo { display: flex; align-items: center; gap: 10px; }
+  #topbar .logo span:first-child { color: #FF7420; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
+  #topbar .logo span:last-child { color: #555; font-size: 13px; }
+  #topbar .hint { color: #444; font-size: 12px; }
+
+  #controls {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  #controls button {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #1a1a1a; border: 1px solid #333;
+    color: #fff; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  #controls button:hover { background: #2a2a2a; }
+
+  #legend {
+    position: fixed; bottom: 24px; left: 24px; z-index: 100;
+    background: #141414; border: 1px solid #222; border-radius: 12px;
+    padding: 14px 18px; display: flex; flex-direction: column; gap: 8px;
+  }
+  #legend p { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #FF7420; margin-bottom: 2px; }
+  .leg-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #888; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+  #tooltip {
+    position: fixed; z-index: 200;
+    background: #1a1a1a; border: 1px solid #333; border-radius: 12px;
+    padding: 14px 18px; max-width: 280px; font-size: 13px; color: #ccc;
+    line-height: 1.6; pointer-events: none; display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+  #tooltip strong { color: #FF7420; display: block; margin-bottom: 4px; font-size: 13px; }
+
+  #canvas { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; cursor: grab; overflow: hidden; }
+  #canvas:active { cursor: grabbing; }
+  #svg-wrap {
+    position: absolute; top: 0; left: 0;
+    transform-origin: 0 0;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .nd { cursor: pointer; }
+  .nd rect, .nd path { transition: filter 0.15s, transform 0.15s; }
+  .nd:hover rect { filter: brightness(1.25); }
+  .nd:hover .nd-arrow { opacity: 1; }
+  .nd-arrow { opacity: 0; transition: opacity 0.2s; }
+
+  .zone-label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; fill: #FF7420; }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">
+    <span>SIFYGSA</span>
+    <span>Flujo de experiencia de usuario</span>
+  </div>
+  <div class="hint">Scroll para zoom · Arrastra para mover · Clic en nodo para detalles</div>
+</div>
+
+<div id="canvas">
+<div id="svg-wrap">
+<svg id="main-svg" width="1400" height="1100" viewBox="0 0 1400 1100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ═══ ZONA VISITANTE ═══ -->
+<text class="zone-label" x="50" y="38">Visitante</text>
+<line x1="50" y1="44" x2="220" y2="44" stroke="#FF7420" stroke-width="0.5"/>
+
+<g class="nd" data-title="Inicio" data-tip="Landing principal de SIFYGSA. Presenta los servicios, propuesta de valor, call-to-action y acceso al catálogo completo.">
+  <rect x="50" y="56" width="160" height="60" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="130" y="80" text-anchor="middle" font-size="14" font-weight="600" fill="#fff" font-family="sans-serif">Inicio</text>
+  <text x="130" y="98" text-anchor="middle" font-size="11" fill="#666" font-family="sans-serif">Landing principal</text>
+</g>
+
+<g class="nd" data-title="Servicios y Productos" data-tip="Catálogo completo con dos tabs. Tab 'Servicios': 12 cards con imagen → cada una abre su página individual. Tab 'Productos': panel izquierdo de navegación con categorías dinámicas desde la DB.">
+  <rect x="300" y="56" width="200" height="60" rx="10" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+  <text x="400" y="78" text-anchor="middle" font-size="14" font-weight="600" fill="#fff" font-family="sans-serif">Servicios y Productos</text>
+  <text x="400" y="96" text-anchor="middle" font-size="11" fill="#666" font-family="sans-serif">Catálogo completo</text>
+</g>
+
+<g class="nd" data-title="Página de Servicio" data-tip="Página individual de cada uno de los 12 servicios. Estructura: imagen + descripción → características + servicios incluidos → ¿por qué elegirnos? → carrusel de productos relacionados (filtra por categoryKeyword) → CTA naranja a /contacto.">
+  <rect x="300" y="170" width="200" height="60" rx="10" fill="#0a2a1a" stroke="#1D9E75" stroke-width="1"/>
+  <text x="400" y="192" text-anchor="middle" font-size="14" font-weight="600" fill="#9FE1CB" font-family="sans-serif">Página de Servicio</text>
+  <text x="400" y="210" text-anchor="middle" font-size="11" fill="#5DCAA5" font-family="sans-serif">Imagen + carrusel + CTA</text>
+</g>
+
+<g class="nd" data-title="Contacto / Login" data-tip="Ruta /contacto. Funciona como punto de entrada principal: login para usuarios registrados Y formulario de contacto para nuevos prospectos. Todos los CTAs de la web apuntan aquí. Link a /forgot-password en el tab de login.">
+  <rect x="620" y="56" width="180" height="60" rx="10" fill="#2a1000" stroke="#FF7420" stroke-width="1"/>
+  <text x="710" y="78" text-anchor="middle" font-size="14" font-weight="600" fill="#FF7420" font-family="sans-serif">Contacto / Login</text>
+  <text x="710" y="96" text-anchor="middle" font-size="11" fill="#cc5500" font-family="sans-serif">/contacto — punto central</text>
+</g>
+
+<!-- Flechas visitante -->
+<line x1="210" y1="86" x2="298" y2="86" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="400" y1="116" x2="400" y2="168" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="500" y1="86" x2="618" y2="86" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="500" y1="200" x2="618" y2="100" stroke="#444" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="555" y="158" font-size="10" fill="#555" font-family="sans-serif" text-anchor="middle">solicita info</text>
+
+<!-- ═══ ZONA AUTH ═══ -->
+<text class="zone-label" x="50" y="290">Autenticación</text>
+<line x1="50" y1="296" x2="280" y2="296" stroke="#FF7420" stroke-width="0.5"/>
+
+<g class="nd" data-title="Registro" data-tip="Formulario de registro con campos: nombre completo, teléfono, email y contraseña. Al completarse exitosamente muestra una pantalla verde de confirmación por 2.5 segundos y luego hace login automático redirigiendo al dashboard correspondiente.">
+  <rect x="50" y="308" width="160" height="74" rx="10" fill="#1a1020" stroke="#534AB7" stroke-width="1"/>
+  <text x="130" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#EEEDFE" font-family="sans-serif">Registro</text>
+  <text x="130" y="350" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">✓ Pantalla verde éxito</text>
+  <text x="130" y="368" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">→ auto login por rol</text>
+</g>
+
+<g class="nd" data-title="Login" data-tip="Login con credenciales email/contraseña. NextAuth con estrategia JWT. Session máxima 15 minutos de inactividad. Detecta el rol del usuario (CLIENT, SALESPERSON, MANAGER) y redirige automáticamente al dashboard correspondiente. Toggle de mostrar/ocultar contraseña con animación.">
+  <rect x="260" y="308" width="160" height="74" rx="10" fill="#1a1020" stroke="#534AB7" stroke-width="1"/>
+  <text x="340" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#EEEDFE" font-family="sans-serif">Login</text>
+  <text x="340" y="350" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">Detecta rol → dashboard</text>
+  <text x="340" y="368" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">JWT · 15 min sesión</text>
+</g>
+
+<g class="nd" data-title="Olvidé contraseña" data-tip="Flujo de recuperación self-service. El usuario ingresa su email o teléfono. Se genera un token único con 1 hora de expiración y se envía el link por email via Resend (onboarding@resend.dev). Página en /forgot-password.">
+  <rect x="480" y="308" width="180" height="74" rx="10" fill="#1a1020" stroke="#534AB7" stroke-width="1"/>
+  <text x="570" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#EEEDFE" font-family="sans-serif">Olvidé contraseña</text>
+  <text x="570" y="350" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">Email o teléfono</text>
+  <text x="570" y="368" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">Token 1h via Resend</text>
+</g>
+
+<g class="nd" data-title="Reset contraseña" data-tip="Página /reset-password?token=xxx. Valida el token (expiración + uso único). Muestra checklist de reglas de contraseña en tiempo real mientras el usuario escribe. Actualiza la contraseña con bcrypt (12 rounds). Redirige automáticamente a /contacto después de 3 segundos de éxito.">
+  <rect x="720" y="308" width="180" height="74" rx="10" fill="#1a1020" stroke="#534AB7" stroke-width="1"/>
+  <text x="810" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#EEEDFE" font-family="sans-serif">Reset contraseña</text>
+  <text x="810" y="350" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">Checklist tiempo real</text>
+  <text x="810" y="368" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="sans-serif">bcrypt · → /contacto 3s</text>
+</g>
+
+<!-- Flechas auth -->
+<line x1="710" y1="116" x2="570" y2="306" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="710" y1="116" x2="340" y2="306" stroke="#534AB7" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<line x1="210" y1="345" x2="258" y2="345" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="660" y1="345" x2="718" y2="345" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="420" y1="345" x2="478" y2="345" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- ═══ ZONA DASHBOARDS ═══ -->
+<text class="zone-label" x="50" y="438">Dashboards — por rol</text>
+<line x1="50" y1="444" x2="320" y2="444" stroke="#FF7420" stroke-width="0.5"/>
+
+<g class="nd" data-title="Dashboard Cliente" data-tip="Vista del cliente autenticado. Muestra todas sus consultas MAC con su status (PENDING, IN_PROGRESS, COMPLETED, CANCELLED). Si tiene un borrador guardado aparece un banner naranja con link directo a /MAC para retomar. Puede crear nuevas consultas.">
+  <rect x="50" y="456" width="180" height="84" rx="10" fill="#001830" stroke="#378ADD" stroke-width="1"/>
+  <text x="140" y="480" text-anchor="middle" font-size="14" font-weight="600" fill="#E6F1FB" font-family="sans-serif">Dashboard Cliente</text>
+  <text x="140" y="498" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">Consultas + status</text>
+  <text x="140" y="514" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">Banner borrador MAC</text>
+  <text x="140" y="530" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">→ Nueva consulta</text>
+</g>
+
+<g class="nd" data-title="Dashboard Vendedor" data-tip="Vista del vendedor. Muestra únicamente las consultas que le fueron asignadas por el manager. Puede ver todos los detalles: contacto, organización, presupuesto, instalaciones existentes, nivel de soporte requerido.">
+  <rect x="290" y="456" width="180" height="84" rx="10" fill="#001830" stroke="#378ADD" stroke-width="1"/>
+  <text x="380" y="480" text-anchor="middle" font-size="14" font-weight="600" fill="#E6F1FB" font-family="sans-serif">Dashboard Vendedor</text>
+  <text x="380" y="498" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">Consultas asignadas</text>
+  <text x="380" y="514" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">Detalles completos</text>
+  <text x="380" y="530" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">de cada prospecto</text>
+</g>
+
+<g class="nd" data-title="Dashboard Manager" data-tip="Vista completa del manager con 3 tabs: (1) Consultas MAC — tabla con filtros por status/vendedor/ubicación + asignación a vendedores. (2) Productos legacy. (3) Categorías — CRUD completo con formulario inline para gestionar el catálogo público.">
+  <rect x="530" y="456" width="200" height="84" rx="10" fill="#001830" stroke="#378ADD" stroke-width="1"/>
+  <text x="630" y="480" text-anchor="middle" font-size="14" font-weight="600" fill="#E6F1FB" font-family="sans-serif">Dashboard Manager</text>
+  <text x="630" y="498" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">3 tabs: Consultas</text>
+  <text x="630" y="514" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">Productos · Categorías</text>
+  <text x="630" y="530" text-anchor="middle" font-size="11" fill="#85B7EB" font-family="sans-serif">CRUD catálogo público</text>
+</g>
+
+<g class="nd" data-title="Sesión expirada" data-tip="SessionGuard monitorea la inactividad del usuario en todos los dashboards. Al minuto 14 muestra una advertencia de '1 minuto restante'. Al minuto 15 cierra la sesión automáticamente y redirige a /contacto?reason=inactivity.">
+  <rect x="800" y="456" width="180" height="84" rx="10" fill="#200000" stroke="#E24B4A" stroke-width="1"/>
+  <text x="890" y="480" text-anchor="middle" font-size="14" font-weight="600" fill="#FCEBEB" font-family="sans-serif">Sesión expirada</text>
+  <text x="890" y="498" text-anchor="middle" font-size="11" fill="#F09595" font-family="sans-serif">15 min inactividad</text>
+  <text x="890" y="514" text-anchor="middle" font-size="11" fill="#F09595" font-family="sans-serif">Aviso al min 14</text>
+  <text x="890" y="530" text-anchor="middle" font-size="11" fill="#F09595" font-family="sans-serif">→ /contacto</text>
+</g>
+
+<!-- Flechas login → dashboards -->
+<line x1="340" y1="382" x2="140" y2="454" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="340" y1="382" x2="380" y2="454" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="340" y1="382" x2="590" y2="454" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="810" y1="345" x2="890" y2="454" stroke="#E24B4A" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+
+<!-- ═══ ZONA MAC ═══ -->
+<text class="zone-label" x="50" y="600">Flujo MAC — formulario de consulta</text>
+<line x1="50" y1="606" x2="380" y2="606" stroke="#FF7420" stroke-width="0.5"/>
+
+<g class="nd" data-title="MAC — Paso 1" data-tip="Tipo de servicio y proyecto. El usuario selecciona el tipo de servicio industrial que necesita y el tipo de proyecto. El progreso se guarda en borrador automáticamente desde el primer paso.">
+  <rect x="50" y="618" width="150" height="74" rx="10" fill="#1a1000" stroke="#EF9F27" stroke-width="1"/>
+  <text x="125" y="642" text-anchor="middle" font-size="14" font-weight="600" fill="#FAEEDA" font-family="sans-serif">Paso 1</text>
+  <text x="125" y="660" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">Tipo de servicio</text>
+  <text x="125" y="676" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">y proyecto</text>
+</g>
+
+<g class="nd" data-title="MAC — Paso 2" data-tip="Ubicación de la instalación. Código postal, ciudad y estado. Se guarda con debounce de 800ms en la DB via /api/consultations/draft y de forma inmediata en sessionStorage como backup.">
+  <rect x="240" y="618" width="150" height="74" rx="10" fill="#1a1000" stroke="#EF9F27" stroke-width="1"/>
+  <text x="315" y="642" text-anchor="middle" font-size="14" font-weight="600" fill="#FAEEDA" font-family="sans-serif">Paso 2</text>
+  <text x="315" y="660" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">Ubicación</text>
+  <text x="315" y="676" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">y código postal</text>
+</g>
+
+<g class="nd" data-title="MAC — Paso 3" data-tip="Detalles del proyecto. Fecha estimada de inicio, descripción de instalaciones existentes, presupuesto estimado (rangos predefinidos) y nivel de soporte requerido. Todo se guarda en el borrador.">
+  <rect x="440" y="618" width="150" height="74" rx="10" fill="#1a1000" stroke="#EF9F27" stroke-width="1"/>
+  <text x="515" y="642" text-anchor="middle" font-size="14" font-weight="600" fill="#FAEEDA" font-family="sans-serif">Paso 3</text>
+  <text x="515" y="660" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">Detalles proyecto</text>
+  <text x="515" y="676" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">presupuesto · fechas</text>
+</g>
+
+<g class="nd" data-title="MAC — Paso 4" data-tip="Datos de contacto. Nombre completo, organización/empresa, email y teléfono. Al hacer clic en 'Enviar' se crea la consulta en la tabla 'consultations' con status PENDING y se elimina el borrador guardado.">
+  <rect x="640" y="618" width="150" height="74" rx="10" fill="#1a1000" stroke="#EF9F27" stroke-width="1"/>
+  <text x="715" y="642" text-anchor="middle" font-size="14" font-weight="600" fill="#FAEEDA" font-family="sans-serif">Paso 4</text>
+  <text x="715" y="660" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">Datos de contacto</text>
+  <text x="715" y="676" text-anchor="middle" font-size="11" fill="#FAC775" font-family="sans-serif">y envío final</text>
+</g>
+
+<!-- Borrador -->
+<g class="nd" data-title="Borrador persistente" data-tip="Un borrador por usuario guardado en la tabla 'consultation_drafts'. Se guarda el paso actual y todo el formData en JSON. El cliente puede cerrar el browser, volver días después y retomar desde donde lo dejó. El dashboard muestra un banner naranja si hay borrador pendiente.">
+  <rect x="240" y="730" width="340" height="60" rx="10" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+  <text x="410" y="754" text-anchor="middle" font-size="14" font-weight="600" fill="#ccc" font-family="sans-serif">Borrador persistente</text>
+  <text x="410" y="772" text-anchor="middle" font-size="11" fill="#666" font-family="sans-serif">DB (debounce 800ms) + sessionStorage inmediato · 1 por usuario</text>
+</g>
+
+<!-- Consulta PENDING -->
+<g class="nd" data-title="Consulta creada — PENDING" data-tip="La consulta queda registrada en la tabla 'consultations' con status PENDING. El manager la ve en su dashboard con todos los detalles. Puede asignarla a un vendedor cambiando el status a IN_PROGRESS. El vendedor asignado la ve en su dashboard.">
+  <rect x="480" y="830" width="220" height="60" rx="10" fill="#0a2a1a" stroke="#1D9E75" stroke-width="1"/>
+  <text x="590" y="854" text-anchor="middle" font-size="14" font-weight="600" fill="#9FE1CB" font-family="sans-serif">Consulta creada</text>
+  <text x="590" y="872" text-anchor="middle" font-size="11" fill="#5DCAA5" font-family="sans-serif">Status: PENDING · asignar vendedor</text>
+</g>
+
+<!-- Flechas MAC -->
+<line x1="140" y1="498" x2="125" y2="616" stroke="#EF9F27" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<line x1="200" y1="655" x2="238" y2="655" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="390" y1="655" x2="438" y2="655" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="590" y1="655" x2="638" y2="655" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="315" y1="692" x2="340" y2="728" stroke="#555" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<line x1="515" y1="692" x2="480" y2="728" stroke="#555" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<line x1="715" y1="692" x2="650" y2="828" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- ═══ ZONA MANAGER GESTIÓN ═══ -->
+<text class="zone-label" x="50" y="950">Gestión manager — catálogo</text>
+<line x1="50" y1="956" x2="330" y2="956" stroke="#FF7420" stroke-width="0.5"/>
+
+<g class="nd" data-title="Asignar vendedor" data-tip="El manager selecciona una consulta PENDING y elige un vendedor del equipo en el dropdown. La consulta cambia a IN_PROGRESS y aparece inmediatamente en el dashboard del vendedor asignado.">
+  <rect x="50" y="966" width="180" height="74" rx="10" fill="#200a00" stroke="#D85A30" stroke-width="1"/>
+  <text x="140" y="990" text-anchor="middle" font-size="14" font-weight="600" fill="#FAECE7" font-family="sans-serif">Asignar vendedor</text>
+  <text x="140" y="1008" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">PENDING → IN_PROGRESS</text>
+  <text x="140" y="1024" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">Aparece en dashboard</text>
+</g>
+
+<g class="nd" data-title="Reset contraseña usuarios" data-tip="El manager puede generar un token de reset de 24 horas (vs 1 hora del auto-servicio) para cualquier usuario desde su panel. El link se envía al email del usuario via Resend. Útil cuando el usuario no recuerda su email de registro.">
+  <rect x="280" y="966" width="180" height="74" rx="10" fill="#200a00" stroke="#D85A30" stroke-width="1"/>
+  <text x="370" y="990" text-anchor="middle" font-size="14" font-weight="600" fill="#FAECE7" font-family="sans-serif">Reset usuarios</text>
+  <text x="370" y="1008" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">Token 24h (vs 1h)</text>
+  <text x="370" y="1024" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">Email via Resend</text>
+</g>
+
+<g class="nd" data-title="CRUD Categorías de productos" data-tip="Formulario inline para gestionar las categorías del catálogo: nombre, descripción, ruta de imagen, lista de productos (uno por línea) y número de orden. Los cambios se reflejan en tiempo real en /servicios-y-productos y en el carrusel de cada página de servicio.">
+  <rect x="510" y="966" width="200" height="74" rx="10" fill="#200a00" stroke="#D85A30" stroke-width="1"/>
+  <text x="610" y="990" text-anchor="middle" font-size="14" font-weight="600" fill="#FAECE7" font-family="sans-serif">CRUD Categorías</text>
+  <text x="610" y="1008" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">Nombre · imagen · items</text>
+  <text x="610" y="1024" text-anchor="middle" font-size="11" fill="#F5C4B3" font-family="sans-serif">Orden · tiempo real</text>
+</g>
+
+<g class="nd" data-title="Catálogo público actualizado" data-tip="Cuando el manager guarda cambios en una categoría, la página /servicios-y-productos y el carrusel en las páginas de servicio muestran los datos actualizados inmediatamente en el siguiente request. No requiere redeploy.">
+  <rect x="770" y="966" width="200" height="74" rx="10" fill="#0a2a1a" stroke="#1D9E75" stroke-width="1"/>
+  <text x="870" y="990" text-anchor="middle" font-size="14" font-weight="600" fill="#9FE1CB" font-family="sans-serif">Catálogo público</text>
+  <text x="870" y="1008" text-anchor="middle" font-size="11" fill="#5DCAA5" font-family="sans-serif">/servicios-y-productos</text>
+  <text x="870" y="1024" text-anchor="middle" font-size="11" fill="#5DCAA5" font-family="sans-serif">Carrusel en servicios</text>
+</g>
+
+<!-- Flechas gestión -->
+<line x1="590" y1="890" x2="200" y2="964" stroke="#D85A30" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="630" y1="540" x2="370" y2="964" stroke="#D85A30" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<line x1="630" y1="540" x2="610" y2="964" stroke="#D85A30" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<line x1="710" y1="1003" x2="768" y2="1003" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr)"/>
+
+</svg>
+</div>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="controls">
+  <button id="zi" title="Zoom in">+</button>
+  <button id="zo" title="Zoom out">−</button>
+  <button id="zr" title="Vista completa">⌂</button>
+</div>
+
+<div id="legend">
+  <p>Leyenda</p>
+  <div class="leg-item"><div class="leg-dot" style="background:#333;border:1px solid #555"></div> Pantalla pública</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#1a1020;border:1px solid #534AB7"></div> Autenticación</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#001830;border:1px solid #378ADD"></div> Dashboard</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#1a1000;border:1px solid #EF9F27"></div> Flujo MAC</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#200a00;border:1px solid #D85A30"></div> Gestión manager</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#0a2a1a;border:1px solid #1D9E75"></div> Resultado / público</div>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('canvas');
+  const wrap   = document.getElementById('svg-wrap');
+  const tip    = document.getElementById('tooltip');
+  let scale = 0.6, tx = 0, ty = 0;
+  let drag = false, sx = 0, sy = 0, stx = 0, sty = 0;
+
+  function apply() {
+    wrap.style.transform = `translate(${Math.round(tx)}px,${Math.round(ty)}px) scale(${scale})`;
+  }
+  function clamp() {
+    const sw = 1400 * scale, sh = 1100 * scale;
+    const cw = canvas.clientWidth, ch = canvas.clientHeight;
+    const margin = 200;
+    tx = Math.min(margin, Math.max(cw - sw - margin, tx));
+    ty = Math.min(margin, Math.max(ch - sh - margin, ty));
+  }
+  function init() {
+    scale = Math.min(canvas.clientWidth/1500, canvas.clientHeight/1200);
+    tx = (canvas.clientWidth  - 1400*scale) / 2;
+    ty = (canvas.clientHeight - 1100*scale) / 2;
+    apply();
+  }
+  init();
+  window.addEventListener('resize', init);
+
+  canvas.addEventListener('mousedown', e => {
+    if (e.target.closest('.nd')) return;
+    drag=true; sx=e.clientX; sy=e.clientY; stx=tx; sty=ty;
+  });
+  window.addEventListener('mousemove', e => {
+    if (!drag) return;
+    tx=stx+(e.clientX-sx); ty=sty+(e.clientY-sy);
+    clamp(); apply();
+  });
+  window.addEventListener('mouseup', ()=>{ drag=false; });
+
+  canvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const factor = e.deltaY > 0 ? 0.88 : 1.12;
+    const newScale = Math.min(3, Math.max(0.15, scale * factor));
+    // Anclar el punto bajo el cursor: el punto SVG bajo el mouse no se mueve
+    tx = mx - (mx - tx) * (newScale / scale);
+    ty = my - (my - ty) * (newScale / scale);
+    scale = newScale;
+    apply(); // sin clamp aquí para no romper el anclaje
+  }, {passive:false});
+
+  document.getElementById('zi').onclick = () => {
+    scale=Math.min(3,scale*1.25);
+    tx=canvas.clientWidth/2-(canvas.clientWidth/2-tx)*1.25;
+    ty=canvas.clientHeight/2-(canvas.clientHeight/2-ty)*1.25;
+    clamp(); apply();
+  };
+  document.getElementById('zo').onclick = () => {
+    scale=Math.max(0.15,scale*0.8);
+    tx=canvas.clientWidth/2-(canvas.clientWidth/2-tx)*0.8;
+    ty=canvas.clientHeight/2-(canvas.clientHeight/2-ty)*0.8;
+    clamp(); apply();
+  };
+  document.getElementById('zr').onclick = init;
+
+  let tipTimeout;
+  document.querySelectorAll('.nd').forEach(g => {
+    g.addEventListener('click', e => {
+      e.stopPropagation();
+      const title = g.getAttribute('data-title');
+      const text  = g.getAttribute('data-tip');
+      if (!text) return;
+      tip.innerHTML = `<strong>${title}</strong>${text}`;
+      const rect = canvas.getBoundingClientRect();
+      let tx2 = e.clientX + 16, ty2 = e.clientY - 20;
+      if (tx2 + 300 > window.innerWidth) tx2 = e.clientX - 316;
+      if (ty2 + 150 > window.innerHeight) ty2 = window.innerHeight - 160;
+      tip.style.left  = tx2 + 'px';
+      tip.style.top   = ty2 + 'px';
+      tip.style.display = 'block';
+      clearTimeout(tipTimeout);
+      tipTimeout = setTimeout(()=>{ tip.style.display='none'; }, 6000);
+    });
+  });
+  canvas.addEventListener('click', ()=>{ tip.style.display='none'; });
+})();
+</script>
+</body>
+</html>
