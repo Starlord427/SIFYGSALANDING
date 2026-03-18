@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -42,7 +42,8 @@ const projects = [
   }
 ]
 
-export default function Proyectos() {
+// Componente separado para poder envolver useSearchParams en Suspense
+function ProyectosContent() {
   const [activeCategory, setActiveCategory] = useState("Todos")
   const [activeProject, setActiveProject] = useState<number | null>(null)
   const searchParams = useSearchParams()
@@ -104,7 +105,6 @@ export default function Proyectos() {
       </div>
 
       <main className="max-w-7xl mx-auto px-6 md:px-16 py-12">
-
         {filtered.length === 0 ? (
           <div className="text-center py-24 text-gray-500">
             <p className="text-lg font-medium">No hay proyectos en esta categoría.</p>
@@ -112,7 +112,7 @@ export default function Proyectos() {
         ) : (
           <div className="bg-[#141414] rounded-3xl border border-white/5 overflow-hidden flex flex-col lg:flex-row">
 
-            {/* Panel izquierdo — lista */}
+            {/* Panel izquierdo */}
             <div className="lg:w-80 xl:w-96 shrink-0 border-b lg:border-b-0 lg:border-r border-white/5 overflow-y-auto max-h-[500px] lg:max-h-[680px]">
               {filtered.map((project, i) => (
                 <button
@@ -142,10 +142,9 @@ export default function Proyectos() {
               ))}
             </div>
 
-            {/* Panel derecho — detalle */}
+            {/* Panel derecho */}
             <div className="flex-1 bg-[#0f0f0f]">
               {activeProject === null ? (
-                /* Estado inicial */
                 <div className="relative h-full min-h-80">
                   <Image src={filtered[0].image} alt={filtered[0].title} fill className="object-cover opacity-60" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -169,7 +168,6 @@ export default function Proyectos() {
                 </div>
               ) : (
                 <div className="flex flex-col h-full">
-                  {/* Imagen grande */}
                   <div className="relative h-56 md:h-80 overflow-hidden">
                     <Image src={filtered[activeProject].image} alt={filtered[activeProject].title} fill className="object-cover opacity-70" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-black/40 to-transparent" />
@@ -181,8 +179,6 @@ export default function Proyectos() {
                       <h2 className="text-white text-2xl font-black">{filtered[activeProject].title}</h2>
                     </div>
                   </div>
-
-                  {/* Descripción y detalles */}
                   <div className="p-6 flex-1">
                     <p className="text-gray-400 text-sm leading-relaxed mb-6">
                       {filtered[activeProject].description}
@@ -213,10 +209,22 @@ export default function Proyectos() {
                 </div>
               )}
             </div>
-
           </div>
         )}
       </main>
     </div>
+  )
+}
+
+// Suspense obligatorio en Next.js 14+ cuando useSearchParams está en un page
+export default function Proyectos() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-[#FF7420]" />
+      </div>
+    }>
+      <ProyectosContent />
+    </Suspense>
   )
 }
