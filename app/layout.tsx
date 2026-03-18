@@ -1,6 +1,5 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { headers } from 'next/headers'
 import Header from './components/Header'
 import { Analytics } from '@vercel/analytics/next'
 import Footer from './components/Footer'
@@ -29,21 +28,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Lee el nonce generado por el middleware — único por cada request
-  const nonce = headers().get('x-nonce') ?? ''
-
   return (
     <html lang="es">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        {/*
-          Inyecta el nonce en un meta tag — Next.js lo lee automáticamente
-          y lo aplica a todos sus scripts internos de hidratación
-        */}
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content={`script-src 'nonce-${nonce}'`}
-        />
       </head>
       <body className={`${inter.className} bg-[#0a0a0a]`}>
         <Providers>

@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest) {
-  const nonce = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('base64')
+  const response = NextResponse.next()
 
-  const csp = [
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()')
+  response.headers.set('Content-Security-Policy', [
     "default-src 'self'",
-    // strict-dynamic: confía en scripts cargados por el script con nonce
-    // Esto cubre todos los chunks dinámicos de Next.js (_next/static/...)
-    // y Vercel Analytics (/_vercel/insights/script.js)
-    // unsafe-inline y https: son fallback para browsers viejos que ignoran nonce
-    `script-src 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline' https:`,
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https://*.supabase.co",
     "font-src 'self' https://fonts.gstatic.com",
@@ -18,18 +18,7 @@ export async function middleware(req: NextRequest) {
     "object-src 'none'",
     "form-action 'self'",
     "base-uri 'self'",
-  ].join('; ')
-
-  const requestHeaders = new Headers(req.headers)
-  requestHeaders.set('x-nonce', nonce)
-
-  const response = NextResponse.next({ request: { headers: requestHeaders } })
-
-  response.headers.set('Content-Security-Policy', csp)
-  response.headers.set('X-Frame-Options', 'DENY')
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()')
+  ].join('; '))
 
   return response
 }
