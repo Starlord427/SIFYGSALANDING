@@ -18,9 +18,11 @@ const categories = ["Todos", "Arquitectura", "Construcción", "Renovación", "In
 
 const projects = [
   { id: "torre-corporativa", title: "Skystay Tower", category: "Renovación & Arquitectura", description: "Diseño y construcción de una torre de oficinas de 30 pisos con certificación LEED.", image: "/projects/torre-corporativa.jpg" },
-  { id: "complejo-residencial", title: "The Fallingwater House", category: "Building & Interior", description: "Desarrollo de un complejo residencial de lujo con 200 unidades y áreas verdes.", image: "/projects/complejo-residencial.jpg" },
-  { id: "renovacion-centro", title: "The Orange Apartemen", category: "Construction & Interior", description: "Restauración y modernización de edificios históricos en el centro de la ciudad.", image: "/projects/renovacion-centro.jpg" },
+  { id: "complejo-residencial", title: "The Fallingwater House", category: "Construcción & Interior", description: "Desarrollo de un complejo residencial de lujo con 200 unidades y áreas verdes.", image: "/projects/complejo-residencial.jpg" },
+  { id: "renovacion-centro", title: "The Orange Apartemen", category: "Construcción & Interior", description: "Restauración y modernización de edificios históricos en el centro de la ciudad.", image: "/projects/renovacion-centro.jpg" },
   { id: "edificio-sustentable", title: "GreenTech Building", category: "Arquitectura & Sustentabilidad", description: "Diseño y construcción de un edificio de oficinas con tecnologías de energía renovable.", image: "/projects/edificio-sustentable.jpg" },
+  {id:  "renovacion-diseño",title: "Diseño de Interiores Corporativos Nexus", category: "Interior", description: "Rediseño completo de espacios de trabajo para una firma de consultoría de 3 pisos. El proyecto integró zonas colaborativas, áreas de descanso y oficinas privadas bajo una identidad visual coherente que refleja los valores de innovación y productividad de la empresa.", image: "/projects/interiores-nexus.jpg", details: ["3 pisos de espacios de trabajo rediseñados", "Zonas colaborativas con mobiliario modular", "Sala de juntas con tecnología de videoconferencia integrada", "Iluminación circadiana para mejorar el bienestar", "Materiales acústicos de alto rendimiento en áreas abiertas"]
+  }
 ]
 
 export default function ProjectsCarousel() {

@@ -6,11 +6,12 @@ import { motion } from 'framer-motion'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 
 const collaborators = [
-  { name: 'Empresa 1', logo: '/collaborators/empresa1.png' },
-  { name: 'Empresa 2', logo: '/collaborators/empresa2.png' },
-  { name: 'Empresa 3', logo: '/collaborators/empresa3.png' },
-  { name: 'Empresa 4', logo: '/collaborators/empresa4.png' },
-  { name: 'Empresa 5', logo: '/collaborators/empresa5.png' },
+  { name: 'Allen-Bradley', logo: '/collaborators/empresa1.png' },
+  { name: 'Ametek', logo: '/collaborators/empresa2.png' },
+  { name: 'FEDERAL SIGNAL', logo: '/collaborators/empresa3.png' },
+  { name: 'METRIX', logo: '/collaborators/empresa4.png' },
+  { name: 'MSA', logo: '/collaborators/empresa5.png' },
+  { name: 'NOTIFIER', logo: '/collaborators/empresa6.png' },
 ]
 
 export default function CollaboratorsSection() {

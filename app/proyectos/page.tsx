@@ -39,6 +39,14 @@ const projects = [
     description: "Diseño y construcción de un edificio de oficinas con tecnologías de energía renovable. Este proyecto pionero demuestra cómo la arquitectura moderna puede integrarse perfectamente con soluciones sostenibles.",
     image: "/projects/edificio-sustentable.jpg",
     details: ["Paneles solares que cubren el 80% del consumo energético", "Sistema de recolección y reutilización de agua de lluvia", "Fachada con jardines verticales", "Uso de materiales reciclados y de bajo impacto ambiental", "Estaciones de carga para vehículos eléctricos"]
+  },
+  {
+    id: 5,
+    title: "Diseño de Interiores Corporativos Nexus",
+    category: "Interior",
+    description: "Rediseño completo de espacios de trabajo para una firma de consultoría de 3 pisos. El proyecto integró zonas colaborativas, áreas de descanso y oficinas privadas bajo una identidad visual coherente que refleja los valores de innovación y productividad de la empresa.",
+    image: "/projects/interiores-nexus.jpg",
+    details: ["3 pisos de espacios de trabajo rediseñados", "Zonas colaborativas con mobiliario modular", "Sala de juntas con tecnología de videoconferencia integrada", "Iluminación circadiana para mejorar el bienestar", "Materiales acústicos de alto rendimiento en áreas abiertas"]
   }
 ]
 
