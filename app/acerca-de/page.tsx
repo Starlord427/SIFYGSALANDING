@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const stats = [
-  { number: "9+", label: "Años de experiencia" },
+  { number: "10+", label: "Años de experiencia" },
   { number: "200+", label: "Proyectos completados" },
   { number: "50+", label: "Socios estratégicos" },
 ]
@@ -58,7 +58,7 @@ export default function AcercaDe() {
             Industrial
           </h1>
           <p className="text-gray-400 max-w-lg text-sm md:text-base leading-relaxed">
-            9+ años definiendo soluciones hechas a la medida con compromiso con la seguridad y eficiencia de sus procesos industriales.
+            10+ años definiendo soluciones hechas a la medida con compromiso con la seguridad y eficiencia de sus procesos industriales.
           </p>
         </div>
       </section>

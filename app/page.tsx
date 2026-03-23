@@ -104,14 +104,14 @@ export default function Home() {
                 <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Trayectoria</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-black leading-none mb-6">
-                9+ <span className="text-[#FF7420]">Años</span><br />
+                10+ <span className="text-[#FF7420]">Años</span><br />
                 de experiencia
               </h2>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">
                 Proveemos tecnología e ingeniería vanguardistas que resuelven las necesidades y generan la satisfacción de clientes, proveedores y accionistas, con alto sentido de ética y profesionalismo.
               </p>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Con 9+ años en el mercado, aseguramos que nuestros proyectos cumplen los estándares más exigentes de seguridad y construcción, garantizando resultados que superan las expectativas.
+                Con 10+ años en el mercado, aseguramos que nuestros proyectos cumplen los estándares más exigentes de seguridad y construcción, garantizando resultados que superan las expectativas.
               </p>
             </div>
           </div>
