@@ -146,7 +146,7 @@ export default function Contacto() {
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-3 mt-10 pt-8 border-t border-white/5">
-              {[["9+", "Años de exp."], ["200+", "Proyectos"], ["98%", "Satisfacción"], ["24/7", "Soporte"]].map(([val, label], i) => (
+              {[["10+", "Años de exp."], ["200+", "Proyectos"], ["98%", "Satisfacción"], ["24/7", "Soporte"]].map(([val, label], i) => (
                 <div key={i} className="bg-[#1a1a1a] rounded-2xl p-4">
                   <p className="text-2xl font-black text-[#FF7420]">{val}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{label}</p>
