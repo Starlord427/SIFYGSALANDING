@@ -56,9 +56,6 @@ model Consultation {
   longitude     Float?
   projectTypes  String[]
   startDate     DateTime?
-  installations String?
-  budget        String?
-  supportLevel  String?
   contactName   String
   organization  String?
   email         String
