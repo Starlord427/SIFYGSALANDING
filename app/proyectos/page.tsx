@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-const categories = ["Todos", "Obra civil", "Sistemas de gas y fuego", "Rehabilitación", "Sistemas detección y alarmas"]
+const categories = ["Todos", "Obra civil", "Sistemas de gas y fuego", "Rehabilitación", "Sistemas detección y alarmas", "Mantenimiento"]
 
 const projects = [
   {
@@ -94,13 +94,13 @@ function ProyectosContent() {
       </section>
 
       {/* ── FILTROS STICKY ── */}
-      <div className="sticky top-0 z-20 bg-[#0a0a0a] border-b border-white/5 overflow-x-auto">
-        <div className="max-w-7xl mx-auto px-6 md:px-16 flex min-w-max">
+      <div className="sticky top-0 z-20 bg-[#0a0a0a] border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-wrap gap-x-2">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => { setActiveCategory(cat); setActiveProject(null) }}
-              className={`px-6 py-5 text-sm font-bold uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
+              className={`px-5 py-4 text-sm font-bold uppercase tracking-widest transition-all border-b-2 whitespace-nowrap ${
                 activeCategory === cat
                   ? 'border-[#FF7420] text-[#FF7420]'
                   : 'border-transparent text-gray-500 hover:text-gray-300'
