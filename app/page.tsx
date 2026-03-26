@@ -24,7 +24,7 @@ export default function Home() {
           src="/hero/hero-background.jpg"
           alt="SIFYGSA Hero Background"
           fill
-          className="object-cover opacity-25"
+          className="object-cover opacity-100"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-transparent to-[#0a0a0a]" />
@@ -35,7 +35,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 mb-6">
               <span className="w-8 h-px bg-[#FF7420]" />
               <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">
-                Seguridad Industrial
+                Automatización, control y seguridad Industrial
               </span>
             </div>
             <h1 className="text-4xl md:text-7xl font-black tracking-tight leading-none mb-6">
@@ -44,7 +44,7 @@ export default function Home() {
               <span className="text-[#FF7420]">Fire & Gas</span>
             </h1>
             <p className="text-gray-400 text-lg mb-10 uppercase tracking-widest text-sm">
-              En SIFYGSA hacemos que las cosas sucedan
+              Hacemos que las cosas sucedan
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
@@ -67,9 +67,10 @@ export default function Home() {
 
             <div className="flex flex-col gap-3">
               {[
-                "Presencia en el País",
-                "Personal Altamente Profesional, Procesos de Pruebas Precisos",
-                "Mano de obra inigualable, Profesional y Calificada"
+                "Personal altamente calificado",
+                "Presencia en el territorio mexicano",
+                "Cumplimiento a programas de ejecución"
+                
               ].map((text, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-[#FF7420] shrink-0" />

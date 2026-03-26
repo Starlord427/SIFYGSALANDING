@@ -28,7 +28,7 @@ export default function CollaboratorsSection() {
             <span className="text-[#FF7420] text-xs font-semibold uppercase tracking-[0.3em]">Alianzas</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
-            Nuestros Colaboradores
+            Nuestros socios comerciales
           </h2>
         </div>
 

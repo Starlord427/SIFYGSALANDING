@@ -15,10 +15,10 @@ interface ProductCategory {
 }
 
 const servicios = [
-  { id: "deteccion-gas-flama",          titulo: "Detección fija de gas y flama",               descripcion: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",         imagen: "/servicios/servicio-deteccion.jpg" },
+  { id: "deteccion-gas-flama",          titulo: "Detección fija de gas y fuego",               descripcion: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.",         imagen: "/servicios/servicio-deteccion.jpg" },
   { id: "proteccion-caidas",            titulo: "Sistemas de protección contra caídas",          descripcion: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.",                            imagen: "/servicios/servicio-proteccion-caidas.jpg" },
-  { id: "control-automatizacion",       titulo: "Control y automatización",                      descripcion: "Implementación de sistemas de control y automatización para optimizar procesos industriales.",                     imagen: "/servicios/servicio-automatizacion.jpg" },
-  { id: "deteccion-humo-incendios",     titulo: "Detección de humo y supresión de incendios",   descripcion: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",                    imagen: "/servicios/servicio-deteccion-humo.jpg" },
+  { id: "control-automatizacion",       titulo: "Monitoreo, control y automatización",                      descripcion: "Implementación de sistemas de control y automatización para optimizar procesos industriales.",                     imagen: "/servicios/servicio-automatizacion.jpg" },
+  { id: "deteccion-humo-incendios",     titulo: "Detección y alarmas\nSupresión de incendios",   descripcion: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.",                    imagen: "/servicios/servicio-deteccion-humo.jpg" },
   { id: "notificacion-emergencias",     titulo: "Notificación masiva de emergencias",            descripcion: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.",                                   imagen: "/servicios/servicio-notificacion.jpg" },
   { id: "intercomunicacion-voceo",      titulo: "Intercomunicación y voceo",                     descripcion: "Sistemas de comunicación interna para mejorar la coordinación y seguridad en las instalaciones.",                  imagen: "/servicios/servicio-intercomunicacion.jpg" },
   { id: "tratamiento-aire-gas",         titulo: "Tratamiento de aire y gas",                     descripcion: "Tecnologías avanzadas para el tratamiento y purificación de aire y gases industriales.",                          imagen: "/servicios/servicio-tratamiento-aire.jpg" },
@@ -74,7 +74,7 @@ function CatImage({
   if (!src || errored) {
     return (
       <div className={`w-full h-full bg-gradient-to-br ${gradient} flex flex-col items-center justify-center gap-3 ${fill ? 'absolute inset-0' : ''}`}>
-        <CategoryIcon tipo={tipo} className="w-10 h-10 text-[#FF7420]/60" />
+        <CategoryIcon tipo={tipo} className="w-10 h-10 text-[#FF7420]/80" />
         <span className="text-[10px] font-semibold uppercase tracking-widest text-[#FF7420]/40 px-4 text-center leading-tight">
           {tipo}
         </span>
@@ -162,7 +162,7 @@ export default function ServiciosYProductos() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="text-white font-bold text-sm leading-tight mb-1">{s.titulo}</h3>
+                    <h3 className="text-white font-bold text-sm leading-tight mb-1 whitespace-pre-line">{s.titulo}</h3>
                     <p className="text-gray-400 text-xs leading-relaxed max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-300">
                       {s.descripcion}
                     </p>

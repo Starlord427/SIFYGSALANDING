@@ -63,8 +63,8 @@ export default function Header() {
               <Image
                 src="/logos/logo-sifygsa.png"
                 alt="SIFYGSA Fire & Gas"
-                width={140}
-                height={56}
+                width={150}
+                height={66}
                 className="h-10 w-auto"
                 priority
               />

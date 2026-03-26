@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const stats = [
   { number: "10+", label: "Años de experiencia" },
-  { number: "200+", label: "Proyectos completados" },
+  { number: "290+", label: "Proyectos completados" },
   { number: "50+", label: "Socios estratégicos" },
 ]
 
@@ -40,7 +40,7 @@ export default function AcercaDe() {
           src="/about/hero-background.jpg"
           alt="SIFYGSA"
           fill
-          className="object-cover opacity-30"
+          className="object-cover opacity-90"
           priority
         />
         {/* Gradient overlay */}
@@ -143,7 +143,7 @@ export default function AcercaDe() {
                 src="/about/timeline-image.jpg"
                 alt="Trayectoria SIFYGSA"
                 fill
-                className="object-cover opacity-40 mix-blend-luminosity"
+                className="object-cover opacity-90 mix-blend-luminosity"
               />
             </div>
           </div>

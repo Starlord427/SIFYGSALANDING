@@ -3,10 +3,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const servicesAndProducts = [
-  { title: "Detección de gas y flama", description: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.", link: "/servicios/deteccion-gas-flama", image: "/servicios/servicio-deteccion.jpg" },
+  { title: "Detección de gas y fuego", description: "Sistemas avanzados para la detección temprana de gases peligrosos y fuego en instalaciones industriales.", link: "/servicios/deteccion-gas-flama", image: "/servicios/servicio-deteccion.jpg" },
   { title: "Protección contra caídas", description: "Equipos y soluciones para garantizar la seguridad del personal en trabajos en altura.", link: "/servicios/proteccion-caidas", image: "/servicios/servicio-proteccion-caidas.jpg" },
-  { title: "Control y automatización", description: "Implementación de sistemas de control y automatización para optimizar procesos industriales.", link: "/servicios/servicio-automatizacion", image: "/servicios/servicio-automatizacion.jpg" },
-  { title: "Detección de humo y supresión de incendios", description: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.", link: "/servicios/deteccion-humo-incendios", image: "/servicios/servicio-deteccion-humo.jpg" },
+  { title: "Monitoreo, control y automatización", description: "Implementación de sistemas de control y automatización para optimizar procesos industriales.", link: "/servicios/servicio-automatizacion", image: "/servicios/servicio-automatizacion.jpg" },
+  { title: "Detección y alarmas\nSupresión de incendios", description: "Sistemas integrales para la detección temprana de humo y la supresión efectiva de incendios.", link: "/servicios/deteccion-humo-incendios", image: "/servicios/servicio-deteccion-humo.jpg" },
   { title: "Notificación masiva de emergencias", description: "Soluciones de comunicación rápida y eficiente para situaciones de emergencia.", link: "/servicios/notificacion-emergencias", image: "/servicios/servicio-notificacion.jpg" },
   { title: "Intercomunicación y voceo", description: "Sistemas de comunicación interna para mejorar la coordinación y seguridad en las instalaciones.", link: "/servicios/intercomunicacion-voceo", image: "/servicios/servicio-intercomunicacion.jpg" },
 ]
@@ -55,7 +55,7 @@ export default function ServicesAndProducts() {
                 {/* Contenido */}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <div className="w-5 h-0.5 bg-[#FF7420] mb-3" />
-                  <h3 className="text-white font-bold text-sm leading-tight mb-1">{item.title}</h3>
+                  <h3 className="text-white font-bold text-sm leading-tight mb-1 whitespace-pre-line">{item.title}</h3>
                   <p className="text-gray-400 text-xs leading-relaxed max-h-0 overflow-hidden group-hover:max-h-16 transition-all duration-300">
                     {item.description}
                   </p>

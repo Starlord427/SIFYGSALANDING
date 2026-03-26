@@ -1,7 +1,4 @@
 {
-  "/servicios/notificacion-emergencias/page": "app/servicios/notificacion-emergencias/page.js",
   "/page": "app/page.js",
-  "/servicios/aire-instrumentos/page": "app/servicios/aire-instrumentos/page.js",
-  "/proyectos/page": "app/proyectos/page.js",
-  "/acerca-de/page": "app/acerca-de/page.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }

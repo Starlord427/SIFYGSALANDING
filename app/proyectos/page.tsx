@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-const categories = ["Todos", "Arquitectura", "Construcción", "Renovación", "Interior"]
+const categories = ["Todos", "Obra civil", "Sistemas de gas y fuego", "Rehabilitación", "Sistemas detección y alarmas"]
 
 const projects = [
   {
