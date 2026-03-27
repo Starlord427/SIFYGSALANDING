@@ -47,8 +47,21 @@ export default function LocationAndDetails({ onNext, onPrev, updateFormData, ini
   const [startDate,      setStartDate]      = useState(initialData?.startDate     ?? '')
   const [preferredTime,  setPreferredTime]  = useState(initialData?.preferredTime ?? '')
 
-  const getGeolocation = () => {
+  const getGeolocation = async () => {
     if (!navigator.geolocation) { setGeoError('Tu navegador no soporta geolocalización.'); return }
+    // Evita llamar getCurrentPosition cuando el documento la bloquea por policy
+    try {
+      const perms = (navigator as any).permissions
+      if (perms?.query) {
+        const status = await perms.query({ name: 'geolocation' })
+        if (status?.state === 'denied') {
+          setGeoError('La ubicación está bloqueada por permisos/política del navegador. Ingresa la dirección manualmente.')
+          return
+        }
+      }
+    } catch {
+      // Si no se puede consultar permisos, seguimos con el intento normal
+    }
     setGeoLoading(true); setGeoError('')
     navigator.geolocation.getCurrentPosition(
       async ({ coords: { latitude: lat, longitude: lng } }) => {
@@ -65,7 +78,7 @@ export default function LocationAndDetails({ onNext, onPrev, updateFormData, ini
       (err) => {
         setGeoLoading(false)
         setGeoError(err.code === err.PERMISSION_DENIED
-          ? 'Permiso denegado. Habilita la ubicación en tu navegador.'
+          ? 'No se pudo usar la ubicación (bloqueada o denegada). Ingresa la dirección manualmente.'
           : 'No se pudo obtener tu ubicación. Ingrésala manualmente.')
       }
     )

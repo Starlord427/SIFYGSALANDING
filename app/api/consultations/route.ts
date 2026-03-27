@@ -41,12 +41,29 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const {
-      servicesAndProducts, address, postalCode, latitude, longitude,
-      projectTypes, startDate, installations, budget,
-      supportLevel, name, organization, email, phone,
+      servicesAndProducts,
+      address,
+      postalCode,
+      latitude,
+      longitude,
+      projectTypes,
+      startDate,
+      installations,
+      budget,
+      supportLevel,
+      name,
+      contactName,
+      organization,
+      email,
+      phone,
     } = body
 
-    if (!servicesAndProducts?.length || !address || !postalCode || !name || !email)
+    const resolvedName = (contactName ?? name)?.toString?.().trim?.() ?? ''
+    const resolvedEmail = (email ?? '')?.toString?.().trim?.() ?? ''
+    const resolvedAddress = (address ?? '')?.toString?.().trim?.() ?? ''
+    const resolvedPostal = (postalCode ?? '')?.toString?.().trim?.() ?? ''
+
+    if (!servicesAndProducts?.length || !resolvedAddress || !resolvedPostal || !resolvedName || !resolvedEmail)
       return NextResponse.json({ message: 'Faltan campos obligatorios' }, { status: 400 })
 
     const consultation = await prisma.consultation.create({
@@ -61,9 +78,9 @@ export async function POST(request: Request) {
         installations,
         budget,
         supportLevel,
-        contactName:  name,
+        contactName:  resolvedName,
         organization,
-        email,
+        email:        resolvedEmail,
         phone,
         status:       'PENDING',
         clientId:     (session.user as any).id as string,
