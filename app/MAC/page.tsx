@@ -11,6 +11,12 @@ import ContactInfo         from './components/ContactInfo'
 const SESSION_KEY  = 'mac_form_draft'
 const TOTAL_STEPS  = 3   // Pasos reales (sin contar resumen)
 
+function normalizeStep(value: any) {
+  const n = typeof value === 'number' ? value : Number(value)
+  if (!Number.isFinite(n)) return 1
+  return Math.min(Math.max(1, Math.trunc(n)), TOTAL_STEPS)
+}
+
 export default function MAC() {
   const router                    = useRouter()
   const [step, setStep]           = useState(1)
@@ -27,9 +33,20 @@ export default function MAC() {
         if (res.ok) {
           const draft = await res.json()
           if (draft) {
-            setStep(draft.step ?? 1)
+            const normalized = normalizeStep(draft.step)
+            setStep(normalized)
             setFormData(draft.formData ?? {})
-            if (draft.step > 1) setRestored(true)
+            if (normalized > 1) setRestored(true)
+            if (normalized !== draft.step) {
+              // Corrige drafts viejos (ej. step 4 del resumen eliminado)
+              try {
+                await fetch('/api/consultations/draft', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ step: normalized, formData: draft.formData ?? {} }),
+                })
+              } catch {}
+            }
             return
           }
         }
@@ -38,9 +55,13 @@ export default function MAC() {
         const saved = sessionStorage.getItem(SESSION_KEY)
         if (saved) {
           const { step: s, formData: d } = JSON.parse(saved)
-          if (s) setStep(s)
+          const normalized = normalizeStep(s)
+          if (s) setStep(normalized)
           if (d) setFormData(d)
-          if (s > 1) setRestored(true)
+          if (normalized > 1) setRestored(true)
+          if (normalized !== s) {
+            try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ step: normalized, formData: d ?? {} })) } catch {}
+          }
         }
       } catch {}
     }
@@ -80,7 +101,11 @@ export default function MAC() {
     })
   }
 
-  const nextStep = () => { const n = step + 1; setStep(n); saveDraft(n, formData) }
+  const nextStep = () => {
+    const n = normalizeStep(step + 1)
+    setStep(n)
+    saveDraft(n, formData)
+  }
   const prevStep = () => { const p = step - 1; setStep(p); saveDraft(p, formData) }
 
   // ── 5. Submit ───────────────────────────────────────────────────────────
