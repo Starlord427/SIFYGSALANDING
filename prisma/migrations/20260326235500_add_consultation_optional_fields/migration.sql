@@ -1,0 +1,4 @@
+ALTER TABLE "consultations"
+ADD COLUMN IF NOT EXISTS "installations" TEXT,
+ADD COLUMN IF NOT EXISTS "budget" TEXT,
+ADD COLUMN IF NOT EXISTS "supportLevel" TEXT;

@@ -7,7 +7,6 @@ import ProgressBar         from './components/ProgressBar'
 import ServiceInfo         from './components/ServiceInfo'
 import LocationAndDetails  from './components/Locationanddetails'
 import ContactInfo         from './components/ContactInfo'
-import Summary             from './components/Summary'
 
 const SESSION_KEY  = 'mac_form_draft'
 const TOTAL_STEPS  = 3   // Pasos reales (sin contar resumen)
@@ -85,14 +84,16 @@ export default function MAC() {
   const prevStep = () => { const p = step - 1; setStep(p); saveDraft(p, formData) }
 
   // ── 5. Submit ───────────────────────────────────────────────────────────
-  const handleSubmit = async () => {
+  const handleSubmit = async (patch?: Record<string, any>) => {
+    const payload = patch ? { ...formData, ...patch } : formData
     const res = await fetch('/api/consultations', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(payload),
     })
     if (!res.ok) throw new Error('Error al enviar')
     await clearDraft()
+    router.push('/dashboard/client')
   }
 
   // ── 6. Render por paso ──────────────────────────────────────────────────
@@ -120,7 +121,6 @@ export default function MAC() {
       )
       case 3: return (
         <ContactInfo
-          onNext={nextStep}
           onPrev={prevStep}
           updateFormData={updateFormData}
           initialData={{
@@ -128,10 +128,8 @@ export default function MAC() {
             phone: formData.phone, position: formData.position,
             organization: formData.organization,
           }}
+          onSubmit={handleSubmit}
         />
-      )
-      case 4: return (
-        <Summary formData={formData} onPrev={prevStep} onSubmit={handleSubmit} />
       )
       default: return null
     }

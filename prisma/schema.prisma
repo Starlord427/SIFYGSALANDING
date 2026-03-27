@@ -56,6 +56,10 @@ model Consultation {
   longitude     Float?
   projectTypes  String[]
   startDate     DateTime?
+  // Campos opcionales usados por el formulario MAC (se envían, pero no son obligatorios)
+  installations String?
+  budget        String?
+  supportLevel  String?
   contactName   String
   organization  String?
   email         String

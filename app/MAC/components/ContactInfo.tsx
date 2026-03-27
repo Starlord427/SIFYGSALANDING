@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 interface ContactInfoProps {
-  onNext: () => void
   onPrev: () => void
   updateFormData: (data: {
     contactName: string
@@ -10,6 +9,13 @@ interface ContactInfoProps {
     position: string
     organization: string
   }) => void
+  onSubmit: (data: {
+    contactName: string
+    email: string
+    phone: string
+    position: string
+    organization: string
+  }) => Promise<void>
   initialData?: {
     contactName?: string
     email?: string
@@ -45,19 +51,32 @@ function Input({ type = 'text', placeholder, value, onChange }: {
   )
 }
 
-export default function ContactInfo({ onNext, onPrev, updateFormData, initialData }: ContactInfoProps) {
+export default function ContactInfo({ onPrev, updateFormData, onSubmit, initialData }: ContactInfoProps) {
   const [contactName,  setContactName]  = useState(initialData?.contactName  ?? '')
   const [email,        setEmail]        = useState(initialData?.email        ?? '')
   const [phone,        setPhone]        = useState(initialData?.phone        ?? '')
   const [position,     setPosition]     = useState(initialData?.position     ?? '')
   const [organization, setOrganization] = useState(initialData?.organization ?? '')
 
-  const handleNext = () => {
-    updateFormData({ contactName, email, phone, position, organization })
-    onNext()
-  }
-
   const canContinue = contactName.trim() !== '' && email.trim() !== ''
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async () => {
+    if (loading) return
+    setLoading(true)
+    setError('')
+    try {
+      const payload = { contactName, email, phone, position, organization }
+      updateFormData(payload)
+      await onSubmit(payload)
+    } catch {
+      setError('Hubo un error al enviar la solicitud. Intenta de nuevo.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div>
@@ -110,11 +129,17 @@ export default function ContactInfo({ onNext, onPrev, updateFormData, initialDat
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           Anterior
         </button>
-        <button onClick={handleNext} disabled={!canContinue} className="inline-flex items-center gap-2 bg-[#FF7420] hover:bg-[#e5681c] disabled:opacity-30 disabled:cursor-not-allowed text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-colors">
-          Ver resumen
+        <button onClick={handleSubmit} disabled={!canContinue || loading} className="inline-flex items-center gap-2 bg-[#FF7420] hover:bg-[#e5681c] disabled:opacity-30 disabled:cursor-not-allowed text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-colors">
+          {loading ? 'Enviando...' : 'Enviar solicitud'}
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </button>
       </div>
+
+      {error && (
+        <div className="mt-4 mb-0 bg-red-500/10 border border-red-500/20 rounded-2xl px-5 py-3">
+          <p className="text-red-400 text-sm">{error}</p>
+        </div>
+      )}
     </div>
   )
 }
