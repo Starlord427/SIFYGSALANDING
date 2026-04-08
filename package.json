@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node -e \"const fs = require('fs'); fs.rmSync('.next', { recursive: true, force: true });\"",
+    "prebuild": "node -e \"const fs = require('fs'); ['.next/server', '.next/static', '.next/types'].forEach(p => { try { fs.rmSync(p, { recursive: true, force: true }); } catch (e) {} });\"",
     "build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
