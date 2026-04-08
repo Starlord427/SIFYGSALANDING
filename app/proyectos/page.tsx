@@ -132,7 +132,7 @@ function ProyectosContent() {
                   }`}
                 >
                   <div className="relative w-16 h-12 shrink-0 overflow-hidden rounded-xl">
-                    <Image src={project.image} alt={project.title} fill className="object-cover" />
+                    <Image src={project.image} alt={project.title} fill sizes="100px" className="object-cover" />
                     {activeProject !== i && <div className="absolute inset-0 bg-black/40" />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -154,7 +154,7 @@ function ProyectosContent() {
             <div className="flex-1 bg-[#0f0f0f]">
               {activeProject === null ? (
                 <div className="relative h-full min-h-80">
-                  <Image src={filtered[0].image} alt={filtered[0].title} fill className="object-cover opacity-60" />
+                  <Image src={filtered[0].image} alt={filtered[0].title} fill sizes="(max-width: 1024px) 100vw, 70vw" className="object-cover opacity-60" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <div className="inline-flex items-center gap-2 mb-2">
@@ -177,7 +177,7 @@ function ProyectosContent() {
               ) : (
                 <div className="flex flex-col h-full">
                   <div className="relative h-56 md:h-80 overflow-hidden">
-                    <Image src={filtered[activeProject].image} alt={filtered[activeProject].title} fill className="object-cover opacity-70" />
+                    <Image src={filtered[activeProject].image} alt={filtered[activeProject].title} fill sizes="(max-width: 1024px) 100vw, 70vw" className="object-cover opacity-70" priority />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-black/40 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
                       <div className="inline-flex items-center gap-2 mb-2">

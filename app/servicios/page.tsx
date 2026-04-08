@@ -50,7 +50,7 @@ export default function ServiciosPage() {
             <Link href={`/servicios/${s.id}`} key={s.id}>
               <div className="group relative bg-[#141414] rounded-2xl overflow-hidden cursor-pointer h-72 border border-white/5 hover:border-[#FF7420]/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,116,32,0.1)]">
                 <div className="relative h-full overflow-hidden rounded-2xl">
-                  <Image src={s.imagen} alt={s.titulo} fill className="object-cover opacity-60 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-80" />
+                  <Image src={s.imagen} alt={s.titulo} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover opacity-60 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-80" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-5">
