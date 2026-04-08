@@ -28,7 +28,7 @@ export default function ServicesAndProducts() {
             </h2>
           </div>
           <Link
-            href="/servicios-y-productos"
+            href="/servicios"
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm font-semibold transition-colors shrink-0"
           >
             Ver catálogo completo

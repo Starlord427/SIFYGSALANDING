@@ -5,7 +5,8 @@ import { Linkedin, Instagram, Facebook } from 'lucide-react'
 const navLinks = [
   { href: '/',                      label: 'Inicio' },
   { href: '/acerca-de',             label: 'Acerca de' },
-  { href: '/servicios-y-productos', label: 'Servicios y Productos' },
+  { href: '/servicios',             label: 'Servicios' },
+  { href: '/productos',             label: 'Productos' },
   { href: '/proyectos',             label: 'Proyectos' },
   { href: '/eventos',               label: 'Eventos' },
 ]

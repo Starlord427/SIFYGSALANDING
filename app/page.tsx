@@ -49,10 +49,10 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-4 mb-12">
               <Link
-                href="/servicios-y-productos"
+                href="/servicios"
                 className="inline-flex items-center gap-2 bg-[#FF7420] hover:bg-[#e5681c] text-white font-bold px-7 py-3.5 rounded-xl transition-colors"
               >
-                Servicios y productos
+                Catálogo de servicios
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>

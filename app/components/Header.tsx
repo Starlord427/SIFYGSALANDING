@@ -9,7 +9,8 @@ import { Menu, X } from 'lucide-react'
 const navItems = [
   { href: '/',                      label: 'Inicio' },
   { href: '/acerca-de',             label: 'Acerca de' },
-  { href: '/servicios-y-productos', label: 'Servicios y Productos' },
+  { href: '/servicios',             label: 'Servicios' },
+  { href: '/productos',             label: 'Productos' },
   { href: '/proyectos',             label: 'Proyectos' },
   { href: '/eventos',               label: 'Eventos' },
 ]
@@ -55,17 +56,18 @@ export default function Header() {
           }`}
         />
 
-        <div className="max-w-7xl mx-auto px-6 md:px-16">
-          <div className="flex items-center justify-between h-20">
+<div className="max-w-7xl mx-auto px-6 md:px-16">
+          {/* 1. ENGORDAMOS EL HEADER (Cambiamos h-20 por h-24) */}
+          <div className="flex items-center justify-between h-24"> 
 
-            {/* Logo */}
-            <Link href="/" className="relative z-10 shrink-0">
+            {/* 2. CRECEMOS EL LOGO (Cambiamos h-10 por h-20) */}
+            <Link href="/" className="relative z-10 shrink-0 flex items-center">
               <Image
                 src="/logos/logo-sifygsa.png"
-                alt="SIFYGSA Fire & Gas"
-                width={150}
-                height={66}
-                className="h-10 w-auto"
+                alt="SIFYGSA"
+                width={350} 
+                height={200}
+                className="h-20 w-auto object-contain" 
                 priority
               />
             </Link>

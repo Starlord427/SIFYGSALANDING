@@ -211,7 +211,7 @@ function ProductsCarousel({ keyword }: { keyword?: string }) {
 export default function ServicePageTemplate({
   title, subtitle, imageSrc, imageAlt, description,
   features, services, whyTitle, whyText, categoryKeyword,
-  backHref = '/servicios-y-productos'
+  backHref = '/servicios'
 }: ServicePageProps) {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pt-20">
